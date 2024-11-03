@@ -1,4 +1,6 @@
 using EAMDJ.Context;
+using EAMDJ.Repository;
+using EAMDJ.Service;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -9,6 +11,9 @@ builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ServiceAppContext>(options => options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
+builder.Services.AddScoped<IBusinessService, BusinessService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
