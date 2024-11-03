@@ -1,0 +1,16 @@
+services:
+  eamdj:
+    image: ${DOCKER_REGISTRY-}eamdj
+    build:
+      context: .
+      dockerfile: EAMDJ/Dockerfile
+    depends_on:
+        - db
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: eamdj
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
