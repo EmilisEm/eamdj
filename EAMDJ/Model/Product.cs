@@ -13,7 +13,9 @@ public record Product {
     // Might be a good idea to merge modifiers and products. Could simplify price and tax calculations.
     // In that case it should have a flag denoting whether or not it's a modifier, or something similar.
     // public bool IsModifier { get; set; }
-    // Could either have nullable lists for possible modifiers/products that it can be a modifier for
+    // Could either have nullable lists for possible modifiers/products that it can be a modifier for.
+    // Note that these lists would be entirely optional; you could use the Product entity without necessarily having
+    // to fetch the entire list.
     // public List<Product>? CanModifyProducts { get; set; }
     // public List<Product>? PossibleModifiers { get; set; }
 }
