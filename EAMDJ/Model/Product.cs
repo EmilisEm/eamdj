@@ -18,4 +18,9 @@ public record Product {
     // to fetch the entire list.
     // public List<Product>? CanModifyProducts { get; set; }
     // public List<Product>? PossibleModifiers { get; set; }
+
+    // Description field from Service entity.
+    // I think it would be a good idea to merge Product and Service into a single object, since they have a lot of
+    // shared fields and shared behaviour.
+    public string? Description { get; set; }
 }
