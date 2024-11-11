@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace EAMDJ.Model;
 
 public record Order {
-    public Guid Id { get; init; }
+    [Key] public Guid Id { get; init; }
 
     // The data model specifies a customer id stored with every order.
     // I don't think this is a good idea, because:
@@ -11,7 +14,7 @@ public record Order {
     // Guid CustomerId { get; set; }
 
     // Id pointing to which business this order belongs to.
-    public Guid BusinessId { get; init; }
+    [ForeignKey("Business")] public Guid BusinessId { get; init; }
 
     // Not sure if this should be added because it implies that only one discount coupon may be used on an order.
     // Guid? DiscountCouponId { get; set; }
