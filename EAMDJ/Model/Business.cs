@@ -1,7 +1,9 @@
-﻿namespace EAMDJ.Model;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EAMDJ.Model;
 
 public record Business {
-    public Guid Id { get; init; }
+    [Key] public Guid Id { get; init; }
 
     // Should probably decide whether we set strings as nullable or we initialize them as string.Empty.
     public string? Name { get; set; }
