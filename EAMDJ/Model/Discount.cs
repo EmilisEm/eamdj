@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace EAMDJ.Model;
 
 public record Discount {
-    [Key] public Guid Id { get; init; }
+    public Guid Id { get; init; }
 
     // Id of product which this discount affects.
     // Could be a good idea to allow discounts to point at ProductCategories as well.
-    [ForeignKey("Product")] public Guid ProductId { get; init; }
+    public Guid ProductId { get; init; }
 
     // Percentage discount field (ex. 50% off on lunch menu).
     public decimal? Percentage { get; set; }

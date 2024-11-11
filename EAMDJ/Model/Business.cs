@@ -3,7 +3,7 @@
 namespace EAMDJ.Model;
 
 public record Business {
-    [Key] public Guid Id { get; init; }
+    public Guid Id { get; init; }
 
     // Should probably decide whether we set strings as nullable or we initialize them as string.Empty.
     public string? Name { get; set; }

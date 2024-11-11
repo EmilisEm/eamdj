@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace EAMDJ.Model;
 
 public class OrderItem {
-    [Key] [ForeignKey("Product")] public Guid ProductId { get; init; }
-    [Key] [ForeignKey("Order")] public Guid OrderId { get; init; }
+    public Guid ProductId { get; init; }
+    public Guid OrderId { get; init; }
     public uint Quantity { get; set; }
 
     // Not sure how to implement discounts.

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace EAMDJ.Model;
 
 public record User {
-    [Key] public Guid Id { get; init; }
+    public Guid Id { get; init; }
     public string? Username { get; set; }
     public string? Password { get; set; }
 
@@ -38,5 +38,5 @@ public record User {
     // The data model didn't specify, but I think it would make sense to add a field for which business this User
     // belongs to.
     // I'm making it nullable, because I think Admin type users wouldn't be related to a specific business.
-    [ForeignKey("Business")] public Guid? BusinessId { get; set; }
+    public Guid? BusinessId { get; set; }
 }
