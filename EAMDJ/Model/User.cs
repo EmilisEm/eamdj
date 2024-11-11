@@ -14,6 +14,8 @@ public record User {
     // I think renaming the Employee entity to Person or something similar, and keeping only personal data inside it
     // like the legal name, address, etc. could be a good idea.
     // Then UserType stays with the User entity, which becomes an entity used entirely for authentication/authorization.
+    // The User entity would then point to a Person entity, which would mean that a Person could have more than one
+    // account.
 
     // The employee entity has a Name, which I assume is a legal name.
     // I split the legal name into FirstName and LastName.
