@@ -16,4 +16,11 @@ public record User {
 
     // Since I combined User and Employee entities, I'm renaming EmployeeType into UserType.
     UserType UserType { get; set; }
+
+    // The data model suggests fields for when the user starts work and when the user ends work.
+    // If we plan to track the employee's schedule in the program, this doesn't seem sufficient, because it isn't
+    // granular enough.
+    // Just tracking the hour/minute when the employee starts and ends work is not enough, we would also probably need
+    // to track what days of the week they work, which may differ per week.
+    // That's why I'm omitting the starts_work and ends_work fields.
 }
