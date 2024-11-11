@@ -1,14 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace EAMDJ.Model;
 
 public record Product {
-    public Guid Id { get; init; }
+    [Key] public Guid Id { get; init; }
     public decimal Price { get; set; }
     public string Name { get; set; } = string.Empty;
 
     // Id of the product category to which this product belongs to.
     // Might be a good idea to add a string representation of this later, so a UI doesn't have to also fetch category
     // names when getting the orders.
-    public Guid CategoryId { get; set; }
+    [ForeignKey("ProductCategory")] public Guid CategoryId { get; set; }
 
     // Might be a good idea to merge modifiers and products. Could simplify price and tax calculations.
     // In that case it should have a flag denoting whether or not it's a modifier, or something similar.
