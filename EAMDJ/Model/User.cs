@@ -9,6 +9,12 @@ public record User {
     // Since Users and Employees are 1:1 and User doesn't have any information that allows to differentiate between
     // business owner/normal employee/super admin I think it would be convenient to just combine these two entities.
 
+    // Though in some cases it may be wise to keep the User entity separate from Employee, in that case I think the
+    // entity should have some changes.
+    // I think renaming the Employee entity to Person or something similar, and keeping only personal data inside it
+    // like the legal name, address, etc. could be a good idea.
+    // Then UserType stays with the User entity, which becomes an entity used entirely for authentication/authorization.
+
     // The employee entity has a Name, which I assume is a legal name.
     // I split the legal name into FirstName and LastName.
     string? FirstName { get; set; }
@@ -23,4 +29,9 @@ public record User {
     // Just tracking the hour/minute when the employee starts and ends work is not enough, we would also probably need
     // to track what days of the week they work, which may differ per week.
     // That's why I'm omitting the starts_work and ends_work fields.
+
+    // The data model didn't specify, but I think it would make sense to add a field for which business this User
+    // belongs to.
+    // I'm making it nullable, because I think Admin type users wouldn't be related to a specific business.
+    Guid? BusinessId { get; set; }
 }
