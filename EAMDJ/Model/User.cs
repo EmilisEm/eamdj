@@ -1,9 +1,9 @@
 namespace EAMDJ.Model;
 
 public record User {
-    Guid Id { get; init; }
-    string? Username { get; set; }
-    string? Password { get; set; }
+    public Guid Id { get; init; }
+    public string? Username { get; set; }
+    public string? Password { get; set; }
 
     // The data model suggests a separate User and Employee entity.
     // Since Users and Employees are 1:1 and User doesn't have any information that allows to differentiate between
@@ -19,11 +19,11 @@ public record User {
 
     // The employee entity has a Name, which I assume is a legal name.
     // I split the legal name into FirstName and LastName.
-    string? FirstName { get; set; }
-    string? LastName { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
 
     // Since I combined User and Employee entities, I'm renaming EmployeeType into UserType.
-    UserType UserType { get; set; }
+    public UserType UserType { get; set; }
 
     // The data model suggests fields for when the user starts work and when the user ends work.
     // If we plan to track the employee's schedule in the program, this doesn't seem sufficient, because it isn't
@@ -35,5 +35,5 @@ public record User {
     // The data model didn't specify, but I think it would make sense to add a field for which business this User
     // belongs to.
     // I'm making it nullable, because I think Admin type users wouldn't be related to a specific business.
-    Guid? BusinessId { get; set; }
+    public Guid? BusinessId { get; set; }
 }
