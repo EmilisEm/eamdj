@@ -6,9 +6,9 @@ public record Business {
     public Guid Id { get; init; }
 
     // Should probably decide whether we set strings as nullable or we initialize them as string.Empty.
-    public string? Name { get; set; }
-    public string? Address { get; set; }
-    public string? Email { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Address { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
 
     // Data model specifies business-wide VAT.
     // I don't think there should be a business-wide VAT because:
