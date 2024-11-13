@@ -12,6 +12,10 @@ public record Product {
     // Might be a good idea to add a string representation of this later, so a UI doesn't have to also fetch category
     // names when getting the orders.
     public Guid CategoryId { get; set; }
+    public string Description { get; set; } = string.Empty;
+
+    // We decided to implement modifiers later.
+    // Keeping below comments for later.
 
     // Might be a good idea to merge modifiers and products. Could simplify price and tax calculations.
     // In that case it should have a flag denoting whether or not it's a modifier, or something similar.
