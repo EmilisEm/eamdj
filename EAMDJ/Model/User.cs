@@ -5,8 +5,8 @@ namespace EAMDJ.Model;
 
 public record User {
     public Guid Id { get; init; }
-    public string? Username { get; set; }
-    public string? Password { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 
     // The data model suggests a separate User and Employee entity.
     // Since Users and Employees are 1:1 and User doesn't have any information that allows to differentiate between
@@ -22,9 +22,10 @@ public record User {
 
     // The employee entity has a Name, which I assume is a legal name.
     // I split the legal name into FirstName and LastName.
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
 
+    // Might create an entity for user type, to make user permission levels more customizable.
     // Since I combined User and Employee entities, I'm renaming EmployeeType into UserType.
     public UserType UserType { get; set; }
 
