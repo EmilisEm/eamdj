@@ -12,7 +12,6 @@ public record Product {
     // Might be a good idea to add a string representation of this later, so a UI doesn't have to also fetch category
     // names when getting the orders.
     public Guid CategoryId { get; set; }
-    public string Description { get; set; } = string.Empty;
 
     // We decided to implement modifiers later.
     // Keeping below comments for later.
@@ -29,5 +28,5 @@ public record Product {
     // Description field from Service entity.
     // I think it would be a good idea to merge Product and Service into a single object, since they have a lot of
     // shared fields and shared behaviour.
-    public string? Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 }
