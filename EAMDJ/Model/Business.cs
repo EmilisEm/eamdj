@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace EAMDJ.Model;
+﻿namespace EAMDJ.Model;
 
 public record Business {
     public Guid Id { get; init; }
