@@ -37,4 +37,5 @@ public record User {
     // belongs to.
     // I'm making it nullable, because I think Admin type users wouldn't be related to a specific business.
     public Guid? BusinessId { get; set; }
+    public virtual Business Business { get; set; } = null!;
 }

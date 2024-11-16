@@ -6,10 +6,11 @@ public record Discount {
     // Id of product which this discount affects.
     // Could be a good idea to allow discounts to point at ProductCategories as well.
     public Guid ProductId { get; init; }
-    
+    public virtual Product Product { get; init; } = null!;
+
     // Discount amount (Percentage or flat value)
     public decimal Amount { get; set; }
-    
+
     // Flag which shows whether discount amount is percentage or flat value 
     public bool IsFlat { get; set; }
 
