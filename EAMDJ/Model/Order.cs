@@ -12,6 +12,7 @@ public record Order {
 
     // Id pointing to which business this order belongs to.
     public Guid BusinessId { get; init; }
+    public virtual Business Business { get; init; } = null!;
 
     // Not sure if this should be added because it implies that only one discount coupon may be used on an order.
     // Guid? DiscountCouponId { get; set; }
