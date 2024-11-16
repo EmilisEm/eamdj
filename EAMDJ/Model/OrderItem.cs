@@ -2,7 +2,9 @@ namespace EAMDJ.Model;
 
 public class OrderItem {
     public Guid ProductId { get; init; }
+    public virtual Product Product { get; init; } = null!;
     public Guid OrderId { get; init; }
+    public virtual Order Order { get; init; } = null!;
     public uint Quantity { get; set; }
 
     // Not sure how to implement discounts.

@@ -9,6 +9,7 @@ public record Product {
     // Might be a good idea to add a string representation of this later, so a UI doesn't have to also fetch category
     // names when getting the orders.
     public Guid CategoryId { get; set; }
+    public virtual ProductCategory Category { get; set; } = null!;
 
     // We decided to implement modifiers later.
     // Keeping below comments for later.
