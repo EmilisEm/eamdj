@@ -10,7 +10,8 @@ builder.Services.AddControllers();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<ServiceAppContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<ServiceAppContext>(options => options.UseNpgsql(connectionString)
+	.UseLazyLoadingProxies());
 
 builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
 builder.Services.AddScoped<IBusinessService, BusinessService>();
