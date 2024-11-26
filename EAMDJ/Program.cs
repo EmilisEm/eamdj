@@ -1,6 +1,8 @@
 using EAMDJ.Context;
 using EAMDJ.Repository;
+using EAMDJ.Repository.OrderRepository;
 using EAMDJ.Service;
+using EAMDJ.Service.OrderService;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -15,6 +17,9 @@ builder.Services.AddDbContext<ServiceAppContext>(options => options.UseNpgsql(co
 
 builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
 builder.Services.AddScoped<IBusinessService, BusinessService>();
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
