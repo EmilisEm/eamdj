@@ -5,9 +5,9 @@ namespace EAMDJ.Service.OrderService
 	public interface IOrderService
 	{
 		Task<OrderDto> GetOrderAsync(Guid id);
-		Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
-		Task<OrderDto> UpdateOrderAsync(Guid id, OrderDto business);
+		Task<IEnumerable<OrderDto>> GetAllOrdersByBusinessIdAsync(Guid businessId);
+		Task<OrderDto> UpdateOrderAsync(Guid id, OrderDto order);
 		Task DeleteOrderAsync(Guid id);
-		Task<OrderDto> CreateOrderAsync(OrderDto business);
+		Task<OrderDto> CreateOrderAsync(OrderDto order);
 	}
 }

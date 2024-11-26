@@ -15,10 +15,10 @@ namespace EAMDJ.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrder()
+        [HttpGet("by-business/{id}")]
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByBusinessId(Guid id)
         {
-            return Ok(await _service.GetAllOrdersAsync());
+            return Ok(await _service.GetAllOrdersByBusinessIdAsync(id));
         }
 
         [HttpGet("{id}")]
@@ -45,7 +45,7 @@ namespace EAMDJ.Controllers
             return await _service.CreateOrderAsync(order);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
 			await _service.DeleteOrderAsync(id);

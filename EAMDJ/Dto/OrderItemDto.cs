@@ -2,9 +2,9 @@
 {
 	public class OrderItemDto
 	{
-    public Guid ProductId { get; init; }
-    public Guid OrderId { get; init; }
-    public virtual OrderDto Order { get; init; } = null!;
-    public uint Quantity { get; set; }
+		public Guid Id { get; set; }
+		public Guid ProductId { get; init; }
+		public Guid OrderId { get; init; }
+		public uint Quantity { get; set; }
 	}
 }

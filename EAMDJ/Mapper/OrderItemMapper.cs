@@ -1,6 +1,29 @@
-﻿namespace EAMDJ.Mapper
+﻿using EAMDJ.Dto;
+using EAMDJ.Model;
+
+namespace EAMDJ.Mapper
 {
 	public class OrderItemMapper
 	{
+		public static OrderItemDto ToDto(OrderItem from)
+		{
+			return new OrderItemDto()
+			{
+				Id = from.Id,
+				OrderId = from.OrderId,
+				ProductId = from.ProductId,
+				Quantity = from.Quantity,
+			};
+		}
+		public static OrderItem FromDto(OrderItemDto from)
+		{
+			return new OrderItem()
+			{
+				Id = from.Id,
+				OrderId = from.OrderId,
+				ProductId = from.ProductId,
+				Quantity = from.Quantity,
+			};
+		}
 	}
 }

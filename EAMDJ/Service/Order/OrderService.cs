@@ -15,9 +15,9 @@ namespace EAMDJ.Service.OrderService
 			_repository = repository;
 		}
 
-		public async Task<OrderDto> CreateOrderAsync(OrderDto business)
+		public async Task<OrderDto> CreateOrderAsync(OrderDto order)
 		{
-			Order created = await _repository.CreateOrderAsync(OrderMapper.FromDto(business));
+			Order created = await _repository.CreateOrderAsync(OrderMapper.FromDto(order));
 
 			return OrderMapper.ToDto(created);
 
@@ -29,23 +29,23 @@ namespace EAMDJ.Service.OrderService
 			await _repository.DeleteOrderAsync(id);
 		}
 
-		public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
+		public async Task<IEnumerable<OrderDto>> GetAllOrdersByBusinessIdAsync(Guid businessId)
 		{
-			IEnumerable<Order> businesses = await _repository.GetAllOrdersAsync();
+			IEnumerable<Order> orderes = await _repository.GetAllOrdersByBusinessIdAsync(businessId);
 
-			return businesses.Select(OrderMapper.ToDto);
+			return orderes.Select(OrderMapper.ToDto);
 		}
 
 		public async Task<OrderDto> GetOrderAsync(Guid id)
 		{
-			Order business = await _repository.GetOrderAsync(id);
+			Order order = await _repository.GetOrderAsync(id);
 
-			return OrderMapper.ToDto(business);
+			return OrderMapper.ToDto(order);
 		}
 
-		public async Task<OrderDto> UpdateOrderAsync(Guid id, OrderDto business)
+		public async Task<OrderDto> UpdateOrderAsync(Guid id, OrderDto order)
 		{
-			Order updated = await _repository.UpdateOrderAsync(id, OrderMapper.FromDto(business));
+			Order updated = await _repository.UpdateOrderAsync(id, OrderMapper.FromDto(order));
 
 			return OrderMapper.ToDto(updated);
 		}
