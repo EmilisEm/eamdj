@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using EAMDJ.Context;
-using EAMDJ.Model;
 using EAMDJ.Dto;
 using EAMDJ.Service;
 
@@ -23,15 +20,12 @@ namespace EAMDJ.Controllers
             return Ok(await _service.GetAllBusinessAsync());
         }
 
-        // GET: api/Businesses/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BusinessDto>> GetBusiness(Guid id)
         {
             return Ok(await _service.GetBusinessAsync(id));
         }
 
-        // PUT: api/Businesses/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBusiness(Guid id, BusinessDto business)
         {
@@ -44,15 +38,12 @@ namespace EAMDJ.Controllers
             return NoContent();
         }
 
-        // POST: api/Businesses
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<BusinessDto>> PostBusiness(BusinessDto business)
         {
             return await _service.CreateBusinessAsync(business);
         }
 
-        // DELETE: api/Businesses/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBusiness(Guid id)
         {
