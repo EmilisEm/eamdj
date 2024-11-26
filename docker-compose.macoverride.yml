@@ -1,0 +1,14 @@
+services:
+  eamdj:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=awefawef23fq2io3
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ${USER_SECRETS_PATH:-${APPDATA}/Microsoft/UserSecrets}:/home/app/.microsoft/usersecrets:ro
+      - ${HTTPS_PATH:-${APPDATA}/ASP.NET/Https}:/home/app/.aspnet/https:ro

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using EAMDJ.Context;
 using EAMDJ.Model;
 using EAMDJ.Dto;
@@ -17,21 +18,21 @@ namespace EAMDJ.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BusinessDto>>> GetBusiness()
         {
             return Ok(await _service.GetAllBusinessAsync());
         }
 
-        // GET: api/Businesses/5
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<BusinessDto>> GetBusiness(Guid id)
         {
             return Ok(await _service.GetBusinessAsync(id));
         }
 
-        // PUT: api/Businesses/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBusiness(Guid id, BusinessDto business)
         {
@@ -44,15 +45,14 @@ namespace EAMDJ.Controllers
             return NoContent();
         }
 
-        // POST: api/Businesses
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<BusinessDto>> PostBusiness(BusinessDto business)
         {
             return await _service.CreateBusinessAsync(business);
         }
 
-        // DELETE: api/Businesses/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBusiness(Guid id)
         {
