@@ -1,8 +1,14 @@
 using EAMDJ.Context;
 using EAMDJ.Repository;
+using EAMDJ.Repository.CategoryRepository;
+using EAMDJ.Repository.OrderItemRepository;
 using EAMDJ.Repository.OrderRepository;
+using EAMDJ.Repository.ProductRepository;
 using EAMDJ.Service;
+using EAMDJ.Service.CategoryService;
+using EAMDJ.Service.OrderItemService;
 using EAMDJ.Service.OrderService;
+using EAMDJ.Service.ProductService;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -20,6 +26,15 @@ builder.Services.AddScoped<IBusinessService, BusinessService>();
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+builder.Services.AddScoped<IOrderItemService, OrderItemService>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

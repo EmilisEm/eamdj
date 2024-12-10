@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EAMDJ.Controllers
 {
-	[Route("api/v1/Order")]
+	[Route("api/v1/order")]
 	[ApiController]
 	public class OrderController : ControllerBase
 	{

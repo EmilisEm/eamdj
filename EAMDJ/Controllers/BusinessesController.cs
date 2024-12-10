@@ -4,7 +4,7 @@ using EAMDJ.Service;
 
 namespace EAMDJ.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/business")]
     [ApiController]
     public class BusinessesController : ControllerBase
     {

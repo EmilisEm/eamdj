@@ -3,7 +3,7 @@ using EAMDJ.Model;
 
 namespace EAMDJ.Mapper
 {
-	public class OrderItemMapper
+	public static class OrderItemMapper
 	{
 		public static OrderItemDto ToDto(OrderItem from)
 		{

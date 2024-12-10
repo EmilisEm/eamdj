@@ -1,11 +1,10 @@
 ﻿using EAMDJ.Dto;
 using EAMDJ.Service.OrderItemService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EAMDJ.Controllers
 {
-	[Route("api/v1/OrderItem")]
+	[Route("api/v1/order-item")]
 	[ApiController]
 	public class OrderItemController : ControllerBase
 	{
@@ -15,7 +14,7 @@ namespace EAMDJ.Controllers
             _service = service;
         }
 
-        [HttpGet("by-orderItem/{id}")]
+        [HttpGet("by-order/{id}")]
         public async Task<ActionResult<IEnumerable<OrderItemDto>>> GetOrderItemsByOrderId(Guid id)
         {
             return Ok(await _service.GetAllOrderItemsByOrderIdAsync(id));
