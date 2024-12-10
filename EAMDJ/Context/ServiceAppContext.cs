@@ -22,7 +22,7 @@ public class ServiceAppContext : DbContext {
             .HasForeignKey(o => o.BusinessId);
 
         modelBuilder.Entity<OrderItem>()
-            .HasKey(o => new { o.OrderId, o.ProductId });
+            .HasKey(o => o.Id);
         modelBuilder.Entity<OrderItem>()
             .HasOne<Order>(o => o.Order)
             .WithMany()
