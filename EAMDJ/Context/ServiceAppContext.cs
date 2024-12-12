@@ -11,6 +11,7 @@ public class ServiceAppContext : DbContext
 	public DbSet<Discount> Discount { get; set; }
 	public DbSet<Product> Product { get; set; }
 	public DbSet<ProductCategory> ProductCategory { get; set; }
+	public DbSet<ProductModifier> ProductModifier { get; set; }
 	public DbSet<Tax> Tax { get; set; }
 	public DbSet<User> User { get; set; }
 

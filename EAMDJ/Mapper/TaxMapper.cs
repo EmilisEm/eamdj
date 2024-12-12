@@ -10,7 +10,7 @@ namespace EAMDJ.Mapper
 			return new TaxResponseDto()
 			{
 				Id = from.Id,
-				BusinessId = from.BusinessId,
+				CategoryId = from.ProductCategoryId,
 			};
 		}
 		public static Tax FromDto(TaxCreateDto from)
@@ -18,17 +18,17 @@ namespace EAMDJ.Mapper
 			return new Tax()
 			{
 				Id = Guid.NewGuid(),
-				BusinessId = from.BusinessId,
+				ProductCategoryId = from.CategoryId,
 				Name = from.Name,
 				Percentage = from.Percentage,
 			};
 		}
-		public static Tax FromDto(TaxUpdateDto from, Guid id, Guid businessId)
+		public static Tax FromDto(TaxUpdateDto from, Guid id, Guid categoryId)
 		{
 			return new Tax()
 			{
 				Id = id,
-				BusinessId = businessId,
+				ProductCategoryId = categoryId,
 				Name = from.Name,
 				Percentage = from.Percentage,
 			};

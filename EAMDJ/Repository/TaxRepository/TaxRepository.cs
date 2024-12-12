@@ -34,7 +34,7 @@ namespace EAMDJ.Repository.TaxRepository
 
 		public async Task<IEnumerable<Tax>> GetAllTaxesByCategoryIdAsync(Guid categoryId)
 		{
-			return await _context.Tax.Where(it => it.ProductCategoryId.Equals(categoryId)).ToListAsync();
+			return await _context.Tax.Where(it => it.CategoryId.Equals(categoryId)).ToListAsync();
 		}
 
 		public async Task<Tax> GetTaxAsync(Guid id)

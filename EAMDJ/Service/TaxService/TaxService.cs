@@ -46,7 +46,7 @@ namespace EAMDJ.Service.TaxService
 		{
 			Tax original = await _repository.GetTaxAsync(id);
 
-			Tax updated = await _repository.UpdateTaxAsync(id, TaxMapper.FromDto(tax, original.Id, original.BusinessId));
+			Tax updated = await _repository.UpdateTaxAsync(id, TaxMapper.FromDto(tax, original.Id, original.ProductCategoryId));
 
 			return TaxMapper.ToDto(updated);
 		}
