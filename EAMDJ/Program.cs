@@ -5,7 +5,7 @@ using EAMDJ.Repository.OrderItemRepository;
 using EAMDJ.Repository.OrderRepository;
 using EAMDJ.Repository.ProductRepository;
 using EAMDJ.Repository.UserRepository;
-using EAMDJ.Service;
+using EAMDJ.Service.BusinessService.BusinessService;
 using EAMDJ.Service.CategoryService;
 using EAMDJ.Service.OrderItemService;
 using EAMDJ.Service.OrderService;

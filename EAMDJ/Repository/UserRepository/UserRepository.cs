@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EAMDJ.Repository.UserRepository
 {
-	public class UserRepository: IUserRepository
+	public class UserRepository : IUserRepository
 	{
 		private readonly ServiceAppContext _context;
 

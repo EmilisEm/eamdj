@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EAMDJ.Repository.ProductRepository
 {
-	public class ProductRepository: IProductRepository
+	public class ProductRepository : IProductRepository
 	{
 		private readonly ServiceAppContext _context;
 

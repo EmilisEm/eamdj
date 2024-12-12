@@ -1,8 +1,7 @@
-﻿namespace EAMDJ.Dto
+﻿namespace EAMDJ.Dto.OrderItemDto
 {
-	public class OrderItemDto
+	public class OrderItemCreateDto
 	{
-		public Guid Id { get; set; }
 		public Guid ProductId { get; init; }
 		public Guid OrderId { get; init; }
 		public uint Quantity { get; set; }

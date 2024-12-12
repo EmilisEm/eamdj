@@ -1,11 +1,11 @@
-﻿using EAMDJ.Dto;
+﻿using EAMDJ.Dto.ProductDto;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
 using EAMDJ.Repository.ProductRepository;
 
 namespace EAMDJ.Service.ProductService
 {
-	public class ProductService: IProductService
+	public class ProductService : IProductService
 	{
 		private readonly IProductRepository _repository;
 
@@ -14,7 +14,7 @@ namespace EAMDJ.Service.ProductService
 			_repository = repository;
 		}
 
-		public async Task<ProductDto> CreateProductAsync(ProductDto product)
+		public async Task<ProductResponseDto> CreateProductAsync(ProductCreateDto product)
 		{
 			Product created = await _repository.CreateProductAsync(ProductMapper.FromDto(product));
 
@@ -28,23 +28,25 @@ namespace EAMDJ.Service.ProductService
 			await _repository.DeleteProductAsync(id);
 		}
 
-		public async Task<IEnumerable<ProductDto>> GetAllProductsByProductCategoryIdAsync(Guid productCategoryId)
+		public async Task<IEnumerable<ProductResponseDto>> GetAllProductsByProductCategoryIdAsync(Guid productCategoryId)
 		{
 			IEnumerable<Product> products = await _repository.GetAllProductsByProductCategoryIdAsync(productCategoryId);
 
 			return products.Select(ProductMapper.ToDto);
 		}
 
-		public async Task<ProductDto> GetProductAsync(Guid id)
+		public async Task<ProductResponseDto> GetProductAsync(Guid id)
 		{
 			Product product = await _repository.GetProductAsync(id);
 
 			return ProductMapper.ToDto(product);
 		}
 
-		public async Task<ProductDto> UpdateProductAsync(Guid id, ProductDto product)
+		public async Task<ProductResponseDto> UpdateProductAsync(Guid id, ProductUpdateDto product)
 		{
-			Product updated = await _repository.UpdateProductAsync(id, ProductMapper.FromDto(product));
+			Product original = await _repository.GetProductAsync(id);
+
+			Product updated = await _repository.UpdateProductAsync(id, ProductMapper.FromDto(product, original.Id));
 
 			return ProductMapper.ToDto(updated);
 		}

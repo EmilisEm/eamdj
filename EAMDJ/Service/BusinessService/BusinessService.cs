@@ -1,9 +1,9 @@
-﻿using EAMDJ.Dto;
+﻿using EAMDJ.Dto.BusinessDto;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
 using EAMDJ.Repository;
 
-namespace EAMDJ.Service
+namespace EAMDJ.Service.BusinessService.BusinessService
 {
 	public class BusinessService : IBusinessService
 	{
@@ -14,7 +14,7 @@ namespace EAMDJ.Service
 			_repository = repository;
 		}
 
-		public async Task<BusinessDto> CreateBusinessAsync(BusinessDto business)
+		public async Task<BusinessResponseDto> CreateBusinessAsync(BusinessCreateDto business)
 		{
 			Business created = await _repository.CreateBusinessAsync(BusinessMapper.FromDto(business));
 
@@ -28,23 +28,23 @@ namespace EAMDJ.Service
 			await _repository.DeleteBusinessAsync(id);
 		}
 
-		public async Task<IEnumerable<BusinessDto>> GetAllBusinessAsync()
+		public async Task<IEnumerable<BusinessResponseDto>> GetAllBusinessAsync()
 		{
 			IEnumerable<Business> businesses = await _repository.GetAllBusinessAsync();
 
 			return businesses.Select(BusinessMapper.ToDto);
 		}
 
-		public async Task<BusinessDto> GetBusinessAsync(Guid id)
+		public async Task<BusinessResponseDto> GetBusinessAsync(Guid id)
 		{
 			Business business = await _repository.GetBusinessAsync(id);
 
 			return BusinessMapper.ToDto(business);
 		}
 
-		public async Task<BusinessDto> UpdateBusinessAsync(Guid id, BusinessDto business)
+		public async Task<BusinessResponseDto> UpdateBusinessAsync(Guid id, BusinessUpdateDto business)
 		{
-			Business updated = await _repository.UpdateBusinessAsync(id, BusinessMapper.FromDto(business));
+			Business updated = await _repository.UpdateBusinessAsync(id, BusinessMapper.FromDto(business, id));
 
 			return BusinessMapper.ToDto(updated);
 		}

@@ -1,11 +1,11 @@
-﻿using EAMDJ.Dto;
+﻿using EAMDJ.Dto.UserDto;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
 using EAMDJ.Repository.UserRepository;
 
 namespace EAMDJ.Service.UserService
 {
-	public class UserService: IUserService
+	public class UserService : IUserService
 	{
 		private readonly IUserRepository _repository;
 
@@ -14,7 +14,7 @@ namespace EAMDJ.Service.UserService
 			_repository = repository;
 		}
 
-		public async Task<UserDto> CreateUserAsync(UserDto user)
+		public async Task<UserResponseDto> CreateUserAsync(UserCreateDto user)
 		{
 			User created = await _repository.CreateUserAsync(UserMapper.FromDto(user));
 
@@ -28,23 +28,24 @@ namespace EAMDJ.Service.UserService
 			await _repository.DeleteUserAsync(id);
 		}
 
-		public async Task<IEnumerable<UserDto>> GetAllUsersByBusinessIdAsync(Guid businessId)
+		public async Task<IEnumerable<UserResponseDto>> GetAllUsersByBusinessIdAsync(Guid businessId)
 		{
 			IEnumerable<User> productCategories = await _repository.GetAllUsersByBusinessIdAsync(businessId);
 
 			return productCategories.Select(UserMapper.ToDto);
 		}
 
-		public async Task<UserDto> GetUserAsync(Guid id)
+		public async Task<UserResponseDto> GetUserAsync(Guid id)
 		{
 			User user = await _repository.GetUserAsync(id);
 
 			return UserMapper.ToDto(user);
 		}
 
-		public async Task<UserDto> UpdateUserAsync(Guid id, UserDto user)
+		public async Task<UserResponseDto> UpdateUserAsync(Guid id, UserUpdateDto user)
 		{
-			User updated = await _repository.UpdateUserAsync(id, UserMapper.FromDto(user));
+			User original = await _repository.GetUserAsync(id);
+			User updated = await _repository.UpdateUserAsync(id, UserMapper.FromDto(user, original.BusinessId, original.Password));
 
 			return UserMapper.ToDto(updated);
 		}

@@ -1,13 +1,13 @@
-﻿using EAMDJ.Dto;
+﻿using EAMDJ.Dto.UserDto;
 
 namespace EAMDJ.Service.UserService
 {
 	public interface IUserService
 	{
-		Task<UserDto> GetUserAsync(Guid id);
-		Task<IEnumerable<UserDto>> GetAllUsersByBusinessIdAsync(Guid businessId);
-		Task<UserDto> UpdateUserAsync(Guid id, UserDto user);
+		Task<UserResponseDto> GetUserAsync(Guid id);
+		Task<IEnumerable<UserResponseDto>> GetAllUsersByBusinessIdAsync(Guid businessId);
+		Task<UserResponseDto> UpdateUserAsync(Guid id, UserUpdateDto user);
 		Task DeleteUserAsync(Guid id);
-		Task<UserDto> CreateUserAsync(UserDto user);
+		Task<UserResponseDto> CreateUserAsync(UserCreateDto user);
 	}
 }

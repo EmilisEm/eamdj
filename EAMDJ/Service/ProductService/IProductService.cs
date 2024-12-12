@@ -1,13 +1,13 @@
-﻿using EAMDJ.Dto;
+﻿using EAMDJ.Dto.ProductDto;
 
 namespace EAMDJ.Service.ProductService
 {
 	public interface IProductService
 	{
-		Task<ProductDto> GetProductAsync(Guid id);
-		Task<IEnumerable<ProductDto>> GetAllProductsByProductCategoryIdAsync(Guid productCategoryId);
-		Task<ProductDto> UpdateProductAsync(Guid id, ProductDto product);
+		Task<ProductResponseDto> GetProductAsync(Guid id);
+		Task<IEnumerable<ProductResponseDto>> GetAllProductsByProductCategoryIdAsync(Guid productCategoryId);
+		Task<ProductResponseDto> UpdateProductAsync(Guid id, ProductUpdateDto product);
 		Task DeleteProductAsync(Guid id);
-		Task<ProductDto> CreateProductAsync(ProductDto product);
+		Task<ProductResponseDto> CreateProductAsync(ProductCreateDto product);
 	}
 }

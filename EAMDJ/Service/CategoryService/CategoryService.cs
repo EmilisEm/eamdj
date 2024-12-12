@@ -1,4 +1,4 @@
-﻿using EAMDJ.Dto;
+﻿using EAMDJ.Dto.ProductCategoryDto;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
 using EAMDJ.Repository.CategoryRepository;
@@ -14,7 +14,7 @@ namespace EAMDJ.Service.CategoryService
 			_repository = repository;
 		}
 
-		public async Task<ProductCategoryDto> CreateProductCategoryAsync(ProductCategoryDto productCategory)
+		public async Task<ProductCategoryResponseDto> CreateProductCategoryAsync(ProductCategoryCreateDto productCategory)
 		{
 			ProductCategory created = await _repository.CreateProductCategoryAsync(ProductCategoryMapper.FromDto(productCategory));
 
@@ -28,23 +28,24 @@ namespace EAMDJ.Service.CategoryService
 			await _repository.DeleteProductCategoryAsync(id);
 		}
 
-		public async Task<IEnumerable<ProductCategoryDto>> GetAllProductCategoriesByBusinessIdAsync(Guid businessId)
+		public async Task<IEnumerable<ProductCategoryResponseDto>> GetAllProductCategoriesByBusinessIdAsync(Guid businessId)
 		{
 			IEnumerable<ProductCategory> productCategories = await _repository.GetAllProductCategoriesByBusinessIdAsync(businessId);
 
 			return productCategories.Select(ProductCategoryMapper.ToDto);
 		}
 
-		public async Task<ProductCategoryDto> GetProductCategoryAsync(Guid id)
+		public async Task<ProductCategoryResponseDto> GetProductCategoryAsync(Guid id)
 		{
 			ProductCategory productCategory = await _repository.GetProductCategoryAsync(id);
 
 			return ProductCategoryMapper.ToDto(productCategory);
 		}
 
-		public async Task<ProductCategoryDto> UpdateProductCategoryAsync(Guid id, ProductCategoryDto productCategory)
+		public async Task<ProductCategoryResponseDto> UpdateProductCategoryAsync(Guid id, ProductCategoryUpdateDto productCategory)
 		{
-			ProductCategory updated = await _repository.UpdateProductCategoryAsync(id, ProductCategoryMapper.FromDto(productCategory));
+			ProductCategory original = await _repository.GetProductCategoryAsync(id);
+			ProductCategory updated = await _repository.UpdateProductCategoryAsync(id, ProductCategoryMapper.FromDto(productCategory, id, original.BusinessId));
 
 			return ProductCategoryMapper.ToDto(updated);
 		}

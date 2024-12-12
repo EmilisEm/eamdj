@@ -1,13 +1,13 @@
-﻿using EAMDJ.Dto;
+﻿using EAMDJ.Dto.ProductDto;
 using EAMDJ.Model;
 
 namespace EAMDJ.Mapper
 {
 	public static class ProductMapper
 	{
-		public static ProductDto ToDto(Product from)
+		public static ProductResponseDto ToDto(Product from)
 		{
-			return new ProductDto()
+			return new ProductResponseDto()
 			{
 				Id = from.Id,
 				Name = from.Name,
@@ -16,11 +16,22 @@ namespace EAMDJ.Mapper
 				Description = from.Description,
 			};
 		}
-		public static Product FromDto(ProductDto from)
+		public static Product FromDto(ProductCreateDto from)
 		{
 			return new Product()
 			{
-				Id = from.Id,
+				Id = Guid.NewGuid(),
+				Name = from.Name,
+				Price = from.Price,
+				CategoryId = from.CategoryId,
+				Description = from.Description,
+			};
+		}
+		public static Product FromDto(ProductUpdateDto from, Guid id)
+		{
+			return new Product()
+			{
+				Id = id,
 				Name = from.Name,
 				Price = from.Price,
 				CategoryId = from.CategoryId,

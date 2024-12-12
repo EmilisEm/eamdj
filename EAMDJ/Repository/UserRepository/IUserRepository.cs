@@ -4,7 +4,7 @@ namespace EAMDJ.Repository.UserRepository
 {
 	public interface IUserRepository
 	{
-		
+
 		Task<User> GetUserAsync(Guid id);
 		Task<IEnumerable<User>> GetAllUsersByBusinessIdAsync(Guid businessId);
 		Task<User> UpdateUserAsync(Guid id, User user);

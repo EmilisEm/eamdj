@@ -1,6 +1,6 @@
-﻿namespace EAMDJ.Dto
+﻿namespace EAMDJ.Dto.ProductDto
 {
-	public class ProductDto
+	public class ProductResponseDto
 	{
 		public Guid Id { get; init; }
 		public decimal Price { get; set; }
