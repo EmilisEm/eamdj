@@ -28,4 +28,5 @@ public record Order
 	// Make sure it's UTC.
 	public DateTime CreatedAt { get; init; }
 	public DateTime LastModifiedAt { get; set; }
+	public virtual IEnumerable<OrderItem> OrderItems { get; init; } = new List<OrderItem>();
 }

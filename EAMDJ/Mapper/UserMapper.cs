@@ -17,11 +17,11 @@ namespace EAMDJ.Mapper
 				UserType = from.UserType,
 			};
 		}
-		public static User FromDto(UserUpdateDto from, Guid businessId, string password)
+		public static User FromDto(UserUpdateDto from, Guid? businessId, string password, Guid id)
 		{
 			return new User()
 			{
-				Id = Guid.NewGuid(),
+				Id = id,
 				Username = from.Username,
 				BusinessId = businessId,
 				FirstName = from.FirstName,

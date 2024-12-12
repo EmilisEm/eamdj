@@ -56,7 +56,7 @@ namespace EAMDJ.Repository.OrderItemRepository
 				throw new ArgumentException("OrderItem not found");
 			}
 
-			_context.Entry(orderItem).State = EntityState.Modified;
+			_context.Entry(await GetOrderItemAsync(id)).CurrentValues.SetValues(orderItem);
 
 			try
 			{

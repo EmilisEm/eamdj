@@ -3,6 +3,6 @@
 	public class BusinessCreateDto
 	{
 		public string Name { get; set; } = string.Empty;
-		public Guid OwnerId { get; set; }
+		public Guid? OwnerId { get; set; }
 	}
 }

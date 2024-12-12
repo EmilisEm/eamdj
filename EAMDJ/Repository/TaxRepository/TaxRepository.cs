@@ -34,7 +34,7 @@ namespace EAMDJ.Repository.TaxRepository
 
 		public async Task<IEnumerable<Tax>> GetAllTaxesByCategoryIdAsync(Guid categoryId)
 		{
-			return await _context.Tax.Where(it => it.CategoryId.Equals(categoryId)).ToListAsync();
+			return await _context.Tax.Where(it => it.ProductCategoryId.Equals(categoryId)).ToListAsync();
 		}
 
 		public async Task<Tax> GetTaxAsync(Guid id)
@@ -56,7 +56,7 @@ namespace EAMDJ.Repository.TaxRepository
 				throw new ArgumentException("Tax not found");
 			}
 
-			_context.Entry(tax).State = EntityState.Modified;
+			_context.Entry(await GetTaxAsync(id)).CurrentValues.SetValues(tax);
 
 			try
 			{

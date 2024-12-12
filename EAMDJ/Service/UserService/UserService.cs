@@ -45,7 +45,7 @@ namespace EAMDJ.Service.UserService
 		public async Task<UserResponseDto> UpdateUserAsync(Guid id, UserUpdateDto user)
 		{
 			User original = await _repository.GetUserAsync(id);
-			User updated = await _repository.UpdateUserAsync(id, UserMapper.FromDto(user, original.BusinessId, original.Password));
+			User updated = await _repository.UpdateUserAsync(id, UserMapper.FromDto(user, original.BusinessId, original.Password, original.Id));
 
 			return UserMapper.ToDto(updated);
 		}

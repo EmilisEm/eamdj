@@ -32,7 +32,7 @@ namespace EAMDJ.Repository.OrderRepository
 
 		public async Task<IEnumerable<Order>> GetAllOrdersByBusinessIdAsync(Guid businessId)
 		{
-			return await _context.Order.Where(it => it.BusinessId.Equals(businessId)).ToListAsync();
+			return await _context.Order.Where(it => it.BusinessId.Equals(businessId)).Include(it => it.OrderItems).ToListAsync();
 		}
 
 		public async Task<Order> GetOrderAsync(Guid id)
@@ -54,7 +54,7 @@ namespace EAMDJ.Repository.OrderRepository
 				throw new ArgumentException("Order not found");
 			}
 
-			_context.Entry(orderItem).State = EntityState.Modified;
+			_context.Entry(await GetOrderAsync(id)).CurrentValues.SetValues(orderItem);
 
 			try
 			{

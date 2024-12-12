@@ -5,11 +5,11 @@ using EAMDJ.Repository.ProductModifierRepository;
 
 namespace EAMDJ.Service.ProductModifierService
 {
-	public class ProductModifierModifierService : IProductModifierService
+	public class ProductModifierService : IProductModifierService
 	{
 		private readonly IProductModifierRepository _repository;
 
-		public ProductModifierModifierService(IProductModifierRepository repository)
+		public ProductModifierService(IProductModifierRepository repository)
 		{
 			_repository = repository;
 		}

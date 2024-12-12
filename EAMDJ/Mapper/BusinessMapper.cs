@@ -20,7 +20,6 @@ namespace EAMDJ.Mapper
 			{
 				Id = Guid.NewGuid(),
 				Name = from.Name,
-				OwnerId = from.OwnerId,
 			};
 		}
 		public static Business FromDto(BusinessUpdateDto from, Guid id)
@@ -30,7 +29,6 @@ namespace EAMDJ.Mapper
 				Id = id,
 				Address = from.Address,
 				Name = from.Name,
-				OwnerId = from.OwnerId,
 			};
 		}
 

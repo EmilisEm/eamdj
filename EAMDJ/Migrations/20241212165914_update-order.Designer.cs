@@ -3,6 +3,7 @@ using System;
 using EAMDJ.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EAMDJ.Migrations
 {
     [DbContext(typeof(ServiceAppContext))]
-    partial class ServiceAppContextModelSnapshot : ModelSnapshot
+    [Migration("20241212165914_update-order")]
+    partial class updateorder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,6 +111,9 @@ namespace EAMDJ.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("OrderId1")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
@@ -117,6 +123,8 @@ namespace EAMDJ.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("OrderId1");
 
                     b.HasIndex("ProductId");
 
@@ -275,9 +283,14 @@ namespace EAMDJ.Migrations
             modelBuilder.Entity("EAMDJ.Model.OrderItem", b =>
                 {
                     b.HasOne("EAMDJ.Model.Order", "Order")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EAMDJ.Model.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId1");
 
                     b.HasOne("EAMDJ.Model.Product", "Product")
                         .WithMany()

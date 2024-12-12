@@ -56,7 +56,7 @@ namespace EAMDJ.Repository.ProductRepository
 				throw new ArgumentException("Product not found");
 			}
 
-			_context.Entry(product).State = EntityState.Modified;
+			_context.Entry(await GetProductAsync(id)).CurrentValues.SetValues(product);
 
 			try
 			{

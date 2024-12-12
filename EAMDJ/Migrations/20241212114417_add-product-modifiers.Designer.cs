@@ -3,6 +3,7 @@ using System;
 using EAMDJ.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EAMDJ.Migrations
 {
     [DbContext(typeof(ServiceAppContext))]
-    partial class ServiceAppContextModelSnapshot : ModelSnapshot
+    [Migration("20241212114417_add-product-modifiers")]
+    partial class addproductmodifiers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,9 +278,10 @@ namespace EAMDJ.Migrations
             modelBuilder.Entity("EAMDJ.Model.OrderItem", b =>
                 {
                     b.HasOne("EAMDJ.Model.Order", "Order")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EAMDJ.Model.Product", "Product")
                         .WithMany()
@@ -341,11 +345,6 @@ namespace EAMDJ.Migrations
                         .HasForeignKey("BusinessId");
 
                     b.Navigation("Business");
-                });
-
-            modelBuilder.Entity("EAMDJ.Model.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

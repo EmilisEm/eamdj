@@ -11,6 +11,8 @@ namespace EAMDJ.Mapper
 			{
 				Id = from.Id,
 				CategoryId = from.ProductCategoryId,
+				Name = from.Name,
+				Percentage = from.Percentage,
 			};
 		}
 		public static Tax FromDto(TaxCreateDto from)

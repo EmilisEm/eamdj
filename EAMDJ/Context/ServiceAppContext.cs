@@ -23,13 +23,14 @@ public class ServiceAppContext : DbContext
 			.HasOne<Business>(o => o.Business)
 			.WithMany()
 			.HasForeignKey(o => o.BusinessId);
-
+		modelBuilder.Entity<Order>()
+			.HasMany(o => o.OrderItems)
+			.WithOne(i => i.Order)
+			.HasForeignKey(i => i.OrderId)
+			.IsRequired(false)
+			.OnDelete(DeleteBehavior.Cascade);
 		modelBuilder.Entity<OrderItem>()
 			.HasKey(o => o.Id);
-		modelBuilder.Entity<OrderItem>()
-			.HasOne<Order>(o => o.Order)
-			.WithMany()
-			.HasForeignKey(o => o.OrderId);
 		modelBuilder.Entity<OrderItem>()
 			.HasOne<Product>(o => o.Product)
 			.WithMany()
@@ -54,5 +55,9 @@ public class ServiceAppContext : DbContext
 			.HasOne<Business>(u => u.Business)
 			.WithMany()
 			.HasForeignKey(u => u.BusinessId);
+		modelBuilder.Entity<ProductModifier>()
+			.HasOne(mod => mod.Product)
+			.WithMany()
+			.HasForeignKey(mod => mod.ProductId);
 	}
 }

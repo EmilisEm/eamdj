@@ -14,6 +14,7 @@ namespace EAMDJ.Mapper
 				Status = from.Status,
 				CreatedAt = from.CreatedAt,
 				LastModifiedAt = from.LastModifiedAt,
+				OrderItmes = from.OrderItems.Select(OrderItemMapper.ToDto).ToList(),
 			};
 		}
 		public static Order FromDto(OrderCreateDto from)
@@ -22,10 +23,14 @@ namespace EAMDJ.Mapper
 			{
 				Id = Guid.NewGuid(),
 				BusinessId = from.BusinessId,
+				CreatedAt = DateTime.UtcNow,
+				LastModifiedAt = DateTime.UtcNow,
+				Status = OrderStatus.Open,
 			};
 		}
 		public static Order FromDto(OrderUpdateDto from, Guid id, Guid businessId, OrderStatus status, DateTime created)
 		{
+			Console.WriteLine(from.PaidAmount);
 			return new Order()
 			{
 				Id = id,
@@ -33,7 +38,7 @@ namespace EAMDJ.Mapper
 				BusinessId = businessId,
 				Status = status,
 				CreatedAt = created,
-				LastModifiedAt = DateTime.Now,
+				LastModifiedAt = DateTime.UtcNow,
 			};
 		}
 	}

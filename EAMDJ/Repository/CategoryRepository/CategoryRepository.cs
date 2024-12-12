@@ -56,7 +56,7 @@ namespace EAMDJ.Repository.CategoryRepository
 				throw new ArgumentException("ProductCategory not found");
 			}
 
-			_context.Entry(productCategory).State = EntityState.Modified;
+			_context.Entry(await GetProductCategoryAsync(id)).CurrentValues.SetValues(productCategory);
 
 			try
 			{

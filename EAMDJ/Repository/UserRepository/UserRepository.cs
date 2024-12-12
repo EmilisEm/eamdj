@@ -53,10 +53,10 @@ namespace EAMDJ.Repository.UserRepository
 		{
 			if (id != user.Id)
 			{
-				throw new ArgumentException("User not found");
+				throw new ArgumentException("User not found repo");
 			}
 
-			_context.Entry(user).State = EntityState.Modified;
+			_context.Entry(await GetUserAsync(id)).CurrentValues.SetValues(user);
 
 			try
 			{

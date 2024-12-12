@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EAMDJ.Repository.ProductModifierRepository
 {
-	public class ProductModifierModifierRepository : IProductModifierRepository
+	public class ProductModifierRepository : IProductModifierRepository
 	{
 		private readonly ServiceAppContext _context;
 
-		public ProductModifierModifierRepository(ServiceAppContext context)
+		public ProductModifierRepository(ServiceAppContext context)
 		{
 			_context = context;
 		}
@@ -56,7 +56,7 @@ namespace EAMDJ.Repository.ProductModifierRepository
 				throw new ArgumentException("ProductModifier not found");
 			}
 
-			_context.Entry(productModifier).State = EntityState.Modified;
+			_context.Entry(await GetProductModifierAsync(id)).CurrentValues.SetValues(productModifier);
 
 			try
 			{
