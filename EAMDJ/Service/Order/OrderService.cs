@@ -57,8 +57,17 @@ namespace EAMDJ.Service.OrderService
 			{
 				var product = await _productRepository.GetProductAsync(item.ProductId);
 				var category = await _categoryRepository.GetProductCategoryAsync(product.CategoryId);
+				decimal totalItemTax = 0;
+				if (category.Taxes == null)
+				{
+					throw new ArgumentException("Invalid response from database while getting taxes");
+				}
 
-				// totalTax += product.Price * category.Tax.Percentage * item.Quantity / 100;
+				foreach (Tax tax in category.Taxes)
+				{
+					totalItemTax += tax.Percentage;
+				}
+				totalTax += product.Price * totalItemTax * item.Quantity / 100;
 				totalPrice += product.Price * item.Quantity;
 			}
 
