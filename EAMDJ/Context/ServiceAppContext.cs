@@ -31,12 +31,14 @@ public class ServiceAppContext : DbContext
 			.HasForeignKey(i => i.OrderId)
 			.IsRequired(false)
 			.OnDelete(DeleteBehavior.Cascade);
+
 		modelBuilder.Entity<OrderItem>()
 			.HasKey(o => o.Id);
 		modelBuilder.Entity<OrderItem>()
 			.HasOne<Product>(o => o.Product)
 			.WithMany()
 			.HasForeignKey(o => o.ProductId);
+
 		modelBuilder.Entity<Discount>()
 			.HasOne<Product>(d => d.Product)
 			.WithOne()
@@ -45,28 +47,33 @@ public class ServiceAppContext : DbContext
 			.HasOne(d => d.Business)
 			.WithMany()
 			.HasForeignKey(d => d.BusinessId);
+
 		modelBuilder.Entity<Product>()
 			.HasOne<ProductCategory>(p => p.Category)
-			.WithMany()
+			.WithMany(c => c.Products)
 			.HasForeignKey(p => p.CategoryId);
-		modelBuilder.Entity<Tax>()
-			.HasOne<ProductCategory>(t => t.ProductCategory)
+
+		modelBuilder.Entity<ProductCategory>()
+			.HasOne(t => t.Tax)
 			.WithMany()
-			.HasForeignKey(t => t.ProductCategoryId);
+			.HasForeignKey(t => t.TaxId);
 
 		modelBuilder.Entity<User>()
 			.HasOne<Business>(u => u.Business)
 			.WithMany()
 			.HasForeignKey(u => u.BusinessId);
+
 		modelBuilder.Entity<ProductModifier>()
 			.HasOne(mod => mod.Product)
 			.WithMany()
 			.HasForeignKey(mod => mod.ProductId);
+
 		modelBuilder.Entity<ServiceTime>()
 			.HasOne(st => st.Product)
 			.WithMany()
 			.HasForeignKey(st => st.ServiceId)
 			.IsRequired(true);
+
 		modelBuilder.Entity<Reservation>()
 			.HasOne(r => r.Employee)
 			.WithMany()
@@ -79,5 +86,12 @@ public class ServiceAppContext : DbContext
 			.HasOne(r => r.Product)
 			.WithMany()
 			.HasForeignKey(r => r.ProductId);
+
+		modelBuilder.Entity<ServiceTime>()
+			.Property(st => st.Start)
+			.HasColumnType("time");
+		modelBuilder.Entity<ServiceTime>()
+			.Property(st => st.End)
+			.HasColumnType("time");
 	}
 }

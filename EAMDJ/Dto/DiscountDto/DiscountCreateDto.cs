@@ -2,7 +2,6 @@
 {
 	public class DiscountCreateDto
 	{
-		public decimal Percentage { get; init; } = decimal.Zero;
 		public DateTime ExpirationDate { get; init; }
 		public Guid BusinessId { get; init; }
 		public Guid ProductId { get; init; }

@@ -3,7 +3,7 @@
 	public class ServiceTimeCreateDto
 	{
 		public Guid ServiceId { get; set; }
-		public DateTime Start { get; set; }
-		public DateTime End { get; set; }
+		public TimeOnly Start { get; set; }
+		public TimeOnly End { get; set; }
 	}
 }

@@ -10,7 +10,6 @@ namespace EAMDJ.Mapper
 			return new TaxResponseDto()
 			{
 				Id = from.Id,
-				CategoryId = from.ProductCategoryId,
 				Name = from.Name,
 				Percentage = from.Percentage,
 			};
@@ -20,7 +19,6 @@ namespace EAMDJ.Mapper
 			return new Tax()
 			{
 				Id = Guid.NewGuid(),
-				ProductCategoryId = from.CategoryId,
 				Name = from.Name,
 				Percentage = from.Percentage,
 			};
@@ -30,7 +28,6 @@ namespace EAMDJ.Mapper
 			return new Tax()
 			{
 				Id = id,
-				ProductCategoryId = categoryId,
 				Name = from.Name,
 				Percentage = from.Percentage,
 			};

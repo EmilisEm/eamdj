@@ -24,7 +24,7 @@ namespace EAMDJ.Mapper
 				Id = Guid.NewGuid(),
 				ProductId = from.ProductId,
 				EmployeeId = from.EmployeeId,
-				ServiceTimeId = from.AppointmentTimeId,
+				ServiceTimeId = from.ServiceTimeId,
 				Created = DateTime.UtcNow,
 				Updated = DateTime.UtcNow,
 			};

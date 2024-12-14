@@ -22,6 +22,7 @@ public record User
 	// I split the legal name into FirstName and LastName.
 	public string FirstName { get; set; } = string.Empty;
 	public string LastName { get; set; } = string.Empty;
+	public string Email { get; set; } = string.Empty;
 
 	// Might create an entity for user type, to make user permission levels more customizable.
 	// Since I combined User and Employee entities, I'm renaming EmployeeType into UserType.

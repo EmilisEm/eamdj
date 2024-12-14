@@ -11,7 +11,8 @@ namespace EAMDJ.Mapper
 			{
 				Id = from.Id,
 				Address = from.Address,
-				Name = from.Name
+				Name = from.Name,
+				Email = from.Email,
 			};
 		}
 		public static Business FromDto(BusinessCreateDto from)
@@ -20,6 +21,8 @@ namespace EAMDJ.Mapper
 			{
 				Id = Guid.NewGuid(),
 				Name = from.Name,
+				Email = from.Email,
+				Address = from.Address,
 			};
 		}
 		public static Business FromDto(BusinessUpdateDto from, Guid id)
@@ -29,6 +32,7 @@ namespace EAMDJ.Mapper
 				Id = id,
 				Address = from.Address,
 				Name = from.Name,
+				Email = from.Email,
 			};
 		}
 

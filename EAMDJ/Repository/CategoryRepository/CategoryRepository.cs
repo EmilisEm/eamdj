@@ -15,11 +15,8 @@ namespace EAMDJ.Repository.CategoryRepository
 
 		public async Task<ProductCategory> CreateProductCategoryAsync(ProductCategory productCategory)
 		{
-			Guid id = Guid.NewGuid();
-
-			// TODO: Validate order and product existence. Throw exception
-
 			_context.ProductCategory.Add(productCategory);
+			productCategory.Tax = await _context.Tax.FindAsync(productCategory.TaxId);
 			await _context.SaveChangesAsync();
 
 			return productCategory;
@@ -34,17 +31,18 @@ namespace EAMDJ.Repository.CategoryRepository
 
 		public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesByBusinessIdAsync(Guid businessId)
 		{
-			return await _context.ProductCategory.Where(it => it.BusinessId.Equals(businessId)).ToListAsync();
+			return await _context.ProductCategory.Include(it => it.Tax).Where(it => it.BusinessId.Equals(businessId)).ToListAsync();
 		}
 
 		public async Task<ProductCategory> GetProductCategoryAsync(Guid id)
 		{
 			var productCategory = await _context.ProductCategory.FindAsync(id);
-
 			if (productCategory == null)
 			{
 				throw new ArgumentException("ProductCategory not found");
 			}
+
+			productCategory.Tax = await _context.Tax.FindAsync(productCategory.TaxId);
 
 			return productCategory;
 		}

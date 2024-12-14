@@ -16,6 +16,8 @@ namespace EAMDJ.Repository.ReservationRepository
 		public async Task<Reservation> CreateReservationAsync(Reservation reservation)
 		{
 			_context.Reservation.Add(reservation);
+
+			reservation.ServiceTime = await _context.ServiceTime.FindAsync(reservation.ServiceTimeId);
 			await _context.SaveChangesAsync();
 
 			return reservation;
@@ -30,12 +32,19 @@ namespace EAMDJ.Repository.ReservationRepository
 
 		public async Task<IEnumerable<Reservation>> GetAllReservationsByProductIdAsync(Guid productCategoryId)
 		{
-			return await _context.Reservation.Where(it => it.ProductId.Equals(productCategoryId)).ToListAsync();
+			return await _context.Reservation.Where(it => it.ProductId.Equals(productCategoryId)).Include(it => it.ServiceTime).ToListAsync();
 		}
 
 		public async Task<Reservation> GetReservationAsync(Guid id)
 		{
 			var reservation = await _context.Reservation.FindAsync(id);
+			var serviceTime = await _context.ServiceTime.FindAsync(reservation?.ServiceTimeId);
+
+			if (reservation == null)
+			{
+				throw new ArgumentException("Reservation not found");
+			}
+			reservation.ServiceTime = serviceTime;
 
 			if (reservation == null)
 			{

@@ -4,7 +4,7 @@ public class OrderItem
 {
 	public Guid Id { get; set; }
 	public Guid ProductId { get; init; }
-	public virtual Product Product { get; init; } = null!;
+	public virtual Product Product { get; set; } = null!;
 	public Guid OrderId { get; init; }
 	public virtual Order Order { get; init; } = null!;
 	public uint Quantity { get; set; }

@@ -15,6 +15,7 @@ namespace EAMDJ.Mapper
 				FirstName = from.FirstName,
 				LastName = from.LastName,
 				UserType = from.UserType,
+				Email = from.Email,
 			};
 		}
 		public static User FromDto(UserUpdateDto from, Guid? businessId, string password, Guid id)
@@ -28,6 +29,7 @@ namespace EAMDJ.Mapper
 				LastName = from.LastName,
 				Password = password,
 				UserType = from.UserType,
+				Email = from.Email,
 			};
 		}
 		public static User FromDto(UserCreateDto from)
@@ -41,6 +43,7 @@ namespace EAMDJ.Mapper
 				LastName = from.LastName,
 				Password = from.Password,
 				UserType = from.UserType,
+				Email = from.Email,
 			};
 		}
 	}
