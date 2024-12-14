@@ -7,6 +7,10 @@ namespace EAMDJ.Mapper
 	{
 		public static ProductResponseDto ToDto(Product from)
 		{
+			if (from.ProductModifiers == null)
+			{
+				throw new ArgumentException("Failed to fetch product modifiers for product with ID " + from.Id);
+			}
 			return new ProductResponseDto()
 			{
 				Id = from.Id,
@@ -14,6 +18,7 @@ namespace EAMDJ.Mapper
 				Price = from.Price,
 				CategoryId = from.CategoryId,
 				Description = from.Description,
+				Modifiers = from.ProductModifiers.Select(ProductModifierMapper.ToDto),
 			};
 		}
 		public static Product FromDto(ProductCreateDto from)
@@ -25,17 +30,19 @@ namespace EAMDJ.Mapper
 				Price = from.Price,
 				CategoryId = from.CategoryId,
 				Description = from.Description,
+				ProductModifiers = []
 			};
 		}
-		public static Product FromDto(ProductUpdateDto from, Guid id)
+		public static Product FromDto(ProductUpdateDto from, Product original)
 		{
 			return new Product()
 			{
-				Id = id,
+				Id = original.Id,
 				Name = from.Name,
 				Price = from.Price,
 				CategoryId = from.CategoryId,
 				Description = from.Description,
+				ProductModifiers = original.ProductModifiers
 			};
 		}
 	}

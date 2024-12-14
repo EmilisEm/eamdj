@@ -34,7 +34,7 @@ namespace EAMDJ.Repository.ProductRepository
 
 		public async Task<IEnumerable<Product>> GetAllProductsByProductCategoryIdAsync(Guid productCategoryId)
 		{
-			return await _context.Product.Where(it => it.CategoryId.Equals(productCategoryId)).ToListAsync();
+			return await _context.Product.Include(it => it.ProductModifiers).Where(it => it.CategoryId.Equals(productCategoryId)).ToListAsync();
 		}
 
 		public async Task<Product> GetProductAsync(Guid id)
@@ -46,6 +46,8 @@ namespace EAMDJ.Repository.ProductRepository
 				throw new ArgumentException("Product not found");
 			}
 
+			product.ProductModifiers = await _context.ProductModifier.Where(it => it.ProductId == id).ToListAsync();
+
 			return product;
 		}
 
@@ -55,6 +57,8 @@ namespace EAMDJ.Repository.ProductRepository
 			{
 				throw new ArgumentException("Product not found");
 			}
+
+			product.ProductModifiers = await _context.ProductModifier.Where(it => it.ProductId == id).ToListAsync();
 
 			_context.Entry(await GetProductAsync(id)).CurrentValues.SetValues(product);
 

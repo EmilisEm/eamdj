@@ -64,7 +64,7 @@ public class ServiceAppContext : DbContext
 
 		modelBuilder.Entity<ProductModifier>()
 			.HasOne(mod => mod.Product)
-			.WithMany()
+			.WithMany(p => p.ProductModifiers)
 			.HasForeignKey(mod => mod.ProductId);
 
 		modelBuilder.Entity<ServiceTime>()
