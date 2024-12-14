@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EAMDJ.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/v1/product-modifier")]
 	[ApiController]
 	public class ProductModifierController : ControllerBase
 	{

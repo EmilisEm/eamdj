@@ -1,18 +1,24 @@
 using EAMDJ.Context;
 using EAMDJ.Repository;
 using EAMDJ.Repository.CategoryRepository;
+using EAMDJ.Repository.DiscountRepository;
 using EAMDJ.Repository.OrderItemRepository;
 using EAMDJ.Repository.OrderRepository;
 using EAMDJ.Repository.ProductModifierRepository;
 using EAMDJ.Repository.ProductRepository;
+using EAMDJ.Repository.ReservationRepository;
+using EAMDJ.Repository.ServiceTimeRepository;
 using EAMDJ.Repository.TaxRepository;
 using EAMDJ.Repository.UserRepository;
 using EAMDJ.Service.BusinessService.BusinessService;
 using EAMDJ.Service.CategoryService;
+using EAMDJ.Service.DiscountService;
 using EAMDJ.Service.OrderItemService;
 using EAMDJ.Service.OrderService;
 using EAMDJ.Service.ProductModifierService;
 using EAMDJ.Service.ProductService;
+using EAMDJ.Service.ReservationService;
+using EAMDJ.Service.ServiceTimeService;
 using EAMDJ.Service.TaxService;
 using EAMDJ.Service.UserService;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +56,15 @@ builder.Services.AddScoped<IProductModifierService, ProductModifierService>();
 
 builder.Services.AddScoped<ITaxRepository, TaxRepository>();
 builder.Services.AddScoped<ITaxService, TaxService>();
+
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+
+builder.Services.AddScoped<IServiceTimeRepository, ServiceTimeRepository>();
+builder.Services.AddScoped<IServiceTimeService, ServiceTimeService>();
+
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

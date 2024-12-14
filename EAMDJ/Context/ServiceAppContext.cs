@@ -14,6 +14,8 @@ public class ServiceAppContext : DbContext
 	public DbSet<ProductModifier> ProductModifier { get; set; }
 	public DbSet<Tax> Tax { get; set; }
 	public DbSet<User> User { get; set; }
+	public DbSet<ServiceTime> ServiceTime { get; set; }
+	public DbSet<Reservation> Reservation { get; set; }
 
 	public ServiceAppContext(DbContextOptions<ServiceAppContext> options) : base(options) { }
 
@@ -35,17 +37,18 @@ public class ServiceAppContext : DbContext
 			.HasOne<Product>(o => o.Product)
 			.WithMany()
 			.HasForeignKey(o => o.ProductId);
-
 		modelBuilder.Entity<Discount>()
 			.HasOne<Product>(d => d.Product)
 			.WithOne()
 			.HasForeignKey<Discount>(d => d.ProductId);
-
+		modelBuilder.Entity<Discount>()
+			.HasOne(d => d.Business)
+			.WithMany()
+			.HasForeignKey(d => d.BusinessId);
 		modelBuilder.Entity<Product>()
 			.HasOne<ProductCategory>(p => p.Category)
 			.WithMany()
 			.HasForeignKey(p => p.CategoryId);
-
 		modelBuilder.Entity<Tax>()
 			.HasOne<ProductCategory>(t => t.ProductCategory)
 			.WithMany()
@@ -59,5 +62,22 @@ public class ServiceAppContext : DbContext
 			.HasOne(mod => mod.Product)
 			.WithMany()
 			.HasForeignKey(mod => mod.ProductId);
+		modelBuilder.Entity<ServiceTime>()
+			.HasOne(st => st.Product)
+			.WithMany()
+			.HasForeignKey(st => st.ServiceId)
+			.IsRequired(true);
+		modelBuilder.Entity<Reservation>()
+			.HasOne(r => r.Employee)
+			.WithMany()
+			.HasForeignKey(r => r.EmployeeId);
+		modelBuilder.Entity<Reservation>()
+			.HasOne(r => r.ServiceTime)
+			.WithMany()
+			.HasForeignKey(r => r.ServiceTimeId);
+		modelBuilder.Entity<Reservation>()
+			.HasOne(r => r.Product)
+			.WithMany()
+			.HasForeignKey(r => r.ProductId);
 	}
 }

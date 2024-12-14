@@ -15,10 +15,6 @@ namespace EAMDJ.Repository.UserRepository
 
 		public async Task<User> CreateUserAsync(User user)
 		{
-			Guid id = Guid.NewGuid();
-
-			// TODO: Validate order and product existence. Throw exception
-
 			_context.User.Add(user);
 			await _context.SaveChangesAsync();
 

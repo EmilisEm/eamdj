@@ -15,9 +15,6 @@ namespace EAMDJ.Repository
 
 		public async Task<Business> CreateBusinessAsync(Business business)
 		{
-			Guid id = Guid.NewGuid();
-			// business.Id = id;
-
 			_context.Business.Add(business);
 			await _context.SaveChangesAsync();
 

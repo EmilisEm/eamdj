@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EAMDJ.Controllers
 {
-	[Route("api/tax")]
+	[Route("api/v1/tax")]
 	[ApiController]
 	public class TaxController : ControllerBase
 	{
