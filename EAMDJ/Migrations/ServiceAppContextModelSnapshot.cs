@@ -170,14 +170,9 @@ namespace EAMDJ.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("TaxId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BusinessId");
-
-                    b.HasIndex("TaxId");
 
                     b.ToTable("ProductCategory");
                 });
@@ -272,15 +267,7 @@ namespace EAMDJ.Migrations
                     b.Property<decimal>("Percentage")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("ProductCategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ProductCategoryId1")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductCategoryId1");
 
                     b.ToTable("Tax");
                 });
@@ -322,6 +309,21 @@ namespace EAMDJ.Migrations
                     b.HasIndex("BusinessId");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ProductCategoryTax", b =>
+                {
+                    b.Property<Guid>("ProductCategoriesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TaxesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ProductCategoriesId", "TaxesId");
+
+                    b.HasIndex("TaxesId");
+
+                    b.ToTable("ProductCategoryTax");
                 });
 
             modelBuilder.Entity("EAMDJ.Model.Discount", b =>
@@ -391,15 +393,7 @@ namespace EAMDJ.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EAMDJ.Model.Tax", "Tax")
-                        .WithMany()
-                        .HasForeignKey("TaxId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Business");
-
-                    b.Navigation("Tax");
                 });
 
             modelBuilder.Entity("EAMDJ.Model.ProductModifier", b =>
@@ -451,15 +445,6 @@ namespace EAMDJ.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("EAMDJ.Model.Tax", b =>
-                {
-                    b.HasOne("EAMDJ.Model.ProductCategory", "ProductCategory")
-                        .WithMany()
-                        .HasForeignKey("ProductCategoryId1");
-
-                    b.Navigation("ProductCategory");
-                });
-
             modelBuilder.Entity("EAMDJ.Model.User", b =>
                 {
                     b.HasOne("EAMDJ.Model.Business", "Business")
@@ -467,6 +452,21 @@ namespace EAMDJ.Migrations
                         .HasForeignKey("BusinessId");
 
                     b.Navigation("Business");
+                });
+
+            modelBuilder.Entity("ProductCategoryTax", b =>
+                {
+                    b.HasOne("EAMDJ.Model.ProductCategory", null)
+                        .WithMany()
+                        .HasForeignKey("ProductCategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EAMDJ.Model.Tax", null)
+                        .WithMany()
+                        .HasForeignKey("TaxesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EAMDJ.Model.Order", b =>

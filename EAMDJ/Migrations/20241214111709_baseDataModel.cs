@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EAMDJ.Migrations
 {
     /// <inheritdoc />
-    public partial class adddatamodel : Migration
+    public partial class baseDataModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,6 +23,19 @@ namespace EAMDJ.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Business", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tax",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Percentage = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tax", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,6 +87,7 @@ namespace EAMDJ.Migrations
                     Password = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
                     UserType = table.Column<int>(type: "integer", nullable: false),
                     BusinessId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
@@ -109,21 +123,25 @@ namespace EAMDJ.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tax",
+                name: "ProductCategoryTax",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Percentage = table.Column<decimal>(type: "numeric", nullable: false),
-                    ProductCategoryId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ProductCategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TaxesId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tax", x => x.Id);
+                    table.PrimaryKey("PK_ProductCategoryTax", x => new { x.ProductCategoriesId, x.TaxesId });
                     table.ForeignKey(
-                        name: "FK_Tax_ProductCategory_ProductCategoryId",
-                        column: x => x.ProductCategoryId,
+                        name: "FK_ProductCategoryTax_ProductCategory_ProductCategoriesId",
+                        column: x => x.ProductCategoriesId,
                         principalTable: "ProductCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductCategoryTax_Tax_TaxesId",
+                        column: x => x.TaxesId,
+                        principalTable: "Tax",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -209,8 +227,8 @@ namespace EAMDJ.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Start = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    End = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Start = table.Column<TimeOnly>(type: "time", nullable: false),
+                    End = table.Column<TimeOnly>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -294,6 +312,11 @@ namespace EAMDJ.Migrations
                 column: "BusinessId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductCategoryTax_TaxesId",
+                table: "ProductCategoryTax",
+                column: "TaxesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductModifier_ProductId",
                 table: "ProductModifier",
                 column: "ProductId");
@@ -319,11 +342,6 @@ namespace EAMDJ.Migrations
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tax_ProductCategoryId",
-                table: "Tax",
-                column: "ProductCategoryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_BusinessId",
                 table: "User",
                 column: "BusinessId");
@@ -339,16 +357,19 @@ namespace EAMDJ.Migrations
                 name: "OrderItem");
 
             migrationBuilder.DropTable(
+                name: "ProductCategoryTax");
+
+            migrationBuilder.DropTable(
                 name: "ProductModifier");
 
             migrationBuilder.DropTable(
                 name: "Reservation");
 
             migrationBuilder.DropTable(
-                name: "Tax");
+                name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Tax");
 
             migrationBuilder.DropTable(
                 name: "ServiceTime");

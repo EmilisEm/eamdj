@@ -28,13 +28,6 @@ namespace EAMDJ.Service.TaxService
 			await _repository.DeleteTaxAsync(id);
 		}
 
-		public async Task<IEnumerable<TaxResponseDto>> GetAllTaxesByCategoryIdAsync(Guid categoryId)
-		{
-			IEnumerable<Tax> taxs = await _repository.GetAllTaxesByCategoryIdAsync(categoryId);
-
-			return taxs.Select(TaxMapper.ToDto);
-		}
-
 		public async Task<TaxResponseDto> GetTaxAsync(Guid id)
 		{
 			Tax tax = await _repository.GetTaxAsync(id);
@@ -46,7 +39,7 @@ namespace EAMDJ.Service.TaxService
 		{
 			Tax original = await _repository.GetTaxAsync(id);
 
-			Tax updated = await _repository.UpdateTaxAsync(id, TaxMapper.FromDto(tax, original.Id, original.ProductCategoryId));
+			Tax updated = await _repository.UpdateTaxAsync(id, TaxMapper.FromDto(tax, original.Id));
 
 			return TaxMapper.ToDto(updated);
 		}

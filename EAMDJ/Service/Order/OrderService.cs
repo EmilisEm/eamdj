@@ -58,7 +58,7 @@ namespace EAMDJ.Service.OrderService
 				var product = await _productRepository.GetProductAsync(item.ProductId);
 				var category = await _categoryRepository.GetProductCategoryAsync(product.CategoryId);
 
-				totalTax += product.Price * category.Tax.Percentage * item.Quantity / 100;
+				// totalTax += product.Price * category.Tax.Percentage * item.Quantity / 100;
 				totalPrice += product.Price * item.Quantity;
 			}
 

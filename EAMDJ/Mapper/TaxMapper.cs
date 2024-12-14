@@ -23,7 +23,7 @@ namespace EAMDJ.Mapper
 				Percentage = from.Percentage,
 			};
 		}
-		public static Tax FromDto(TaxUpdateDto from, Guid id, Guid categoryId)
+		public static Tax FromDto(TaxUpdateDto from, Guid id)
 		{
 			return new Tax()
 			{

@@ -14,12 +14,6 @@ namespace EAMDJ.Controllers
 			_service = service;
 		}
 
-		[HttpGet("by-product-category/{id}")]
-		public async Task<ActionResult<IEnumerable<TaxResponseDto>>> GetTaxsByTaxCategoryId(Guid id)
-		{
-			return Ok(await _service.GetAllTaxesByCategoryIdAsync(id));
-		}
-
 		[HttpGet("{id}")]
 		public async Task<ActionResult<TaxResponseDto>> GetTax(Guid id)
 		{

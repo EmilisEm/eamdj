@@ -54,9 +54,8 @@ public class ServiceAppContext : DbContext
 			.HasForeignKey(p => p.CategoryId);
 
 		modelBuilder.Entity<ProductCategory>()
-			.HasOne(t => t.Tax)
-			.WithMany()
-			.HasForeignKey(t => t.TaxId);
+			.HasMany(c => c.Taxes)
+			.WithMany(t => t.ProductCategories);
 
 		modelBuilder.Entity<User>()
 			.HasOne<Business>(u => u.Business)

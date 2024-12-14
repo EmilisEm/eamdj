@@ -7,11 +7,16 @@ namespace EAMDJ.Mapper
 	{
 		public static ProductCategoryResponseDto ToDto(ProductCategory from)
 		{
+			if (from.Taxes == null)
+			{
+				throw new ArgumentException("No taxes passed to product cateogry");
+			}
 			return new ProductCategoryResponseDto()
 			{
 				Id = from.Id,
 				Name = from.Name,
 				BusinessId = from.BusinessId,
+				Taxes = from.Taxes.Select(TaxMapper.ToDto)
 			};
 		}
 		public static ProductCategory FromDto(ProductCategoryCreateDto from)

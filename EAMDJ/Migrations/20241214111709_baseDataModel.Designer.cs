@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EAMDJ.Migrations
 {
     [DbContext(typeof(ServiceAppContext))]
-    [Migration("20241214084721_addEmail")]
-    partial class addEmail
+    [Migration("20241214111709_baseDataModel")]
+    partial class baseDataModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -241,14 +241,14 @@ namespace EAMDJ.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("End")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<TimeOnly>("End")
+                        .HasColumnType("time");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<TimeOnly>("Start")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 
@@ -270,12 +270,7 @@ namespace EAMDJ.Migrations
                     b.Property<decimal>("Percentage")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("ProductCategoryId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductCategoryId");
 
                     b.ToTable("Tax");
                 });
@@ -317,6 +312,21 @@ namespace EAMDJ.Migrations
                     b.HasIndex("BusinessId");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ProductCategoryTax", b =>
+                {
+                    b.Property<Guid>("ProductCategoriesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TaxesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ProductCategoriesId", "TaxesId");
+
+                    b.HasIndex("TaxesId");
+
+                    b.ToTable("ProductCategoryTax");
                 });
 
             modelBuilder.Entity("EAMDJ.Model.Discount", b =>
@@ -370,7 +380,7 @@ namespace EAMDJ.Migrations
             modelBuilder.Entity("EAMDJ.Model.Product", b =>
                 {
                     b.HasOne("EAMDJ.Model.ProductCategory", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -438,17 +448,6 @@ namespace EAMDJ.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("EAMDJ.Model.Tax", b =>
-                {
-                    b.HasOne("EAMDJ.Model.ProductCategory", "ProductCategory")
-                        .WithMany()
-                        .HasForeignKey("ProductCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductCategory");
-                });
-
             modelBuilder.Entity("EAMDJ.Model.User", b =>
                 {
                     b.HasOne("EAMDJ.Model.Business", "Business")
@@ -458,9 +457,29 @@ namespace EAMDJ.Migrations
                     b.Navigation("Business");
                 });
 
+            modelBuilder.Entity("ProductCategoryTax", b =>
+                {
+                    b.HasOne("EAMDJ.Model.ProductCategory", null)
+                        .WithMany()
+                        .HasForeignKey("ProductCategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EAMDJ.Model.Tax", null)
+                        .WithMany()
+                        .HasForeignKey("TaxesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EAMDJ.Model.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("EAMDJ.Model.ProductCategory", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

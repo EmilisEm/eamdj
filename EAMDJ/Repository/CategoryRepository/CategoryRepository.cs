@@ -16,10 +16,9 @@ namespace EAMDJ.Repository.CategoryRepository
 		public async Task<ProductCategory> CreateProductCategoryAsync(ProductCategory productCategory)
 		{
 			_context.ProductCategory.Add(productCategory);
-			productCategory.Tax = await _context.Tax.FindAsync(productCategory.TaxId);
 			await _context.SaveChangesAsync();
 
-			return productCategory;
+			return await _context.ProductCategory.Include(it => it.Taxes).FirstAsync(it => it.Id == productCategory.Id);
 		}
 
 		public async Task DeleteProductCategoryAsync(Guid id)
@@ -31,7 +30,7 @@ namespace EAMDJ.Repository.CategoryRepository
 
 		public async Task<IEnumerable<ProductCategory>> GetAllProductCategoriesByBusinessIdAsync(Guid businessId)
 		{
-			return await _context.ProductCategory.Include(it => it.Tax).Where(it => it.BusinessId.Equals(businessId)).ToListAsync();
+			return await _context.ProductCategory.Include(it => it.Taxes).Where(it => it.BusinessId.Equals(businessId)).ToListAsync();
 		}
 
 		public async Task<ProductCategory> GetProductCategoryAsync(Guid id)
@@ -42,9 +41,7 @@ namespace EAMDJ.Repository.CategoryRepository
 				throw new ArgumentException("ProductCategory not found");
 			}
 
-			productCategory.Tax = await _context.Tax.FindAsync(productCategory.TaxId);
-
-			return productCategory;
+			return await _context.ProductCategory.Include(it => it.Taxes).FirstAsync(it => it.Id == id);
 		}
 
 		public async Task<ProductCategory> UpdateProductCategoryAsync(Guid id, ProductCategory productCategory)

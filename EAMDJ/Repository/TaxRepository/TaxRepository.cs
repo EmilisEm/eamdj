@@ -32,11 +32,6 @@ namespace EAMDJ.Repository.TaxRepository
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task<IEnumerable<Tax>> GetAllTaxesByCategoryIdAsync(Guid categoryId)
-		{
-			return await _context.Tax.Where(it => it.ProductCategoryId.Equals(categoryId)).ToListAsync();
-		}
-
 		public async Task<Tax> GetTaxAsync(Guid id)
 		{
 			var tax = await _context.Tax.FindAsync(id);
