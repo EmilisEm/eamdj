@@ -13,6 +13,7 @@ namespace EAMDJ.Mapper
 				OrderId = from.OrderId,
 				ProductId = from.ProductId,
 				Quantity = from.Quantity,
+				ProductModifiers = from.ProductModifiers.Select(ProductModifierMapper.ToDto),
 			};
 		}
 		public static OrderItem FromDto(OrderItemCreateDto from)
@@ -23,17 +24,15 @@ namespace EAMDJ.Mapper
 				OrderId = from.OrderId,
 				ProductId = from.ProductId,
 				Quantity = from.Quantity,
+				ProductModifiers = new List<ProductModifier>()
 			};
 		}
-		public static OrderItem FromDto(OrderItemUpdateDto from, Guid id, Guid orderId)
+		public static OrderItem FromDto(OrderItemUpdateDto from, OrderItem original)
 		{
-			return new OrderItem()
-			{
-				Id = id,
-				OrderId = orderId,
-				ProductId = from.ProductId,
-				Quantity = from.Quantity,
-			};
+			original.ProductId = from.ProductId;
+			original.Quantity = from.Quantity;
+
+			return original;
 		}
 	}
 }

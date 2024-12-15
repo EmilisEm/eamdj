@@ -30,7 +30,7 @@ namespace EAMDJ.Mapper
 				Price = from.Price,
 				CategoryId = from.CategoryId,
 				Description = from.Description,
-				ProductModifiers = []
+				ProductModifiers = new List<ProductModifier>()
 			};
 		}
 		public static Product FromDto(ProductUpdateDto from, Product original)

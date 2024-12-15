@@ -5,7 +5,7 @@
 		public Guid ProductId { get; init; }
 		public Guid OrderId { get; init; }
 		public uint Quantity { get; set; }
-		public IEnumerable<Guid>? modifierIds { get; set; }
+		public IEnumerable<Guid>? ModifierIds { get; set; }
 
 	}
 }

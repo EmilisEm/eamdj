@@ -4,6 +4,6 @@
 	{
 		public Guid ProductId { get; init; }
 		public uint Quantity { get; set; }
-		public IEnumerable<Guid>? ModifierIds { get; set; }
+		public IEnumerable<Guid> ModifierIds { get; set; } = new List<Guid>();
 	}
 }

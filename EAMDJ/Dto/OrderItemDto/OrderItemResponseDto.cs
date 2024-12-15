@@ -10,6 +10,6 @@ namespace EAMDJ.Dto.OrderItemDto
 		public uint Quantity { get; init; }
 		public decimal BasePrice { get; init; }
 		public decimal Tax { get; init; }
-		public IEnumerable<ProductModifierResponseDto>? ProductModifiers { get; init; }
+		public IEnumerable<ProductModifierResponseDto>? ProductModifiers { get; set; }
 	}
 }

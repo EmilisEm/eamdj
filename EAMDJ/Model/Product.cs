@@ -28,5 +28,5 @@ public record Product
 	// I think it would be a good idea to merge Product and Service into a single object, since they have a lot of
 	// shared fields and shared behaviour.
 	public string Description { get; set; } = string.Empty;
-	public virtual ICollection<ProductModifier> ProductModifiers { get; set; } = [];
+	public virtual ICollection<ProductModifier> ProductModifiers { get; set; } = new List<ProductModifier>();
 }

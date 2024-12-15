@@ -6,7 +6,7 @@ namespace EAMDJ.Repository.OrderItemRepository
 	{
 		Task<OrderItem> GetOrderItemAsync(Guid id);
 		Task<IEnumerable<OrderItem>> GetAllOrderItemsByOrderIdAsync(Guid orderId);
-		Task<OrderItem> UpdateOrderItemAsync(Guid id, OrderItem orderItem);
+		Task<OrderItem> UpdateOrderItemAsync(Guid id, OrderItem orderItem, OrderItem original);
 		Task DeleteOrderItemAsync(Guid id);
 		Task<OrderItem> CreateOrderItemAsync(OrderItem orderItem);
 

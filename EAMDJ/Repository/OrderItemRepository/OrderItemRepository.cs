@@ -15,10 +15,6 @@ namespace EAMDJ.Repository.OrderItemRepository
 
 		public async Task<OrderItem> CreateOrderItemAsync(OrderItem orderItem)
 		{
-			Guid id = Guid.NewGuid();
-
-			// TODO: Validate order and product existence. Throw exception
-
 			_context.OrderItem.Add(orderItem);
 			await _context.SaveChangesAsync();
 
@@ -34,12 +30,12 @@ namespace EAMDJ.Repository.OrderItemRepository
 
 		public async Task<IEnumerable<OrderItem>> GetAllOrderItemsByOrderIdAsync(Guid orderId)
 		{
-			return await _context.OrderItem.Where(it => it.OrderId.Equals(orderId)).ToListAsync();
+			return await _context.OrderItem.Include(it => it.ProductModifiers).Where(it => it.OrderId.Equals(orderId)).ToListAsync();
 		}
 
 		public async Task<OrderItem> GetOrderItemAsync(Guid id)
 		{
-			var orderItem = await _context.OrderItem.FindAsync(id);
+			OrderItem orderItem = await _context.OrderItem.Include(it => it.ProductModifiers).FirstAsync(it => it.Id == id);
 
 			if (orderItem == null)
 			{
@@ -49,14 +45,14 @@ namespace EAMDJ.Repository.OrderItemRepository
 			return orderItem;
 		}
 
-		public async Task<OrderItem> UpdateOrderItemAsync(Guid id, OrderItem orderItem)
+		public async Task<OrderItem> UpdateOrderItemAsync(Guid id, OrderItem orderItem, OrderItem original)
 		{
 			if (id != orderItem.Id)
 			{
 				throw new ArgumentException("OrderItem not found");
 			}
 
-			_context.Entry(await GetOrderItemAsync(id)).CurrentValues.SetValues(orderItem);
+			_context.Entry(original).CurrentValues.SetValues(orderItem);
 
 			try
 			{

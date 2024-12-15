@@ -38,6 +38,9 @@ public class ServiceAppContext : DbContext
 			.HasOne<Product>(o => o.Product)
 			.WithMany()
 			.HasForeignKey(o => o.ProductId);
+		modelBuilder.Entity<OrderItem>()
+			.HasMany(oi => oi.ProductModifiers)
+			.WithMany(pm => pm.OrderItems);
 
 		modelBuilder.Entity<Discount>()
 			.HasOne<Product>(d => d.Product)

@@ -37,6 +37,11 @@ namespace EAMDJ.Repository.ProductModifierRepository
 			return await _context.ProductModifier.Where(it => it.ProductId.Equals(productCategoryId)).ToListAsync();
 		}
 
+		public async Task<IEnumerable<ProductModifier>> GetAllByIdListAsync(IEnumerable<Guid> ids)
+		{
+			return await _context.ProductModifier.Include(it => it.OrderItems).Where(it => ids.Contains(it.Id)).ToListAsync();
+		}
+
 		public async Task<ProductModifier> GetProductModifierAsync(Guid id)
 		{
 			var productModifier = await _context.ProductModifier.FindAsync(id);
