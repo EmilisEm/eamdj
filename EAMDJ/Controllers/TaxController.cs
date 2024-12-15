@@ -20,6 +20,12 @@ namespace EAMDJ.Controllers
 			return Ok(await _service.GetTaxAsync(id));
 		}
 
+		[HttpGet("by-business/{id}")]
+		public async Task<ActionResult<IEnumerable<TaxResponseDto>>> GetTaxByBusiness(Guid id)
+		{
+			return Ok(await _service.GetTaxByBusinessAsync(id));
+		}
+
 		[HttpPut("{id}")]
 		public async Task<IActionResult> PutTax(Guid id, TaxUpdateDto product)
 		{

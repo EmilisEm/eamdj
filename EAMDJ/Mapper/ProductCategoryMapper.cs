@@ -28,14 +28,11 @@ namespace EAMDJ.Mapper
 				BusinessId = from.BusinessId,
 			};
 		}
-		public static ProductCategory FromDto(ProductCategoryUpdateDto from, Guid id, Guid businessId)
+		public static ProductCategory FromDto(ProductCategoryUpdateDto from, ProductCategory original)
 		{
-			return new ProductCategory()
-			{
-				Id = id,
-				Name = from.Name,
-				BusinessId = businessId,
-			};
+			original.Name = from.Name;
+
+			return original;
 		}
 	}
 }

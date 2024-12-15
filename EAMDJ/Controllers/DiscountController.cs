@@ -15,9 +15,15 @@ namespace EAMDJ.Controllers
 		}
 
 		[HttpGet("by-product/{id}")]
-		public async Task<ActionResult<IEnumerable<DiscountResponseDto>>> GetDiscountsByBusinessId(Guid id)
+		public async Task<ActionResult<IEnumerable<DiscountResponseDto>>> GetDiscountsByProductId(Guid id)
 		{
 			return Ok(await _service.GetAllDiscountsByProductIdAsync(id));
+		}
+
+		[HttpGet("by-business/{id}")]
+		public async Task<ActionResult<IEnumerable<DiscountResponseDto>>> GetDiscountsByBusinessId(Guid id)
+		{
+			return Ok(await _service.GetAllDiscountsByBusinessIdAsync(id));
 		}
 
 		[HttpGet("{id}")]

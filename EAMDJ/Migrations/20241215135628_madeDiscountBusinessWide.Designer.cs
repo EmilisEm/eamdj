@@ -3,6 +3,7 @@ using System;
 using EAMDJ.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EAMDJ.Migrations
 {
     [DbContext(typeof(ServiceAppContext))]
-    partial class ServiceAppContextModelSnapshot : ModelSnapshot
+    [Migration("20241215135628_madeDiscountBusinessWide")]
+    partial class madeDiscountBusinessWide
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,9 +263,6 @@ namespace EAMDJ.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("BusinessId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -271,8 +271,6 @@ namespace EAMDJ.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BusinessId");
 
                     b.ToTable("Tax");
                 });
@@ -463,17 +461,6 @@ namespace EAMDJ.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("EAMDJ.Model.Tax", b =>
-                {
-                    b.HasOne("EAMDJ.Model.Business", "Business")
-                        .WithMany("Taxes")
-                        .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Business");
-                });
-
             modelBuilder.Entity("EAMDJ.Model.User", b =>
                 {
                     b.HasOne("EAMDJ.Model.Business", "Business")
@@ -511,11 +498,6 @@ namespace EAMDJ.Migrations
                         .HasForeignKey("TaxesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("EAMDJ.Model.Business", b =>
-                {
-                    b.Navigation("Taxes");
                 });
 
             modelBuilder.Entity("EAMDJ.Model.Order", b =>

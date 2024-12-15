@@ -35,11 +35,17 @@ namespace EAMDJ.Service.TaxService
 			return TaxMapper.ToDto(tax);
 		}
 
+		public async Task<IEnumerable<TaxResponseDto>> GetTaxByBusinessAsync(Guid id)
+		{
+			var taxes = await _repository.GetTaxByBusinessAsync(id);
+			return taxes.Select(TaxMapper.ToDto);
+		}
+
 		public async Task<TaxResponseDto> UpdateTaxAsync(Guid id, TaxUpdateDto tax)
 		{
 			Tax original = await _repository.GetTaxAsync(id);
 
-			Tax updated = await _repository.UpdateTaxAsync(id, TaxMapper.FromDto(tax, original.Id));
+			Tax updated = await _repository.UpdateTaxAsync(id, TaxMapper.FromDto(tax, original));
 
 			return TaxMapper.ToDto(updated);
 		}

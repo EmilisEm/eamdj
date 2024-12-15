@@ -12,6 +12,7 @@ namespace EAMDJ.Mapper
 				Id = from.Id,
 				Name = from.Name,
 				Percentage = from.Percentage,
+				BusinessId = from.BusinessId,
 			};
 		}
 		public static Tax FromDto(TaxCreateDto from)
@@ -21,16 +22,15 @@ namespace EAMDJ.Mapper
 				Id = Guid.NewGuid(),
 				Name = from.Name,
 				Percentage = from.Percentage,
+				BusinessId = from.BusinessId,
 			};
 		}
-		public static Tax FromDto(TaxUpdateDto from, Guid id)
+		public static Tax FromDto(TaxUpdateDto from, Tax original)
 		{
-			return new Tax()
-			{
-				Id = id,
-				Name = from.Name,
-				Percentage = from.Percentage,
-			};
+			original.Name = from.Name;
+			original.Percentage = from.Percentage;
+
+			return original;
 		}
 	}
 }

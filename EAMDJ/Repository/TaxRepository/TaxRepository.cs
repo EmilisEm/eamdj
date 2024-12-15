@@ -15,10 +15,6 @@ namespace EAMDJ.Repository.TaxRepository
 
 		public async Task<Tax> CreateTaxAsync(Tax tax)
 		{
-			Guid id = Guid.NewGuid();
-
-			// TODO: Validate order and tax existence. Throw exception
-
 			_context.Tax.Add(tax);
 			await _context.SaveChangesAsync();
 
@@ -42,6 +38,16 @@ namespace EAMDJ.Repository.TaxRepository
 			}
 
 			return tax;
+		}
+
+		public async Task<IEnumerable<Tax>> GetAllByIdsAsync(IEnumerable<Guid> ids)
+		{
+			return await _context.Tax.Where(it => ids.Contains(it.Id)).ToListAsync();
+		}
+
+		public async Task<IEnumerable<Tax>> GetTaxByBusinessAsync(Guid id)
+		{
+			return await _context.Tax.Where(it => it.BusinessId == id).ToListAsync();
 		}
 
 		public async Task<Tax> UpdateTaxAsync(Guid id, Tax tax)

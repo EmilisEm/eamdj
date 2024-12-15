@@ -8,6 +8,7 @@ public record Business
 	public string Name { get; set; } = string.Empty;
 	public string Address { get; set; } = string.Empty;
 	public string Email { get; set; } = string.Empty;
+	public virtual IEnumerable<Tax>? Taxes { get; set; }
 
 	// Data model specifies business-wide VAT.
 	// I don't think there should be a business-wide VAT because:

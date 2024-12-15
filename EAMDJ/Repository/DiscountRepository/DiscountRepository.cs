@@ -15,10 +15,6 @@ namespace EAMDJ.Repository.DiscountRepository
 
 		public async Task<Discount> CreateDiscountAsync(Discount discount)
 		{
-			Guid id = Guid.NewGuid();
-
-			// TODO: Validate order and discount existence. Throw exception
-
 			_context.Discount.Add(discount);
 			await _context.SaveChangesAsync();
 
@@ -32,9 +28,14 @@ namespace EAMDJ.Repository.DiscountRepository
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task<IEnumerable<Discount>> GetAllDiscountsByProductIdAsync(Guid productCategoryId)
+		public async Task<IEnumerable<Discount>> GetAllDiscountsByProductIdAsync(Guid productId)
 		{
-			return await _context.Discount.Where(it => it.ProductId.Equals(productCategoryId)).ToListAsync();
+			return await _context.Discount.Where(it => productId.Equals(it.ProductId)).ToListAsync();
+		}
+
+		public async Task<IEnumerable<Discount>> GetAllDiscountsByBusinessIdAsync(Guid businessId)
+		{
+			return await _context.Discount.Where(it => businessId.Equals(it.BusinessId) && it.ProductId == null).ToListAsync();
 		}
 
 		public async Task<Discount> GetDiscountAsync(Guid id)

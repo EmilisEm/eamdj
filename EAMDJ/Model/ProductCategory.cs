@@ -6,7 +6,7 @@ public record ProductCategory
 	public string? Name { get; set; }
 	public Guid BusinessId { get; set; }
 	public virtual Business Business { get; set; } = null!;
-	public virtual ICollection<Tax>? Taxes { get; set; }
+	public virtual IEnumerable<Tax>? Taxes { get; set; }
 	public virtual ICollection<Product>? Products { get; set; }
 
 	// Could be a good idea to add a ParentCategory field or something similar later.

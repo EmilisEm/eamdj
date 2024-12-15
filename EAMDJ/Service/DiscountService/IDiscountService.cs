@@ -6,6 +6,7 @@ namespace EAMDJ.Service.DiscountService
 	{
 		Task<DiscountResponseDto> GetDiscountAsync(Guid id);
 		Task<IEnumerable<DiscountResponseDto>> GetAllDiscountsByProductIdAsync(Guid productId);
+		Task<IEnumerable<DiscountResponseDto>> GetAllDiscountsByBusinessIdAsync(Guid businessId);
 		Task DeleteDiscountAsync(Guid id);
 		Task<DiscountResponseDto> CreateDiscountAsync(DiscountCreateDto discount);
 	}

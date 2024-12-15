@@ -6,7 +6,7 @@ public record Discount
 
 	// Id of product which this discount affects.
 	// Could be a good idea to allow discounts to point at ProductCategories as well.
-	public Guid ProductId { get; init; }
+	public Guid? ProductId { get; init; }
 	public virtual Product Product { get; init; } = null!;
 	public Guid BusinessId { get; init; }
 	public virtual Business? Business { get; init; }

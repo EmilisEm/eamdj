@@ -45,7 +45,8 @@ public class ServiceAppContext : DbContext
 		modelBuilder.Entity<Discount>()
 			.HasOne<Product>(d => d.Product)
 			.WithOne()
-			.HasForeignKey<Discount>(d => d.ProductId);
+			.HasForeignKey<Discount>(d => d.ProductId)
+			.IsRequired(false);
 		modelBuilder.Entity<Discount>()
 			.HasOne(d => d.Business)
 			.WithMany()
@@ -95,5 +96,10 @@ public class ServiceAppContext : DbContext
 		modelBuilder.Entity<ServiceTime>()
 			.Property(st => st.End)
 			.HasColumnType("time");
+
+		modelBuilder.Entity<Tax>()
+			.HasOne(t => t.Business)
+			.WithMany(b => b.Taxes)
+			.HasForeignKey(t => t.BusinessId);
 	}
 }
