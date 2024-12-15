@@ -1,7 +1,8 @@
-namespace EAMDJ.Model; 
+namespace EAMDJ.Model;
 
-public enum UserType {
-    Employee,
-    BusinessOwner,
-    Admin,
+public enum UserType
+{
+	Employee,
+	BusinessOwner,
+	Admin,
 }

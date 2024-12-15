@@ -57,8 +57,14 @@ namespace EAMDJ.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid>("BusinessId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("Expires")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsBusinessWide")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsFlat")
                         .HasColumnType("boolean");
@@ -67,6 +73,8 @@ namespace EAMDJ.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BusinessId");
 
                     b.HasIndex("ProductId")
                         .IsUnique();
@@ -89,6 +97,9 @@ namespace EAMDJ.Migrations
                     b.Property<DateTime>("LastModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<decimal>("PayedAmount")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BusinessId");
@@ -98,6 +109,10 @@ namespace EAMDJ.Migrations
 
             modelBuilder.Entity("EAMDJ.Model.OrderItem", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
@@ -107,7 +122,9 @@ namespace EAMDJ.Migrations
                     b.Property<long>("Quantity")
                         .HasColumnType("bigint");
 
-                    b.HasKey("OrderId", "ProductId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -160,6 +177,83 @@ namespace EAMDJ.Migrations
                     b.ToTable("ProductCategory");
                 });
 
+            modelBuilder.Entity("EAMDJ.Model.ProductModifier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductModifier");
+                });
+
+            modelBuilder.Entity("EAMDJ.Model.Reservation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ServiceTimeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ServiceTimeId");
+
+                    b.ToTable("Reservation");
+                });
+
+            modelBuilder.Entity("EAMDJ.Model.ServiceTime", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<TimeOnly>("End")
+                        .HasColumnType("time");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<TimeOnly>("Start")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("ServiceTime");
+                });
+
             modelBuilder.Entity("EAMDJ.Model.Tax", b =>
                 {
                     b.Property<Guid>("Id")
@@ -173,12 +267,7 @@ namespace EAMDJ.Migrations
                     b.Property<decimal>("Percentage")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("ProductCategoryId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductCategoryId");
 
                     b.ToTable("Tax");
                 });
@@ -191,6 +280,10 @@ namespace EAMDJ.Migrations
 
                     b.Property<Guid?>("BusinessId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -218,13 +311,51 @@ namespace EAMDJ.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("OrderItemProductModifier", b =>
+                {
+                    b.Property<Guid>("OrderItemsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductModifiersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("OrderItemsId", "ProductModifiersId");
+
+                    b.HasIndex("ProductModifiersId");
+
+                    b.ToTable("OrderItemProductModifier");
+                });
+
+            modelBuilder.Entity("ProductCategoryTax", b =>
+                {
+                    b.Property<Guid>("ProductCategoriesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TaxesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ProductCategoriesId", "TaxesId");
+
+                    b.HasIndex("TaxesId");
+
+                    b.ToTable("ProductCategoryTax");
+                });
+
             modelBuilder.Entity("EAMDJ.Model.Discount", b =>
                 {
+                    b.HasOne("EAMDJ.Model.Business", "Business")
+                        .WithMany()
+                        .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EAMDJ.Model.Product", "Product")
                         .WithOne()
                         .HasForeignKey("EAMDJ.Model.Discount", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Business");
 
                     b.Navigation("Product");
                 });
@@ -243,10 +374,9 @@ namespace EAMDJ.Migrations
             modelBuilder.Entity("EAMDJ.Model.OrderItem", b =>
                 {
                     b.HasOne("EAMDJ.Model.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EAMDJ.Model.Product", "Product")
                         .WithMany()
@@ -262,7 +392,7 @@ namespace EAMDJ.Migrations
             modelBuilder.Entity("EAMDJ.Model.Product", b =>
                 {
                     b.HasOne("EAMDJ.Model.ProductCategory", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -281,15 +411,53 @@ namespace EAMDJ.Migrations
                     b.Navigation("Business");
                 });
 
-            modelBuilder.Entity("EAMDJ.Model.Tax", b =>
+            modelBuilder.Entity("EAMDJ.Model.ProductModifier", b =>
                 {
-                    b.HasOne("EAMDJ.Model.ProductCategory", "ProductCategory")
-                        .WithMany()
-                        .HasForeignKey("ProductCategoryId")
+                    b.HasOne("EAMDJ.Model.Product", "Product")
+                        .WithMany("ProductModifiers")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProductCategory");
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("EAMDJ.Model.Reservation", b =>
+                {
+                    b.HasOne("EAMDJ.Model.User", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EAMDJ.Model.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EAMDJ.Model.ServiceTime", "ServiceTime")
+                        .WithMany()
+                        .HasForeignKey("ServiceTimeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ServiceTime");
+                });
+
+            modelBuilder.Entity("EAMDJ.Model.ServiceTime", b =>
+                {
+                    b.HasOne("EAMDJ.Model.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("EAMDJ.Model.User", b =>
@@ -299,6 +467,51 @@ namespace EAMDJ.Migrations
                         .HasForeignKey("BusinessId");
 
                     b.Navigation("Business");
+                });
+
+            modelBuilder.Entity("OrderItemProductModifier", b =>
+                {
+                    b.HasOne("EAMDJ.Model.OrderItem", null)
+                        .WithMany()
+                        .HasForeignKey("OrderItemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EAMDJ.Model.ProductModifier", null)
+                        .WithMany()
+                        .HasForeignKey("ProductModifiersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductCategoryTax", b =>
+                {
+                    b.HasOne("EAMDJ.Model.ProductCategory", null)
+                        .WithMany()
+                        .HasForeignKey("ProductCategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EAMDJ.Model.Tax", null)
+                        .WithMany()
+                        .HasForeignKey("TaxesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EAMDJ.Model.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("EAMDJ.Model.Product", b =>
+                {
+                    b.Navigation("ProductModifiers");
+                });
+
+            modelBuilder.Entity("EAMDJ.Model.ProductCategory", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

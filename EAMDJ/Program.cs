@@ -1,6 +1,26 @@
 using EAMDJ.Context;
 using EAMDJ.Repository;
-using EAMDJ.Service;
+using EAMDJ.Repository.CategoryRepository;
+using EAMDJ.Repository.DiscountRepository;
+using EAMDJ.Repository.OrderItemRepository;
+using EAMDJ.Repository.OrderRepository;
+using EAMDJ.Repository.ProductModifierRepository;
+using EAMDJ.Repository.ProductRepository;
+using EAMDJ.Repository.ReservationRepository;
+using EAMDJ.Repository.ServiceTimeRepository;
+using EAMDJ.Repository.TaxRepository;
+using EAMDJ.Repository.UserRepository;
+using EAMDJ.Service.BusinessService.BusinessService;
+using EAMDJ.Service.CategoryService;
+using EAMDJ.Service.DiscountService;
+using EAMDJ.Service.OrderItemService;
+using EAMDJ.Service.OrderService;
+using EAMDJ.Service.ProductModifierService;
+using EAMDJ.Service.ProductService;
+using EAMDJ.Service.ReservationService;
+using EAMDJ.Service.ServiceTimeService;
+using EAMDJ.Service.TaxService;
+using EAMDJ.Service.UserService;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -15,6 +35,36 @@ builder.Services.AddDbContext<ServiceAppContext>(options => options.UseNpgsql(co
 
 builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
 builder.Services.AddScoped<IBusinessService, BusinessService>();
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+builder.Services.AddScoped<IOrderItemService, OrderItemService>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IProductModifierRepository, ProductModifierRepository>();
+builder.Services.AddScoped<IProductModifierService, ProductModifierService>();
+
+builder.Services.AddScoped<ITaxRepository, TaxRepository>();
+builder.Services.AddScoped<ITaxService, TaxService>();
+
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+
+builder.Services.AddScoped<IServiceTimeRepository, ServiceTimeRepository>();
+builder.Services.AddScoped<IServiceTimeService, ServiceTimeService>();
+
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
