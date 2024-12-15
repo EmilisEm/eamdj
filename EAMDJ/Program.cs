@@ -109,6 +109,14 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapControllers();
+app.MapFallbackToFile("index.html");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
