@@ -25,8 +25,6 @@ namespace EAMDJ.Service.CategoryService
 			ProductCategory created = await _repository.CreateProductCategoryAsync(mapped);
 
 			return ProductCategoryMapper.ToDto(created);
-
-
 		}
 
 		public async Task DeleteProductCategoryAsync(Guid id)

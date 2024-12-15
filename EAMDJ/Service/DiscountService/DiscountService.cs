@@ -44,7 +44,12 @@ namespace EAMDJ.Service.DiscountService
 
 		public async Task<DiscountResponseDto> GetDiscountAsync(Guid id)
 		{
-			Discount product = await _repository.GetDiscountAsync(id);
+			Discount? product = await _repository.GetDiscountAsync(id);
+
+			if (product == null)
+			{
+				throw new ArgumentException("Discount not found with id " + id);
+			}
 
 			return DiscountMapper.ToDto(product);
 		}

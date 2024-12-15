@@ -2,6 +2,7 @@
 using EAMDJ.Mapper;
 using EAMDJ.Model;
 using EAMDJ.Repository.CategoryRepository;
+using EAMDJ.Repository.DiscountRepository;
 using EAMDJ.Repository.OrderItemRepository;
 using EAMDJ.Repository.OrderRepository;
 using EAMDJ.Repository.ProductRepository;
@@ -15,13 +16,15 @@ namespace EAMDJ.Service.OrderService
 		private readonly IOrderItemRepository _orderItemRepository;
 		private readonly IProductRepository _productRepository;
 		private readonly ICategoryRepository _categoryRepository;
+		private readonly IDiscountRepository _discountRepository;
 
-		public OrderService(IOrderRepository repository, IOrderItemRepository orderItemRepository, IProductRepository productRepository, ICategoryRepository categoryRepository)
+		public OrderService(IOrderRepository repository, IOrderItemRepository orderItemRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IDiscountRepository discountRepository)
 		{
 			_repository = repository;
 			_orderItemRepository = orderItemRepository;
 			_productRepository = productRepository;
 			_categoryRepository = categoryRepository;
+			_discountRepository = discountRepository;
 		}
 
 		public async Task<OrderResponseDto> CreateOrderAsync(OrderCreateDto order)
@@ -77,8 +80,14 @@ namespace EAMDJ.Service.OrderService
 		public async Task<OrderResponseDto> UpdateOrderAsync(Guid id, OrderUpdateDto order)
 		{
 			Order original = await _repository.GetOrderAsync(id);
+			Order mapped = OrderMapper.FromDto(order, original);
 
-			Order updated = await _repository.UpdateOrderAsync(id, OrderMapper.FromDto(order, original.Id, original.BusinessId, original.Status, original.CreatedAt));
+			if (mapped.DiscountId != null)
+			{
+				mapped.Discount = await _discountRepository.GetDiscountAsync(mapped.DiscountId);
+			}
+
+			Order updated = await _repository.UpdateOrderAsync(id, mapped, original);
 
 			return OrderMapper.ToDto(updated);
 		}

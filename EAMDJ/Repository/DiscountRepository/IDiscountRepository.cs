@@ -4,7 +4,7 @@ namespace EAMDJ.Repository.DiscountRepository
 {
 	public interface IDiscountRepository
 	{
-		Task<Discount> GetDiscountAsync(Guid id);
+		Task<Discount?> GetDiscountAsync(Guid? id);
 		Task<IEnumerable<Discount>> GetAllDiscountsByProductIdAsync(Guid productId);
 		Task<IEnumerable<Discount>> GetAllDiscountsByBusinessIdAsync(Guid businessId);
 		Task<Discount> UpdateDiscountAsync(Guid id, Discount discount);

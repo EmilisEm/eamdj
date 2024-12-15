@@ -10,6 +10,7 @@ public record Discount
 	public virtual Product Product { get; init; } = null!;
 	public Guid BusinessId { get; init; }
 	public virtual Business? Business { get; init; }
+	public virtual List<Order> Orders { get; init; } = [];
 
 	// Discount amount (Percentage or flat value)
 	public decimal Amount { get; set; }

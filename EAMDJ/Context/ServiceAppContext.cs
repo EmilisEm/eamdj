@@ -31,6 +31,11 @@ public class ServiceAppContext : DbContext
 			.HasForeignKey(i => i.OrderId)
 			.IsRequired(false)
 			.OnDelete(DeleteBehavior.Cascade);
+		modelBuilder.Entity<Order>()
+			.HasOne(o => o.Discount)
+			.WithMany(d => d.Orders)
+			.HasForeignKey(o => o.DiscountId)
+			.IsRequired(false);
 
 		modelBuilder.Entity<OrderItem>()
 			.HasKey(o => o.Id);

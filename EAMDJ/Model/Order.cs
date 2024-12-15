@@ -15,6 +15,8 @@ public record Order
 	public Guid BusinessId { get; init; }
 	public virtual Business Business { get; init; } = null!;
 	public decimal PayedAmount { get; set; }
+	public Guid? DiscountId { get; set; }
+	public virtual Discount? Discount { get; set; }
 
 	// Not sure if this should be added because it implies that only one discount coupon may be used on an order.
 	// Guid? DiscountCouponId { get; set; }

@@ -12,6 +12,7 @@ namespace EAMDJ.Mapper
 				Id = from.Id,
 				BusinessId = from.BusinessId,
 				Status = from.Status,
+				Discount = from.Discount == null ? null : DiscountMapper.ToDto(from.Discount),
 				CreatedAt = from.CreatedAt,
 				LastModifiedAt = from.LastModifiedAt,
 				OrderItmes = from.OrderItems.Select(OrderItemMapper.ToDto).ToList(),
@@ -28,18 +29,13 @@ namespace EAMDJ.Mapper
 				Status = OrderStatus.Open,
 			};
 		}
-		public static Order FromDto(OrderUpdateDto from, Guid id, Guid businessId, OrderStatus status, DateTime created)
+		public static Order FromDto(OrderUpdateDto from, Order original)
 		{
-			Console.WriteLine(from.PaidAmount);
-			return new Order()
-			{
-				Id = id,
-				PayedAmount = from.PaidAmount,
-				BusinessId = businessId,
-				Status = status,
-				CreatedAt = created,
-				LastModifiedAt = DateTime.UtcNow,
-			};
+			original.LastModifiedAt = DateTime.UtcNow;
+			original.PayedAmount = from.PaidAmount;
+			original.DiscountId = from.DiscountCouponId;
+
+			return original;
 		}
 	}
 }

@@ -38,7 +38,7 @@ namespace EAMDJ.Repository.DiscountRepository
 			return await _context.Discount.Where(it => businessId.Equals(it.BusinessId) && it.ProductId == null).ToListAsync();
 		}
 
-		public async Task<Discount> GetDiscountAsync(Guid id)
+		public async Task<Discount?> GetDiscountAsync(Guid? id)
 		{
 			var discount = await _context.Discount.FindAsync(id);
 

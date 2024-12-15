@@ -32,12 +32,12 @@ namespace EAMDJ.Repository.OrderRepository
 
 		public async Task<IEnumerable<Order>> GetAllOrdersByBusinessIdAsync(Guid businessId)
 		{
-			return await _context.Order.Where(it => it.BusinessId.Equals(businessId)).Include(it => it.OrderItems).ToListAsync();
+			return await _context.Order.Where(it => it.BusinessId.Equals(businessId)).Include(it => it.Discount).Include(it => it.OrderItems).ToListAsync();
 		}
 
 		public async Task<Order> GetOrderAsync(Guid id)
 		{
-			var orderItem = await _context.Order.FindAsync(id);
+			var orderItem = await _context.Order.Include(it => it.Discount).FirstAsync(it => it.Id == id);
 
 			if (orderItem == null)
 			{
@@ -47,14 +47,14 @@ namespace EAMDJ.Repository.OrderRepository
 			return orderItem;
 		}
 
-		public async Task<Order> UpdateOrderAsync(Guid id, Order orderItem)
+		public async Task<Order> UpdateOrderAsync(Guid id, Order orderItem, Order original)
 		{
 			if (id != orderItem.Id)
 			{
 				throw new ArgumentException("Order not found");
 			}
 
-			_context.Entry(await GetOrderAsync(id)).CurrentValues.SetValues(orderItem);
+			_context.Entry(original).CurrentValues.SetValues(orderItem);
 
 			try
 			{
