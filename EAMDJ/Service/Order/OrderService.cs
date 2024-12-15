@@ -31,7 +31,7 @@ namespace EAMDJ.Service.OrderService
 		{
 			Order created = await _repository.CreateOrderAsync(OrderMapper.FromDto(order));
 
-			var price = await GetPayedAmount(created);
+			var price = GetPayedAmount(created);
 
 			return OrderMapper.ToDto(created, price.Item1 + price.Item2, price.Item2);
 		}
@@ -48,7 +48,7 @@ namespace EAMDJ.Service.OrderService
 
 			return await Task.WhenAll(orderes.Select(async it =>
 			{
-				var price = await GetPayedAmount(it);
+				var price = GetPayedAmount(it);
 
 				return OrderMapper.ToDto(it, price.Item1 + price.Item2, price.Item2);
 			}));
@@ -60,7 +60,7 @@ namespace EAMDJ.Service.OrderService
 			IEnumerable<OrderItem> items = await _orderItemRepository.GetAllOrderItemsByOrderIdAsync(id);
 
 			order.OrderItems = items;
-			var price = await GetPayedAmount(order);
+			var price = GetPayedAmount(order);
 
 			return OrderMapper.ToDto(order, price.Item1 + price.Item2, price.Item2);
 		}
@@ -77,19 +77,19 @@ namespace EAMDJ.Service.OrderService
 
 			Order updated = await _repository.UpdateOrderAsync(id, mapped, original);
 
-			var price = await GetPayedAmount(updated);
+			var price = GetPayedAmount(updated);
 
 			return OrderMapper.ToDto(updated, price.Item1 + price.Item2, price.Item2);
 		}
 
-		private async Task<Tuple<decimal, decimal>> GetPayedAmount(Order order)
+		private static Tuple<decimal, decimal> GetPayedAmount(Order order)
 		{
 			decimal totalPrice = 0;
 			decimal totalTax = 0;
 			foreach (OrderItem item in order.OrderItems)
 			{
-				var product = await _productRepository.GetProductAsync(item.ProductId);
-				var category = await _categoryRepository.GetProductCategoryAsync(product.CategoryId);
+				var product = item.Product;
+				var category = product.Category;
 
 				decimal totalItemTax = 0;
 				if (category.Taxes == null)
@@ -111,6 +111,23 @@ namespace EAMDJ.Service.OrderService
 				}
 				totalTax += product.Price / 100 * totalItemTax * item.Quantity + totalModTax;
 				totalPrice += product.Price * item.Quantity + totalModPrice;
+
+				var total = totalTax + totalPrice;
+
+				if (order.Discount != null && order.Discount.Expires > DateTime.UtcNow)
+				{
+					if (order.Discount.IsFlat)
+					{
+						var shouldFloor = order.Discount.Amount > (total);
+						totalTax = shouldFloor ? 0 : totalTax - (order.Discount.Amount * (totalTax / (total)));
+						totalPrice = shouldFloor ? 0 : totalPrice - (order.Discount.Amount * (totalPrice / (total)));
+					}
+					else
+					{
+						totalTax *= 1 - order.Discount.Amount / 100;
+						totalPrice *= 1 - order.Discount.Amount / 100;
+					}
+				}
 			}
 
 			return Tuple.Create(totalPrice, totalTax);
