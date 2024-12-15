@@ -19,6 +19,7 @@ namespace EAMDJ.Mapper
 				CategoryId = from.CategoryId,
 				Description = from.Description,
 				Modifiers = from.ProductModifiers.Select(ProductModifierMapper.ToDto),
+				Discounts = from.Discounts.Select(DiscountMapper.ToDto),
 			};
 		}
 		public static Product FromDto(ProductCreateDto from)

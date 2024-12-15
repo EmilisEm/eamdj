@@ -1,4 +1,5 @@
-﻿using EAMDJ.Dto.ProductModifierDto;
+﻿using EAMDJ.Dto.DiscountDto;
+using EAMDJ.Dto.ProductModifierDto;
 
 namespace EAMDJ.Dto.OrderItemDto
 {
@@ -10,6 +11,7 @@ namespace EAMDJ.Dto.OrderItemDto
 		public uint Quantity { get; init; }
 		public decimal BasePrice { get; init; }
 		public decimal TaxPercent { get; init; }
+		public DiscountResponseDto? AppliedDiscount { get; set; }
 		public IEnumerable<ProductModifierResponseDto>? ProductModifiers { get; set; }
 	}
 }

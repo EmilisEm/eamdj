@@ -49,8 +49,8 @@ public class ServiceAppContext : DbContext
 
 		modelBuilder.Entity<Discount>()
 			.HasOne<Product>(d => d.Product)
-			.WithOne()
-			.HasForeignKey<Discount>(d => d.ProductId)
+			.WithMany(it => it.Discounts)
+			.HasForeignKey(d => d.ProductId)
 			.IsRequired(false);
 		modelBuilder.Entity<Discount>()
 			.HasOne(d => d.Business)

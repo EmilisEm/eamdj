@@ -1,11 +1,9 @@
 ﻿using EAMDJ.Dto.OrderDto;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
-using EAMDJ.Repository.CategoryRepository;
 using EAMDJ.Repository.DiscountRepository;
 using EAMDJ.Repository.OrderItemRepository;
 using EAMDJ.Repository.OrderRepository;
-using EAMDJ.Repository.ProductRepository;
 
 namespace EAMDJ.Service.OrderService
 
@@ -14,16 +12,12 @@ namespace EAMDJ.Service.OrderService
 	{
 		private readonly IOrderRepository _repository;
 		private readonly IOrderItemRepository _orderItemRepository;
-		private readonly IProductRepository _productRepository;
-		private readonly ICategoryRepository _categoryRepository;
 		private readonly IDiscountRepository _discountRepository;
 
-		public OrderService(IOrderRepository repository, IOrderItemRepository orderItemRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IDiscountRepository discountRepository)
+		public OrderService(IOrderRepository repository, IOrderItemRepository orderItemRepository, IDiscountRepository discountRepository)
 		{
 			_repository = repository;
 			_orderItemRepository = orderItemRepository;
-			_productRepository = productRepository;
-			_categoryRepository = categoryRepository;
 			_discountRepository = discountRepository;
 		}
 
@@ -88,6 +82,11 @@ namespace EAMDJ.Service.OrderService
 			decimal totalTax = 0;
 			foreach (OrderItem item in order.OrderItems)
 			{
+				if (item == null)
+				{
+					throw new ArgumentException("Failed to fetch order items for order " + order.Id);
+				}
+
 				var product = item.Product;
 				var category = product.Category;
 
@@ -109,24 +108,43 @@ namespace EAMDJ.Service.OrderService
 					totalModPrice += mod.Price * item.Quantity;
 					totalModTax += mod.Price / 100 * totalItemTax * item.Quantity;
 				}
-				totalTax += product.Price / 100 * totalItemTax * item.Quantity + totalModTax;
-				totalPrice += product.Price * item.Quantity + totalModPrice;
 
-				var total = totalTax + totalPrice;
+				decimal orderItemTax = product.Price / 100 * totalItemTax * item.Quantity + totalModTax;
+				decimal orderItemPrice = product.Price * item.Quantity + totalModPrice;
 
-				if (order.Discount != null && order.Discount.Expires > DateTime.UtcNow)
+				var orderItemTotal = orderItemPrice + orderItemTax;
+
+				Discount? itemDiscount = item?.Product?.Discounts?.Where(it => it.Expires > DateTime.UtcNow).OrderByDescending(it => it.Amount).FirstOrDefault();
+
+				if (itemDiscount == null)
 				{
-					if (order.Discount.IsFlat)
-					{
-						var shouldFloor = order.Discount.Amount > (total);
-						totalTax = shouldFloor ? 0 : totalTax - (order.Discount.Amount * (totalTax / (total)));
-						totalPrice = shouldFloor ? 0 : totalPrice - (order.Discount.Amount * (totalPrice / (total)));
-					}
-					else
-					{
-						totalTax *= 1 - order.Discount.Amount / 100;
-						totalPrice *= 1 - order.Discount.Amount / 100;
-					}
+					totalTax += orderItemTax;
+					totalPrice += orderItemPrice;
+				}
+				else if (itemDiscount.IsFlat)
+				{
+					totalTax += item?.Quantity * itemDiscount.Amount > orderItemTotal ? 0 : orderItemTax - itemDiscount.Amount * item.Quantity * (orderItemTax / orderItemTotal);
+					totalPrice += item?.Quantity * itemDiscount.Amount > orderItemTotal ? 0 : orderItemPrice - itemDiscount.Amount * item.Quantity * (orderItemPrice / orderItemTotal);
+				}
+				else
+				{
+					totalTax += (1 - itemDiscount.Amount / 100) * orderItemTax;
+					totalPrice += (1 - itemDiscount.Amount / 100) * orderItemPrice;
+				}
+			}
+			var total = totalTax + totalPrice;
+			if (order.Discount != null && order.Discount.Expires > DateTime.UtcNow)
+			{
+				if (order.Discount.IsFlat)
+				{
+					var shouldFloor = order.Discount.Amount > (total);
+					totalTax = shouldFloor ? 0 : totalTax - (order.Discount.Amount * (totalTax / (total)));
+					totalPrice = shouldFloor ? 0 : totalPrice - (order.Discount.Amount * (totalPrice / (total)));
+				}
+				else
+				{
+					totalTax *= 1 - order.Discount.Amount / 100;
+					totalPrice *= 1 - order.Discount.Amount / 100;
 				}
 			}
 

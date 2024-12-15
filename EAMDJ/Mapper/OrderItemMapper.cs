@@ -16,6 +16,7 @@ namespace EAMDJ.Mapper
 				BasePrice = from.Product.Price,
 				TaxPercent = GetTaxForResponse(from),
 				ProductModifiers = from.ProductModifiers.Select(ProductModifierMapper.ToDto),
+				AppliedDiscount = from?.Product?.Discounts?.Where(it => it.Expires > DateTime.UtcNow).OrderBy(it => it.Amount).Select(DiscountMapper.ToDto).FirstOrDefault(),
 			};
 		}
 		public static OrderItem FromDto(OrderItemCreateDto from)
