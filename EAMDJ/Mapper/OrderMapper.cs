@@ -5,13 +5,16 @@ namespace EAMDJ.Mapper
 {
 	public static class OrderMapper
 	{
-		public static OrderResponseDto ToDto(Order from)
+		public static OrderResponseDto ToDto(Order from, decimal totalPrice, decimal totalTax)
 		{
 			return new OrderResponseDto()
 			{
 				Id = from.Id,
 				BusinessId = from.BusinessId,
 				Status = from.Status,
+				PaidAmount = from.PayedAmount,
+				TotalPrice = totalPrice,
+				Tax = totalTax,
 				Discount = from.Discount == null ? null : DiscountMapper.ToDto(from.Discount),
 				CreatedAt = from.CreatedAt,
 				LastModifiedAt = from.LastModifiedAt,

@@ -30,12 +30,12 @@ namespace EAMDJ.Repository.OrderItemRepository
 
 		public async Task<IEnumerable<OrderItem>> GetAllOrderItemsByOrderIdAsync(Guid orderId)
 		{
-			return await _context.OrderItem.Include(it => it.ProductModifiers).Where(it => it.OrderId.Equals(orderId)).ToListAsync();
+			return await _context.OrderItem.Include(it => it.ProductModifiers).Include(it => it.Product).Where(it => it.OrderId.Equals(orderId)).ToListAsync();
 		}
 
 		public async Task<OrderItem> GetOrderItemAsync(Guid id)
 		{
-			OrderItem orderItem = await _context.OrderItem.Include(it => it.ProductModifiers).FirstAsync(it => it.Id == id);
+			OrderItem orderItem = await _context.OrderItem.Include(it => it.Product).Include(it => it.ProductModifiers).FirstAsync(it => it.Id == id);
 
 			if (orderItem == null)
 			{

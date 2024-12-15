@@ -9,7 +9,7 @@ namespace EAMDJ.Dto.OrderItemDto
 		public Guid OrderId { get; init; }
 		public uint Quantity { get; init; }
 		public decimal BasePrice { get; init; }
-		public decimal Tax { get; init; }
+		public decimal TaxPercent { get; init; }
 		public IEnumerable<ProductModifierResponseDto>? ProductModifiers { get; set; }
 	}
 }

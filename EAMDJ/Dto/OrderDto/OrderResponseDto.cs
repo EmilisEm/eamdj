@@ -7,7 +7,8 @@ namespace EAMDJ.Dto.OrderDto
 	public class OrderResponseDto
 	{
 		public Guid Id { get; init; }
-		public decimal Price { get; init; }
+		public decimal TotalPrice { get; set; }
+		public decimal Tax { get; set; }
 		public decimal PaidAmount { get; init; }
 		public Guid BusinessId { get; init; }
 		public DiscountResponseDto? Discount { get; init; }

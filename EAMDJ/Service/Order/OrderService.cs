@@ -31,9 +31,9 @@ namespace EAMDJ.Service.OrderService
 		{
 			Order created = await _repository.CreateOrderAsync(OrderMapper.FromDto(order));
 
-			return OrderMapper.ToDto(created);
+			var price = await GetPayedAmount(created);
 
-
+			return OrderMapper.ToDto(created, price.Item1 + price.Item2, price.Item2);
 		}
 
 		public async Task DeleteOrderAsync(Guid id)
@@ -45,7 +45,13 @@ namespace EAMDJ.Service.OrderService
 		{
 			IEnumerable<Order> orderes = await _repository.GetAllOrdersByBusinessIdAsync(businessId);
 
-			return orderes.Select(OrderMapper.ToDto);
+
+			return await Task.WhenAll(orderes.Select(async it =>
+			{
+				var price = await GetPayedAmount(it);
+
+				return OrderMapper.ToDto(it, price.Item1 + price.Item2, price.Item2);
+			}));
 		}
 
 		public async Task<OrderResponseDto> GetOrderAsync(Guid id)
@@ -54,27 +60,9 @@ namespace EAMDJ.Service.OrderService
 			IEnumerable<OrderItem> items = await _orderItemRepository.GetAllOrderItemsByOrderIdAsync(id);
 
 			order.OrderItems = items;
-			decimal totalPrice = 0;
-			decimal totalTax = 0;
-			foreach (OrderItem item in items)
-			{
-				var product = await _productRepository.GetProductAsync(item.ProductId);
-				var category = await _categoryRepository.GetProductCategoryAsync(product.CategoryId);
-				decimal totalItemTax = 0;
-				if (category.Taxes == null)
-				{
-					throw new ArgumentException("Invalid response from database while getting taxes");
-				}
+			var price = await GetPayedAmount(order);
 
-				foreach (Tax tax in category.Taxes)
-				{
-					totalItemTax += tax.Percentage;
-				}
-				totalTax += product.Price * totalItemTax * item.Quantity / 100;
-				totalPrice += product.Price * item.Quantity;
-			}
-
-			return OrderMapper.ToDto(order);
+			return OrderMapper.ToDto(order, price.Item1 + price.Item2, price.Item2);
 		}
 
 		public async Task<OrderResponseDto> UpdateOrderAsync(Guid id, OrderUpdateDto order)
@@ -89,7 +77,43 @@ namespace EAMDJ.Service.OrderService
 
 			Order updated = await _repository.UpdateOrderAsync(id, mapped, original);
 
-			return OrderMapper.ToDto(updated);
+			var price = await GetPayedAmount(updated);
+
+			return OrderMapper.ToDto(updated, price.Item1 + price.Item2, price.Item2);
+		}
+
+		private async Task<Tuple<decimal, decimal>> GetPayedAmount(Order order)
+		{
+			decimal totalPrice = 0;
+			decimal totalTax = 0;
+			foreach (OrderItem item in order.OrderItems)
+			{
+				var product = await _productRepository.GetProductAsync(item.ProductId);
+				var category = await _categoryRepository.GetProductCategoryAsync(product.CategoryId);
+
+				decimal totalItemTax = 0;
+				if (category.Taxes == null)
+				{
+					throw new ArgumentException("Invalid response from database while getting taxes");
+				}
+
+				foreach (Tax tax in category.Taxes)
+				{
+					totalItemTax += tax.Percentage;
+				}
+
+				decimal totalModPrice = 0;
+				decimal totalModTax = 0;
+				foreach (ProductModifier mod in item.ProductModifiers)
+				{
+					totalModPrice += mod.Price * item.Quantity;
+					totalModTax += mod.Price / 100 * totalItemTax * item.Quantity;
+				}
+				totalTax += product.Price / 100 * totalItemTax * item.Quantity + totalModTax;
+				totalPrice += product.Price * item.Quantity + totalModPrice;
+			}
+
+			return Tuple.Create(totalPrice, totalTax);
 		}
 	}
 }

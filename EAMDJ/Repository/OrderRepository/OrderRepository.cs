@@ -15,8 +15,6 @@ namespace EAMDJ.Repository.OrderRepository
 
 		public async Task<Order> CreateOrderAsync(Order orderItem)
 		{
-			Guid id = Guid.NewGuid();
-
 			_context.Order.Add(orderItem);
 			await _context.SaveChangesAsync();
 
