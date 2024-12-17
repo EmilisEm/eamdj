@@ -1,4 +1,5 @@
 ﻿using EAMDJ.Dto.OrderDto;
+using EAMDJ.Model;
 using EAMDJ.Service.OrderService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,17 @@ namespace EAMDJ.Controllers
 		{
 			await _service.UpdateOrderAsync(id, order);
 			return NoContent();
+		}
+
+		[HttpPut("{id}/status")]
+		public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] OrderUpdateStatusDto updateDto)
+		{
+			if (!Enum.IsDefined(typeof(OrderStatus), updateDto.NewStatus))
+			{
+				return BadRequest("Invalid OrderStatus value.");
+			}
+
+			return Ok(await _service.UpdateOrderStatusAsync(id, updateDto.NewStatus));
 		}
 
 		[HttpPost]

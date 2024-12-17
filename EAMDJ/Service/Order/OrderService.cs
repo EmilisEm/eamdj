@@ -75,6 +75,24 @@ namespace EAMDJ.Service.OrderService
 
 			return OrderMapper.ToDto(updated, price.Item1 + price.Item2, price.Item2);
 		}
+		public async Task<Order> UpdateOrderStatusAsync(Guid id, OrderStatus newStatus)
+		{
+			var originalOrder = await _repository.GetOrderAsync(id);
+			if (originalOrder == null)
+			{
+				throw new KeyNotFoundException("Order not found.");
+			}
+
+			var updatedOrder = originalOrder with
+			{
+				Status = newStatus,
+				LastModifiedAt = DateTime.UtcNow
+			};
+
+			var result = await _repository.UpdateOrderAsync(id, updatedOrder, originalOrder);
+
+			return result;
+		}
 
 		private static Tuple<decimal, decimal> GetPayedAmount(Order order)
 		{
