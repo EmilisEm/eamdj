@@ -1,16 +1,35 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { myContext } from '../../App';
 import { createTax } from '../../api/tax';
+import { fetchBusinesses } from '../../api/business';
 
 const TaxForm = ({ onSuccess }) => {
   const { 
     currentBusiness, 
     businesses, 
+    setBusinesses, 
     setCurrentBusiness 
   } = useContext(myContext);
 
   const [taxName, setTaxName] = useState('');
   const [percentage, setPercentage] = useState('');
+
+  useEffect(() => {
+    const loadBusinesses = async () => {
+      try {
+        const page = 1; // Hardcoded page number
+        const pageSize = 20; // Hardcoded page size
+
+        const response = await fetchBusinesses(page, pageSize);
+        const data = response.items; // Extract businesses array
+        setBusinesses(data);
+      } catch (error) {
+        console.error('Failed to fetch businesses:', error);
+      }
+    };
+
+    loadBusinesses();
+  }, [setBusinesses]);
 
   const handleBusinessChange = (event) => {
     const selectedId = event.target.value;

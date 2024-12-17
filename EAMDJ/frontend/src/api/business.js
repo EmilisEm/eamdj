@@ -1,7 +1,9 @@
 import axiosInstance from './axiosInstance';
 
-export const fetchBusinesses = async () => {
-  const response = await axiosInstance.get('/api/v1/business');
+export const fetchBusinesses = async ({ page, pageSize }) => {
+  const response = await axiosInstance.get(`/api/v1/business`, {
+    params: { page, pageSize }
+  });
   return response.data;
 };
 

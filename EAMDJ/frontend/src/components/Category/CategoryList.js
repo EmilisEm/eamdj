@@ -12,13 +12,16 @@ function CategoryList() {
     useEffect(() => {
         const getBusinesses = async () => {
             try {
-                const data = await fetchBusinesses();
+                const page = 1; // Hardcoded page number
+                const pageSize = 20; // Hardcoded page size
+    
+                const response = await fetchBusinesses(page, pageSize); // Pass params to the API call
+                const data = response.items; // Extract 'items' array
                 setBusinesses(data);
             } catch (err) {
                 console.error('Error fetching businesses:', err);
             }
         };
-
         getBusinesses();
     }, []);
 

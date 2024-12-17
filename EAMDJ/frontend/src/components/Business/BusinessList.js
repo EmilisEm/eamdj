@@ -10,8 +10,8 @@ function BusinessList() {
   useEffect(() => {
     const getBusinesses = async () => {
       try {
-        const data = await fetchBusinesses();
-        setBusinesses(data);
+        const response = await fetchBusinesses({ page: 1, pageSize: 20 });
+        setBusinesses(response.items);
       } catch (err) {
         setError('Failed to fetch businesses');
         console.error(err);
