@@ -44,6 +44,10 @@ namespace EAMDJ.Repository
 
 			return business;
 		}
+		public IQueryable<Business> GetQueryBusinessAsync()
+		{
+			return _context.Business.AsQueryable();
+		}
 
 		public async Task<Business> UpdateBusinessAsync(Guid id, Business business)
 		{

@@ -1,4 +1,6 @@
-﻿using EAMDJ.Dto.ReservationDto;
+﻿using EAMDJ.Dto.OrderDto;
+using EAMDJ.Dto.ReservationDto;
+using EAMDJ.Model;
 using EAMDJ.Service.ReservationService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +34,16 @@ namespace EAMDJ.Controllers
 			await _service.UpdateReservationAsync(id, reservation);
 			return NoContent();
 		}
+		[HttpPut("{id}/status")]
+		public async Task<IActionResult> UpdateReservationStatus(Guid id, [FromBody] ReservationUpdateStatusDto updateDto)
+		{
+			if (!Enum.IsDefined(typeof(ReservationStatus), updateDto.NewStatus))
+			{
+				return BadRequest("Invalid ReservationStatus value.");
+			}
 
+			return Ok(await _service.UpdateReservationStatusAsync(id, updateDto.NewStatus));
+		}
 		[HttpPost]
 		public async Task<ActionResult<ReservationResponseDto>> PostReservation(ReservationCreateDto reservation)
 		{
