@@ -12,6 +12,7 @@ import BusinessForm from './components/Business/BusinessForm';
 import CategoryPage from './pages/CategoryPage';
 import BusinessList from './components/Business/BusinessList';
 import BusinessDetails from './components/Business/BusinessDetails';
+import TaxPage from './pages/TaxPage';
 import { fetchBusinesses } from './api/business';  // Assuming this function is defined
 
 export const myContext = createContext();
@@ -91,6 +92,7 @@ function App() {
               <li><Link to="/product">Products</Link></li>
               <li><Link to="/reservation">Reservations</Link></li>
               <li><Link to="/user">Users</Link></li>
+              <li><Link to="/tax">Taxes</Link></li>
             </ul>
           </nav>
 
@@ -114,9 +116,11 @@ function App() {
               <Route path="update/:id" element={<OrderDetails isUpdate={true} />} />
               <Route path="delete/:id" element={<OrderDetails isDelete={true} />} />
             </Route>
+
             <Route path="/product" element={<ProductPage />} />
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/user" element={<UserPage />} />
+            <Route path="/tax" element={<TaxPage />} />
           </Routes>
         </div>
       </Router>
