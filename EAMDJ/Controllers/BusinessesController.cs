@@ -15,9 +15,16 @@ namespace EAMDJ.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<BusinessResponseDto>>> GetBusiness()
+		public async Task<ActionResult<IEnumerable<BusinessResponseDto>>> GetBusiness(
+			[FromQuery] int page = 1,
+			[FromQuery] int pageSize = 20)
 		{
-			return Ok(await _service.GetAllBusinessAsync());
+			if (page < 1 || pageSize < 1)
+			{
+				return BadRequest("Page and pageSize must be greater than 0.");
+			}
+
+			return Ok(await _service.GetAllBusinessAsync(page, pageSize));
 		}
 
 		[HttpGet("{id}")]

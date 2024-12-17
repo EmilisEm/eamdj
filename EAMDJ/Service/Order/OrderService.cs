@@ -63,7 +63,7 @@ namespace EAMDJ.Service.OrderService
 		public async Task<PaginatedResult<OrderResponseDto>> GetAllOrdersByBusinessIdAsync(Guid businessId, int page, int pageSize)
 		{
 			var skip = (page - 1) * pageSize;
-			var query = await _repository.GetOrdersByBusinessIdAsync(businessId);
+			var query = _repository.GetQueryOrdersByBusinessIdAsync(businessId);
 			var totalCount = await query.CountAsync();
 
 			var orders = await query

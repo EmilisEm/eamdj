@@ -1,7 +1,10 @@
 ﻿using EAMDJ.Dto.BusinessDto;
+using EAMDJ.Dto.OrderDto;
+using EAMDJ.Dto.Shared;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
 using EAMDJ.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EAMDJ.Service.BusinessService.BusinessService
 {
@@ -34,7 +37,27 @@ namespace EAMDJ.Service.BusinessService.BusinessService
 
 			return businesses.Select(BusinessMapper.ToDto);
 		}
+		public async Task<PaginatedResult<BusinessResponseDto>> GetAllBusinessAsync(int page, int pageSize)
+		{
+			var skip = (page - 1) * pageSize;
+			var query = _repository.GetQueryBusinessAsync();
+			var totalCount = await query.CountAsync();
 
+			var businesses = await query
+				.Skip(skip)
+				.Take(pageSize)
+				.ToListAsync();
+
+			var businessDtos = businesses.Select(BusinessMapper.ToDto).ToList();
+
+			return new PaginatedResult<BusinessResponseDto>
+			{
+				Items = businessDtos,
+				TotalCount = totalCount,
+				Page = page,
+				PageSize = pageSize
+			};
+		}
 		public async Task<BusinessResponseDto> GetBusinessAsync(Guid id)
 		{
 			Business business = await _repository.GetBusinessAsync(id);
