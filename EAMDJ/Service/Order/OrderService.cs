@@ -1,9 +1,11 @@
 ﻿using EAMDJ.Dto.OrderDto;
+using EAMDJ.Dto.Shared;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
 using EAMDJ.Repository.DiscountRepository;
 using EAMDJ.Repository.OrderItemRepository;
 using EAMDJ.Repository.OrderRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EAMDJ.Service.OrderService
 
@@ -58,6 +60,34 @@ namespace EAMDJ.Service.OrderService
 
 			return OrderMapper.ToDto(order, price.Item1 + price.Item2, price.Item2);
 		}
+		public async Task<PaginatedResult<OrderResponseDto>> GetAllOrdersByBusinessIdAsync(Guid businessId, int page, int pageSize)
+		{
+			var skip = (page - 1) * pageSize;
+			var query = await _repository.GetOrdersByBusinessIdAsync(businessId);
+			var totalCount = await query.CountAsync();
+
+			var orders = await query
+				.Skip(skip)
+				.Take(pageSize)
+				.ToListAsync();
+
+			// Map orders to DTOs
+			var orderDtos = orders.Select(o => 
+			{
+				var price = GetPayedAmount(o);
+				return OrderMapper.ToDto(o, price.Item1 + price.Item2, price.Item2);
+			}).ToList();
+
+			// Return paginated result
+			return new PaginatedResult<OrderResponseDto>
+			{
+				Items = orderDtos,
+				TotalCount = totalCount,
+				Page = page,
+				PageSize = pageSize
+			};
+		}
+
 
 		public async Task<OrderResponseDto> UpdateOrderAsync(Guid id, OrderUpdateDto order)
 		{

@@ -1,4 +1,5 @@
 ﻿using EAMDJ.Dto.OrderDto;
+using EAMDJ.Dto.Shared;
 using EAMDJ.Model;
 
 namespace EAMDJ.Service.OrderService
@@ -7,6 +8,7 @@ namespace EAMDJ.Service.OrderService
 	{
 		Task<OrderResponseDto> GetOrderAsync(Guid id);
 		Task<IEnumerable<OrderResponseDto>> GetAllOrdersByBusinessIdAsync(Guid businessId);
+		Task<PaginatedResult<OrderResponseDto>> GetAllOrdersByBusinessIdAsync(Guid businessId, int page, int pageSize);
 		Task<OrderResponseDto> UpdateOrderAsync(Guid id, OrderUpdateDto order);
 		Task<Order> UpdateOrderStatusAsync(Guid id, OrderStatus newStatus);
 		Task DeleteOrderAsync(Guid id);
