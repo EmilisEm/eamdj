@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { createBusiness } from '../../api/business';
 import { useNavigate } from 'react-router-dom';
 
 function BusinessForm({ onSuccess }) {
-  const navigate = useNavigate();
   const [newBusiness, setNewBusiness] = useState({
     name: ' ',
     email: ' ',

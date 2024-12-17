@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { myContext } from '../../App';
+const { fetchOrdersByBusiness } = require('../../api/order');
 
 const OrderList = ({ onOrderSelect }) => {
   const { currentBusiness, setCurrentOrders } = useContext(myContext);
@@ -12,15 +13,10 @@ const OrderList = ({ onOrderSelect }) => {
 
       setIsLoading(true);
       try {
-        const response = await fetch(`https://localhost:8081/api/v1/order/by-business/${currentBusiness.id}`);
+        const orderData = await fetchOrdersByBusiness(currentBusiness.id);
         
-        if (response.ok) {
-          const orderData = await response.json();
-          setOrders(orderData);
-          setCurrentOrders(orderData);
-        } else {
-          console.error('Failed to fetch orders');
-        }
+        setOrders(orderData);
+        setCurrentOrders(orderData);
       } catch (error) {
         console.error('Error fetching orders:', error);
       } finally {

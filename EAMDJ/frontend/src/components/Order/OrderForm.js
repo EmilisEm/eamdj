@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { myContext } from '../../App';
 import { v4 as uuidv4 } from 'uuid';
+import { createOrder } from '../../api/order';
 
 const OrderForm = ({ onSuccess }) => {
   const { 
@@ -18,6 +19,7 @@ const OrderForm = ({ onSuccess }) => {
     const selectedBusiness = businesses.find(business => business.id === selectedId);
     if (selectedBusiness) {
       setCurrentBusiness(selectedBusiness);
+      console.log('Selected Business:', selectedBusiness); // Add this line
     }
   };
 
@@ -62,29 +64,13 @@ const OrderForm = ({ onSuccess }) => {
     try {
       console.log('Sending Order Create DTO:', orderCreateDto);
 
-      const response = await fetch('https://localhost:8081/api/v1/order', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(orderCreateDto)
-      });
+      const newOrder = await createOrder(orderCreateDto);
 
-      console.log('Response status:', response.status);
-
-      if (response.ok) {
-        const newOrder = await response.json();
-        onSuccess(newOrder);
-        setOrderItems([]);
-      } else {
-        const errorText = await response.text();
-        console.error('Failed to create order. Status:', response.status);
-        console.error('Error response:', errorText);
-        alert(`Failed to create order: ${errorText}`);
-      }
+      console.log('Order created successfully:', newOrder);
+      onSuccess(newOrder);
+      setOrderItems([]);
     } catch (error) {
-      console.error('Network or parsing error:', error);
+      console.error('Failed to create order:', error);
       alert('An error occurred while creating the order');
     }
   };
@@ -99,18 +85,13 @@ const OrderForm = ({ onSuccess }) => {
           <select
             value={currentBusiness ? currentBusiness.id : ''}
             onChange={handleBusinessChange}
-            required
           >
-            <option value="" disabled>Select a business</option>
-            {businesses && businesses.length > 0 ? (
-              businesses.map((business) => (
-                <option key={business.id} value={business.id}>
-                  {business.name}
-                </option>
-              ))
-            ) : (
-              <option value="" disabled>No businesses available</option>
-            )}
+            <option value="">Select a business</option>
+            {businesses.map(business => (
+              <option key={business.id} value={business.id}>
+                {business.name}
+              </option>
+            ))}
           </select>
         </label>
       </div>
@@ -122,43 +103,33 @@ const OrderForm = ({ onSuccess }) => {
             type="text"
             value={productId}
             onChange={(e) => setProductId(e.target.value)}
-            required
           />
         </label>
+      </div>
+
+      <div>
         <label>
           Quantity:
           <input
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(parseInt(e.target.value))}
-            min="1"
-            required
           />
         </label>
-        <button 
-          type="button" 
-          onClick={handleAddItem}
-          disabled={!productId || quantity <= 0}
-        >
-          Add Item
-        </button>
       </div>
 
-      <div>
-        <h3>Order Items:</h3>
+      <button type="button" onClick={handleAddItem}>Add Item</button>
+
+      <ul>
         {orderItems.map((item, index) => (
-          <div key={item.id}>
-            Product: {item.productId}, Quantity: {item.quantity}
-            <button type="button" onClick={() => handleRemoveItem(index)}>
-              Remove
-            </button>
-          </div>
+          <li key={item.id}>
+            {item.productId} - {item.quantity}
+            <button type="button" onClick={() => handleRemoveItem(index)}>Remove</button>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <button type="submit" disabled={orderItems.length === 0}>
-        Create Order
-      </button>
+      <button type="submit">Submit Order</button>
     </form>
   );
 };

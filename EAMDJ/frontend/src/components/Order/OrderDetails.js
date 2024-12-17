@@ -1,27 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { fetchOrderItems } from '../../api/order';
 
 const OrderDetails = ({ order }) => {
   const [orderItems, setOrderItems] = useState([]);
 
   useEffect(() => {
-    const fetchOrderItems = async () => {
-      if (!order) return;
-
-      try {
-        const response = await fetch(`https://localhost:8081/api/v1/order-item/by-order/${order.id}`);
-        
-        if (response.ok) {
-          const itemsData = await response.json();
-          setOrderItems(itemsData);
-        } else {
-          console.error('Failed to fetch order items');
-        }
-      } catch (error) {
-        console.error('Error fetching order items:', error);
+    const loadOrderItems = async () => {
+      if (order && order.id) {
+        const items = await fetchOrderItems(order.id);
+        setOrderItems(items);
       }
     };
 
-    fetchOrderItems();
+    loadOrderItems();
   }, [order]);
 
   if (!order) return <p>Select an order to see details.</p>;
