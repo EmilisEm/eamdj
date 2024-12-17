@@ -11,6 +11,11 @@ namespace EAMDJ.Mapper
 			{
 				throw new ArgumentException("Failed to fetch product modifiers for product with ID " + from.Id);
 			}
+			if (from.Discounts == null)
+			{
+				throw new ArgumentException("Failed to fetch discounts for product with ID " + from.Id);
+			}
+
 			return new ProductResponseDto()
 			{
 				Id = from.Id,
