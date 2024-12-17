@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import BusinessPage from './pages/BusinessPage'; // Ensure the import
 import OrderPage from './pages/OrderPage';
 import ProductPage from './pages/ProductPage';
+import CategoryPage from './pages/CategoryPage';
 import ReservationPage from './pages/ReservationPage';
 import UserPage from './pages/UserPage';
 import BusinessForm from './components/Business/BusinessForm';
@@ -67,6 +68,7 @@ function App() {
               <li><Link to="/business">Businesses</Link></li>
               <li><Link to="/order">Orders</Link></li>
               <li><Link to="/product">Products</Link></li>
+              <li><Link to="/category">Categories</Link></li>
               <li><Link to="/reservation">Reservations</Link></li>
               <li><Link to="/user">Users</Link></li>
             </ul>
@@ -84,6 +86,7 @@ function App() {
             </Route>
             <Route path="/order" element={<OrderPage />} />
             <Route path="/product" element={<ProductPage />} />
+            <Route path="/category" element={<CategoryPage />} />
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/user" element={<UserPage />} />
           </Routes>
