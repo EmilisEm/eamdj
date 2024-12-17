@@ -1,14 +1,17 @@
-// src/App.js
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import BusinessPage from './pages/BusinessPage'; // Ensure the import
+import BusinessPage from './pages/BusinessPage';
 import OrderPage from './pages/OrderPage';
+import OrderForm from './components/Order/OrderForm';
+import OrderList from './components/Order/OrderList';
+import OrderDetails from './components/Order/OrderDetails';
 import ProductPage from './pages/ProductPage';
 import ReservationPage from './pages/ReservationPage';
 import UserPage from './pages/UserPage';
 import BusinessForm from './components/Business/BusinessForm';
 import BusinessList from './components/Business/BusinessList';
 import BusinessDetails from './components/Business/BusinessDetails';
+import { fetchBusinesses } from './api/business';  // Assuming this function is defined
 
 export const myContext = createContext();
 
@@ -18,6 +21,7 @@ function App() {
     email: '',
     address: '',
   });
+  const [businesses, setBusinesses] = useState([]);  // Add state for businesses
   const [currentBusiness, setCurrentBusiness] = useState({});
   const [user, setUser] = useState({});
   const [currentUser, setCurrentUser] = useState({});
@@ -30,11 +34,27 @@ function App() {
   const [reservations, setReservations] = useState({});
   const [currentReservations, setCurrentReservations] = useState({});
 
+  // Fetch businesses when the component mounts
+  useEffect(() => {
+    const getBusinesses = async () => {
+      try {
+        const fetchedBusinesses = await fetchBusinesses();
+        setBusinesses(fetchedBusinesses);
+      } catch (error) {
+        console.error("Failed to fetch businesses", error);
+      }
+    };
+    getBusinesses();
+  }, []);
+  
+
   const value = {
     business, 
     setBusiness, 
     currentBusiness, 
     setCurrentBusiness, 
+    businesses,        // Add businesses to context
+    setBusinesses,     // Add setBusinesses to context
     user, 
     setUser, 
     currentUser, 
@@ -55,8 +75,8 @@ function App() {
     setReservations,
     currentReservations,
     setCurrentReservations
-  }
- 
+  };
+
   return (
     <myContext.Provider value={value}>
       <Router>
@@ -82,7 +102,14 @@ function App() {
               <Route path="update/:id" element={<BusinessDetails isUpdate={true} />} />
               <Route path="delete/:id" element={<BusinessDetails isDelete={true} />} />
             </Route>
-            <Route path="/order" element={<OrderPage />} />
+
+            <Route path="/order" element={<OrderPage />}>
+              <Route path="create" element={<OrderForm onSuccess={() => {}} />} />
+              <Route path="orderlist" element={<OrderList />} />
+              <Route path=":id" element={<OrderDetails />} />
+              <Route path="update/:id" element={<OrderDetails isUpdate={true} />} />
+              <Route path="delete/:id" element={<OrderDetails isDelete={true} />} />
+            </Route>
             <Route path="/product" element={<ProductPage />} />
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/user" element={<UserPage />} />
