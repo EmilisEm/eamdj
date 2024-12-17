@@ -31,7 +31,7 @@ const OrderDetails = ({ order }) => {
       <h2>Order Details</h2>
       <div>
         <p><strong>Order ID:</strong> {order.id}</p>
-        <p><strong>Order Date:</strong> {new Date(order.orderDate).toLocaleString()}</p>
+        <p><strong>Order Date:</strong> {new Date(order.createdAt).toLocaleString()}</p>
         <p><strong>Status:</strong> {order.status}</p>
       </div>
 

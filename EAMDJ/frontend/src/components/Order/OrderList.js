@@ -52,7 +52,7 @@ const OrderList = ({ onOrderSelect }) => {
             {orders.map(order => (
               <tr key={order.id}>
                 <td>{order.id}</td>
-                <td>{new Date(order.orderDate).toLocaleString()}</td>
+                <td>{new Date(order.createdAt).toLocaleString()}</td>
                 <td>{order.status}</td>
                 <td>
                   <button onClick={() => onOrderSelect(order)}>

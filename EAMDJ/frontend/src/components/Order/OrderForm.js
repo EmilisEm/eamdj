@@ -5,33 +5,29 @@ import { v4 as uuidv4 } from 'uuid';
 const OrderForm = ({ onSuccess }) => {
   const { 
     currentBusiness, 
-    businesses,  // Make sure to add this if you have a list of businesses
-    setCurrentBusiness  // Add this from your context if it exists
+    businesses, 
+    setCurrentBusiness 
   } = useContext(myContext);
 
   const [orderItems, setOrderItems] = useState([]);
   const [productId, setProductId] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [selectedBusinessId, setSelectedBusinessId] = useState('');
 
-  const handleBusinessSelect = () => {
-    if (!businesses || !Array.isArray(businesses)) {
-      alert('No businesses available to select from.');
-      return;
-    }
-  
-    const selectedBusiness = businesses.find(business => business.id === selectedBusinessId);
-    
+  const handleBusinessChange = (event) => {
+    const selectedId = event.target.value;
+    const selectedBusiness = businesses.find(business => business.id === selectedId);
     if (selectedBusiness) {
       setCurrentBusiness(selectedBusiness);
-    } else {
-      alert('Invalid Business ID. Please enter a valid ID.');
     }
   };
-  
 
   const handleAddItem = () => {
-    if (productId && quantity > 0) {
+    if (!productId) {
+      alert('Product ID is required');
+      return;
+    }
+
+    if (quantity > 0) {
       setOrderItems([...orderItems, { 
         id: uuidv4(), 
         productId, 
@@ -50,7 +46,6 @@ const OrderForm = ({ onSuccess }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    // Validate business selection
     if (!currentBusiness || !currentBusiness.id) {
       alert('Please select a business first');
       return;
@@ -94,33 +89,32 @@ const OrderForm = ({ onSuccess }) => {
     }
   };
 
-  // If no business is selected, show business selection
-  if (!currentBusiness || !currentBusiness.id) {
-    return (
-      <div>
-        <h2>Select a Business by ID</h2>
-        <label>
-          Business ID:
-          <input
-            type="text"
-            value={selectedBusinessId}
-            onChange={(e) => setSelectedBusinessId(e.target.value)}
-          />
-        </label>
-        <button onClick={handleBusinessSelect}>
-          Select Business
-        </button>
-        {businesses && businesses.length > 0 && (
-          <p>Businesses available: {businesses.length}</p>
-        )}
-      </div>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Create New Order for {currentBusiness.name}</h2>
-      
+      <h2>Create New Order</h2>
+
+      <div>
+        <label>
+          Select Business:
+          <select
+            value={currentBusiness ? currentBusiness.id : ''}
+            onChange={handleBusinessChange}
+            required
+          >
+            <option value="" disabled>Select a business</option>
+            {businesses && businesses.length > 0 ? (
+              businesses.map((business) => (
+                <option key={business.id} value={business.id}>
+                  {business.name}
+                </option>
+              ))
+            ) : (
+              <option value="" disabled>No businesses available</option>
+            )}
+          </select>
+        </label>
+      </div>
+
       <div>
         <label>
           Product ID:
@@ -141,7 +135,11 @@ const OrderForm = ({ onSuccess }) => {
             required
           />
         </label>
-        <button type="button" onClick={handleAddItem}>
+        <button 
+          type="button" 
+          onClick={handleAddItem}
+          disabled={!productId || quantity <= 0}
+        >
           Add Item
         </button>
       </div>
