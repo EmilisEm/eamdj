@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createBusiness } from '../../api/business';
+import { Navigate } from 'react-router-dom';
 
 function BusinessForm({ onSuccess }) {
   const [newBusiness, setNewBusiness] = useState({
@@ -18,7 +19,7 @@ function BusinessForm({ onSuccess }) {
     try {
       await createBusiness(newBusiness);
       onSuccess();
-      navigate('/business/businesslist');
+      Navigate('/business/businesslist');
     } catch (error) {
       // Capture any errors and set them in state
       setError(error.message);
