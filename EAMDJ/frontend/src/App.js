@@ -3,6 +3,9 @@ import React, { createContext, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import BusinessPage from './pages/BusinessPage'; // Ensure the import
 import OrderPage from './pages/OrderPage';
+import OrderForm from './components/Order/OrderForm';
+import OrderList from './components/Order/OrderList';
+import OrderDetails from './components/Order/OrderDetails';
 import ProductPage from './pages/ProductPage';
 import ReservationPage from './pages/ReservationPage';
 import UserPage from './pages/UserPage';
@@ -78,11 +81,16 @@ function App() {
             <Route path="/business" element={<BusinessPage />}>
               <Route path="create" element={<BusinessForm onSuccess={() => {}} />} />
               <Route path="businesslist" element={<BusinessList/>} />
-              <Route path="business/:id" element={<BusinessDetails />} />
-              <Route path="update/:id" element={<BusinessDetails isUpdate={true} />} />
-              <Route path="delete/:id" element={<BusinessDetails isDelete={true} />} />
+              <Route path="/business/:id" element={<BusinessDetails />} />
+              <Route path="/business/update/:id" element={<BusinessDetails isUpdate={true} />} />
+              <Route path="/business/delete/:id" element={<BusinessDetails isDelete={true} />} />
             </Route>
             <Route path="/order" element={<OrderPage />} />
+              <Route path="create" element={<OrderForm onSuccess={() => {}} />} />
+              <Route path="orderlist" element={<OrderList/>} />
+              <Route path="order/:id" element={<OrderDetails />} />
+              <Route path="update/:id" element={<OrderDetails isUpdate={true} />} />
+              <Route path="delete/:id" element={<OrderDetails isDelete={true} />} />
             <Route path="/product" element={<ProductPage />} />
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/user" element={<UserPage />} />

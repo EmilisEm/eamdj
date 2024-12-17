@@ -6,9 +6,14 @@ export const fetchBusinesses = async () => {
 };
 
 export const fetchBusinessById = async (id) => {
-  const response = await axiosInstance.get(`api/v1/business/${id}`);
-  return response.data;
-}
+  try {
+    const response = await axiosInstance.get(`/api/v1/business/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching business by ID:', error);
+    throw error;
+  }
+};
 
 export const createBusiness = async (data) => {
   const response = await axiosInstance.post('/api/v1/business', data);
