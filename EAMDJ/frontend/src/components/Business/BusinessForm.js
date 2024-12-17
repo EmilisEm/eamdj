@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createBusiness } from '../../api/business';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function BusinessForm({ onSuccess }) {
   const [newBusiness, setNewBusiness] = useState({
@@ -10,6 +10,7 @@ function BusinessForm({ onSuccess }) {
   });
   const [error, setError] = useState(null); // To capture any errors during form submission
   const [loading, setLoading] = useState(false); // To track loading state
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
@@ -19,7 +20,7 @@ function BusinessForm({ onSuccess }) {
     try {
       await createBusiness(newBusiness);
       onSuccess();
-      Navigate('/business/businesslist');
+      navigate('/business/businesslist');
     } catch (error) {
       // Capture any errors and set them in state
       setError(error.message);

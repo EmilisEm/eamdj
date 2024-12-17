@@ -78,7 +78,7 @@ function App() {
             <Route path="/business" element={<BusinessPage />}>
               <Route path="create" element={<BusinessForm onSuccess={() => {}} />} />
               <Route path="businesslist" element={<BusinessList/>} />
-              <Route path="business/:id" element={<BusinessDetails />} />
+              <Route path=":id" element={<BusinessDetails />} />
               <Route path="update/:id" element={<BusinessDetails isUpdate={true} />} />
               <Route path="delete/:id" element={<BusinessDetails isDelete={true} />} />
             </Route>
