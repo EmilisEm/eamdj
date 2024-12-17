@@ -45,17 +45,6 @@ namespace EAMDJ.Controllers
 			return NoContent();
 		}
 
-		[HttpPut("{id}/status")]
-		public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] OrderUpdateStatusDto updateDto)
-		{
-			if (!Enum.IsDefined(typeof(OrderStatus), updateDto.NewStatus))
-			{
-				return BadRequest("Invalid OrderStatus value.");
-			}
-
-			return Ok(await _service.UpdateOrderStatusAsync(id, updateDto.NewStatus));
-		}
-
 		[HttpPost]
 		public async Task<ActionResult<OrderResponseDto>> PostOrder(OrderCreateDto order)
 		{

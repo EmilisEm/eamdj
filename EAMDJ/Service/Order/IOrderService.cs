@@ -10,7 +10,6 @@ namespace EAMDJ.Service.OrderService
 		Task<IEnumerable<OrderResponseDto>> GetAllOrdersByBusinessIdAsync(Guid businessId);
 		Task<PaginatedResult<OrderResponseDto>> GetAllOrdersByBusinessIdAsync(Guid businessId, int page, int pageSize);
 		Task<OrderResponseDto> UpdateOrderAsync(Guid id, OrderUpdateDto order);
-		Task<Order> UpdateOrderStatusAsync(Guid id, OrderStatus newStatus);
 		Task DeleteOrderAsync(Guid id);
 		Task<OrderResponseDto> CreateOrderAsync(OrderCreateDto order);
 	}

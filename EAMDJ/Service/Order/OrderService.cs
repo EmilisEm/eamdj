@@ -71,14 +71,12 @@ namespace EAMDJ.Service.OrderService
 				.Take(pageSize)
 				.ToListAsync();
 
-			// Map orders to DTOs
 			var orderDtos = orders.Select(o => 
 			{
 				var price = GetPayedAmount(o);
 				return OrderMapper.ToDto(o, price.Item1 + price.Item2, price.Item2);
 			}).ToList();
 
-			// Return paginated result
 			return new PaginatedResult<OrderResponseDto>
 			{
 				Items = orderDtos,
@@ -104,24 +102,6 @@ namespace EAMDJ.Service.OrderService
 			var price = GetPayedAmount(updated);
 
 			return OrderMapper.ToDto(updated, price.Item1 + price.Item2, price.Item2);
-		}
-		public async Task<Order> UpdateOrderStatusAsync(Guid id, OrderStatus newStatus)
-		{
-			var originalOrder = await _repository.GetOrderAsync(id);
-			if (originalOrder == null)
-			{
-				throw new KeyNotFoundException("Order not found.");
-			}
-
-			var updatedOrder = originalOrder with
-			{
-				Status = newStatus,
-				LastModifiedAt = DateTime.UtcNow
-			};
-
-			var result = await _repository.UpdateOrderAsync(id, updatedOrder, originalOrder);
-
-			return result;
 		}
 
 		private static Tuple<decimal, decimal> GetPayedAmount(Order order)

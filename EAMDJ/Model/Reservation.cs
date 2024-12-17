@@ -11,5 +11,6 @@
 		public virtual User? Employee { get; set; }
 		public DateTime Created { get; set; }
 		public DateTime Updated { get; set; }
+		public ReservationStatus Status { get; set; }
 	}
 }
