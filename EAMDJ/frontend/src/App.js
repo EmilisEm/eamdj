@@ -33,6 +33,8 @@ function App() {
   const [currentProducts, setCurrentProducts] = useState({});
   const [categories, setCategories] = useState({});
   const [currentCategories, setCurrentCategories] = useState({});
+  const [taxes, setTaxes] = useState({});
+  const [currentTaxes, setCurrentTaxes] = useState({});
   const [reservations, setReservations] = useState({});
   const [currentReservations, setCurrentReservations] = useState({});
 
@@ -73,6 +75,10 @@ function App() {
     setCategories,
     currentCategories,
     setCurrentCategories,
+    taxes,
+    setTaxes,
+    setCurrentTaxes,
+    currentTaxes,
     reservations, 
     setReservations,
     currentReservations,
@@ -120,7 +126,7 @@ function App() {
             <Route path="/product" element={<ProductPage />} />
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/user" element={<UserPage />} />
-            <Route path="/tax" element={<TaxPage />} />
+            <Route path="/tax/*" element={<TaxPage />} />
           </Routes>
         </div>
       </Router>

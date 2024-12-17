@@ -7,7 +7,7 @@ function CategoryDetails() {
     const [category, setCategory] = useState({
         name: '',
         businessId: '',
-        taxes: [],
+        taxIds: [],
     });
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
@@ -19,7 +19,7 @@ function CategoryDetails() {
                 const data = await fetchCategoryById(id); // Fetch a single category
                 setCategory({
                     ...data,
-                    taxes: data.taxes || [], // Ensure taxes is an array
+                    taxIds: data.taxIds || [], // Ensure taxIds is an array
                 });
             } catch (err) {
                 console.error('Error fetching category:', err);
@@ -33,9 +33,9 @@ function CategoryDetails() {
         try {
             const updatedCategory = {
                 ...category,
-                taxes: Array.isArray(category.taxes)
-                    ? category.taxes
-                    : category.taxes.split(',').map((tax) => tax.trim()),
+                taxIds: Array.isArray(category.taxIds)
+                    ? category.taxIds
+                    : category.taxIds.split(',').map((tax) => tax.trim()),
             };
 
             await updateCategory(id, updatedCategory);
@@ -79,11 +79,11 @@ function CategoryDetails() {
                 disabled
             />
 
-            <label>Taxes (comma-separated): </label>
+            <label>taxIds (comma-separated): </label>
             <input
                 type="text"
-                value={isEditing ? category.taxes.join(', ') : category.taxes.join(', ')}
-                onChange={(e) => setCategory({ ...category, taxes: e.target.value.split(',') })}
+                value={isEditing ? category.taxIds.join(', ') : category.taxIds.join(', ')}
+                onChange={(e) => setCategory({ ...category, taxIds: e.target.value.split(',') })}
                 disabled={!isEditing}
             />
 

@@ -6,7 +6,7 @@ function CategoryForm() {
     const [category, setCategory] = useState({
         name: '',
         businessId: '',
-        taxes: '', // Input for multiple tax IDs, comma-separated
+        taxIds: '', // Input for multiple tax IDs, comma-separated
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -19,7 +19,7 @@ function CategoryForm() {
             // Convert comma-separated tax input into an array
             const categoryData = {
                 ...category,
-                taxes: category.taxes ? category.taxes.split(',').map((tax) => tax.trim()) : [],
+                taxIds: category.taxIds ? category.taxIds.split(',').map((tax) => tax.trim()) : [],
             };
             await createCategory(categoryData);
             alert('Category created successfully!');
@@ -53,11 +53,11 @@ function CategoryForm() {
                     required
                 />
 
-                <label>Taxes (comma-separated): </label>
+                <label>taxIds (comma-separated): </label>
                 <input
                     type="text"
-                    value={category.taxes}
-                    onChange={(e) => setCategory({ ...category, taxes: e.target.value })}
+                    value={category.taxIds}
+                    onChange={(e) => setCategory({ ...category, taxIds: e.target.value })}
                 />
 
                 <button type="submit" disabled={loading}>

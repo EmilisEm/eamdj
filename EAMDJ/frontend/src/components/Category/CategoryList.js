@@ -53,7 +53,7 @@ function CategoryList() {
                 {categories.length > 0 ? (
                     categories.map((category) => (
                         <li key={category.id}>
-                            <Link to={`/category/${category.id}`}>{category.name}</Link> (Taxes: {category.taxes.length || 0})
+                            <Link to={`/category/${category.id}`}>{category.name}</Link> (taxIds: {category.taxes.length || 0})
                         </li>
                     ))
                 ) : (
