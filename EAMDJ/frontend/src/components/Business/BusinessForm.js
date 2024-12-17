@@ -18,6 +18,7 @@ function BusinessForm({ onSuccess }) {
     try {
       await createBusiness(newBusiness);
       onSuccess();
+      navigate('/business/businesslist');
     } catch (error) {
       // Capture any errors and set them in state
       setError(error.message);
