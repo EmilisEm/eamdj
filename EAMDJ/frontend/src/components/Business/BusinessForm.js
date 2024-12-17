@@ -1,10 +1,12 @@
-// src/components/Business/BusinessForm.js
 import React, { useState } from 'react';
+import { createBusiness } from '../../api/business';
 
 function BusinessForm({ onSuccess }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
+  const [newBusiness, setNewBusiness] = useState({
+    name: ' ',
+    email: ' ',
+    address: ' ',
+  });
   const [error, setError] = useState(null); // To capture any errors during form submission
   const [loading, setLoading] = useState(false); // To track loading state
 
@@ -14,22 +16,8 @@ function BusinessForm({ onSuccess }) {
     setError(null); // Reset error state
 
     try {
-      const response = await fetch('/api/v1/business', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, address }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create business');
-      }
-
-      // Call onSuccess when the business is created
+      await createBusiness(newBusiness);
       onSuccess();
-      // Optionally reset the form here
-      setName('');
-      setEmail('');
-      setAddress('');
     } catch (error) {
       // Capture any errors and set them in state
       setError(error.message);
@@ -47,8 +35,8 @@ function BusinessForm({ onSuccess }) {
           Name:
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={newBusiness.name}
+            onChange={(e) => setNewBusiness({...newBusiness, name: e.target.value})}
             required
           />
         </label>
@@ -56,8 +44,8 @@ function BusinessForm({ onSuccess }) {
           Email:
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={newBusiness.email}
+            onChange={(e) => setNewBusiness({...newBusiness, email: e.target.value})}
             required
           />
         </label>
@@ -65,8 +53,8 @@ function BusinessForm({ onSuccess }) {
           Address:
           <input
             type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            value={newBusiness.address}
+            onChange={(e) => setNewBusiness({...newBusiness, address: e.target.value})}
             required
           />
         </label>

@@ -5,6 +5,11 @@ export const fetchBusinesses = async () => {
   return response.data;
 };
 
+export const fetchBusinessById = async (id) => {
+  const response = await axiosInstance.get(`api/v1/business/${id}`);
+  return response.data;
+}
+
 export const createBusiness = async (data) => {
   const response = await axiosInstance.post('/api/v1/business', data);
   return response.data;

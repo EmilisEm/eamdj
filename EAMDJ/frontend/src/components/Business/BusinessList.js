@@ -1,17 +1,15 @@
 // src/components/Business/BusinessList.js
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchBusinesses } from '../../api/business';
 
 function BusinessList() {
   const [businesses, setBusinesses] = useState([]);
 
   useEffect(() => {
-    const fetchBusinesses = async () => {
-      const response = await fetch('/api/v1/business');
-      const data = await response.json();
-      setBusinesses(data);
-    };
-    fetchBusinesses();
+    const getBusinesses = async () => setBusinesses(await fetchBusinesses());
+    
+    getBusinesses();
   }, []);
 
   return (
