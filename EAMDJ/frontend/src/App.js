@@ -9,6 +9,7 @@ import ProductPage from './pages/ProductPage';
 import ReservationPage from './pages/ReservationPage';
 import UserPage from './pages/UserPage';
 import BusinessForm from './components/Business/BusinessForm';
+import CategoryPage from './pages/CategoryPage';
 import BusinessList from './components/Business/BusinessList';
 import BusinessDetails from './components/Business/BusinessDetails';
 import { fetchBusinesses } from './api/business';  // Assuming this function is defined
@@ -84,7 +85,8 @@ function App() {
           <nav>
             <ul>
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/business">Businesses</Link></li>
+            <li><Link to="/business">Businesses</Link></li>
+            <li><Link to="/category">Category</Link></li>
               <li><Link to="/order">Orders</Link></li>
               <li><Link to="/product">Products</Link></li>
               <li><Link to="/reservation">Reservations</Link></li>
@@ -102,6 +104,8 @@ function App() {
               <Route path="update/:id" element={<BusinessDetails isUpdate={true} />} />
               <Route path="delete/:id" element={<BusinessDetails isDelete={true} />} />
             </Route>
+
+            <Route path="/category/*" element={<CategoryPage />} />
 
             <Route path="/order" element={<OrderPage />}>
               <Route path="create" element={<OrderForm onSuccess={() => {}} />} />
