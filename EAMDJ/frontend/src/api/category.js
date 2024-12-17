@@ -19,3 +19,9 @@ export const deleteCategory = async (id) => {
   const response = await axiosInstance.delete(`/api/v1/category/delete/${id}`);
   return response.data;
 };
+
+export const fetchCategoryById = async (id) => {
+    const response = await axiosInstance.get(`/api/v1/category/${id}`);
+    return response.data;
+};
+

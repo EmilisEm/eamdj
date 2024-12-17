@@ -1,49 +1,71 @@
 import React, { useState } from 'react';
 import { createCategory } from '../../api/category';
+import { useNavigate } from 'react-router-dom';
 
-const CategoryForm = ({ businessId, onCategoryCreated }) => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    
+function CategoryForm() {
+    const [category, setCategory] = useState({
+        name: '',
+        businessId: '',
+        taxes: '', // Input for multiple tax IDs, comma-separated
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
-        const data = {
-            name,
-            description,
-            businessId,
-        };
-        const category = await createCategory(data);
-        onCategoryCreated(category);
-        setName('');
-        setDescription('');
-        } catch (error) {
-        console.error(error);
+            // Convert comma-separated tax input into an array
+            const categoryData = {
+                ...category,
+                taxes: category.taxes ? category.taxes.split(',').map((tax) => tax.trim()) : [],
+            };
+            await createCategory(categoryData);
+            alert('Category created successfully!');
+            navigate('/category/categorylist');
+        } catch (err) {
+            setError('Failed to create category.');
+            console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
-    
+
     return (
-        <form onSubmit={handleSubmit}>
         <div>
-            <label htmlFor="name">Name</label>
-            <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            />
+            <h2>Create Category</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <form onSubmit={handleSubmit}>
+                <label>Name: </label>
+                <input
+                    type="text"
+                    value={category.name}
+                    onChange={(e) => setCategory({ ...category, name: e.target.value })}
+                    required
+                />
+
+                <label>Business ID: </label>
+                <input
+                    type="text"
+                    value={category.businessId}
+                    onChange={(e) => setCategory({ ...category, businessId: e.target.value })}
+                    required
+                />
+
+                <label>Taxes (comma-separated): </label>
+                <input
+                    type="text"
+                    value={category.taxes}
+                    onChange={(e) => setCategory({ ...category, taxes: e.target.value })}
+                />
+
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Creating...' : 'Create'}
+                </button>
+            </form>
         </div>
-        <div>
-            <label htmlFor="description">Description</label>
-            <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-        </div>
-        <button type="submit">Create Category</button>
-        </form>
     );
-};
+}
 
 export default CategoryForm;
