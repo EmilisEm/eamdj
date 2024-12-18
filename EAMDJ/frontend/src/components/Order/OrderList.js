@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { myContext } from '../../App';
-const { fetchOrdersByBusiness } = require('../../api/order');
+const { fetchOrdersByBusiness, deleteOrder } = require('../../api/order');
 
 const OrderList = ({ onOrderSelect }) => {
   const { currentBusiness, setCurrentOrders } = useContext(myContext);
@@ -42,6 +42,18 @@ const OrderList = ({ onOrderSelect }) => {
     }
   };
 
+  const handleDeleteOrder = async (orderId) => {
+    if (window.confirm('Are you sure you want to delete this order?')) {
+      try {
+        await deleteOrder(orderId);
+        setOrders(orders.filter(order => order.id !== orderId));
+        setCurrentOrders(orders.filter(order => order.id !== orderId));
+      } catch (error) {
+        console.error('Error deleting order:', error);
+      }
+    }
+  };
+
   if (isLoading) return <div>Loading orders...</div>;
 
   return (
@@ -69,6 +81,9 @@ const OrderList = ({ onOrderSelect }) => {
                   <td>
                     <button onClick={() => onOrderSelect(order)}>
                       View Details
+                    </button>
+                    <button onClick={() => handleDeleteOrder(order.id)}>
+                      Delete
                     </button>
                   </td>
                 </tr>
