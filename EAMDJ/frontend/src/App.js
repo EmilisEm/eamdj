@@ -45,19 +45,17 @@ function App() {
 
   // Fetch businesses when the component mounts
     useEffect(() => {
-        if (currentBusiness?.id) {
-            const fetchCategories = async () => {
-                try {
-                    const response = await fetch(`/api/v1/category/by-business/${currentBusiness.id}`);
-                    const data = await response.json();
-                    setCurrentCategories(data);
-                } catch (error) {
-                    console.error('Failed to fetch categories', error);
-                }
-            };
-            fetchCategories();
-        }
-    }, [currentBusiness]);
+        const getBusinesses = async () => {
+            try {
+                const fetchedBusinesses = await fetchBusinesses();
+                setBusinesses(fetchedBusinesses);
+            } catch (error) {
+                console.error("Failed to fetch businesses", error);
+            }
+        };
+        getBusinesses();
+    }, []);
+
   
 
   const value = {
