@@ -12,5 +12,6 @@ namespace EAMDJ.Service.UserService
 		Task<UserResponseDto> UpdateUserAsync(Guid id, UserUpdateDto user);
 		Task DeleteUserAsync(Guid id);
 		Task<UserResponseDto> CreateUserAsync(UserCreateDto user);
+		Task<IEnumerable<UserResponseDto>> GetAllUsers();
 	}
 }

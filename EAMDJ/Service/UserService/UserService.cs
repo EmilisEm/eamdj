@@ -79,5 +79,12 @@ namespace EAMDJ.Service.UserService
 
 			return UserMapper.ToDto(updated);
 		}
+
+		public async Task<IEnumerable<UserResponseDto>> GetAllUsers()
+		{
+			IEnumerable<User> productCategories = await _repository.GetAllUsers();
+
+			return productCategories.Select(UserMapper.ToDto);
+		}
 	}
 }

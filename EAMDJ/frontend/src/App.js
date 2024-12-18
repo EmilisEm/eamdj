@@ -11,6 +11,11 @@ import ProductForm from './components/Product/ProductForm';
 import ProductList from './components/Product/ProductList';
 import ProductDetails from './components/Product/ProductDetails';
 
+import ServiceTimePage from './pages/ServiceTimePage';
+import ServiceTimeForm from './components/ServiceTime/ServiceTimeForm';
+import ServiceTimeList from './components/ServiceTime/ServiceTimeList';
+import ServiceTimeDetails from './components/ServiceTime/ServiceTimeDetails';
+
 import ReservationPage from './pages/ReservationPage';
 import UserPage from './pages/UserPage';
 import BusinessForm from './components/Business/BusinessForm';
@@ -42,6 +47,8 @@ function App() {
   const [taxes, setTaxes] = useState({});
   const [currentTaxes, setCurrentTaxes] = useState({});
   const [reservations, setReservations] = useState({});
+  const [serviceTimes, setServiceTimes] = useState({});
+  const [currentServiceTimes, setCurrentServiceTimes] = useState({});
   const [currentReservations, setCurrentReservations] = useState({});
 
   // Fetch businesses when the component mounts
@@ -89,6 +96,10 @@ function App() {
     reservations, 
     setReservations,
     currentReservations,
+    setCurrentReservations,
+    serviceTimes,
+    setServiceTimes,
+    currentReservations,
     setCurrentReservations
   };
 
@@ -99,10 +110,11 @@ function App() {
           <nav>
             <ul>
               <li><Link to="/">Home</Link></li>
-            <li><Link to="/business">Businesses</Link></li>
-            <li><Link to="/category">Category</Link></li>
+              <li><Link to="/business">Businesses</Link></li>
+              <li><Link to="/category">Category</Link></li>
               <li><Link to="/order">Orders</Link></li>
               <li><Link to="/product">Products</Link></li>
+              <li><Link to="/service-time">Service Times</Link></li>
               <li><Link to="/reservation">Reservations</Link></li>
               <li><Link to="/user">Users</Link></li>
               <li><Link to="/tax">Taxes</Link></li>
@@ -135,6 +147,11 @@ function App() {
                 <Route path="create" element={<ProductForm onSuccess={() => { }} businessId={currentBusiness.id} />} />
                 <Route path="productlist" element={<ProductList categoryId={currentCategories[0]?.id} />} />
                 <Route path=":id" element={<ProductDetails />} />
+                      </Route>
+
+            <Route path="service-time" element={<ServiceTimePage />}>
+                <Route path="service-timelist" element={<ServiceTimeList />} />
+                <Route path=":id" element={<ServiceTimeDetails />} />
             </Route>
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/user" element={<UserPage />} />

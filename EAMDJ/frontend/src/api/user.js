@@ -23,4 +23,9 @@ export const deleteUser = async (id) => {
 export const login = async (username) => {
   const response = await axiosInstance.post('api/auth/login', {username, password: "secret"});
   return response.data;
-}
+};
+
+export const fetchUsers = async () => {
+  const response = await axiosInstance.get('/api/v1/user/all');
+  return response.data;
+};
