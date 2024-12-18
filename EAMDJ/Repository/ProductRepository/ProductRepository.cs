@@ -15,14 +15,10 @@ namespace EAMDJ.Repository.ProductRepository
 
 		public async Task<Product> CreateProductAsync(Product product)
 		{
-			Guid id = Guid.NewGuid();
-
-			// TODO: Validate order and product existence. Throw exception
-
 			_context.Product.Add(product);
 			await _context.SaveChangesAsync();
 
-			return product;
+			return await _context.Product.FirstAsync(it => it.Id == product.Id);
 		}
 
 		public async Task DeleteProductAsync(Guid id)
@@ -34,19 +30,17 @@ namespace EAMDJ.Repository.ProductRepository
 
 		public async Task<IEnumerable<Product>> GetAllProductsByProductCategoryIdAsync(Guid productCategoryId)
 		{
-			return await _context.Product.Include(it => it.ProductModifiers).Where(it => it.CategoryId.Equals(productCategoryId)).ToListAsync();
+			return await _context.Product.Include(it => it.ProductModifiers).Include(it => it.Category).Include(it => it.Discounts).Where(it => it.CategoryId.Equals(productCategoryId)).ToListAsync();
 		}
 
 		public async Task<Product> GetProductAsync(Guid id)
 		{
-			var product = await _context.Product.FindAsync(id);
+			var product = await _context.Product.Include(it => it.ProductModifiers).Include(it => it.Discounts).Include(it => it.Category).Where(it => it.Id == id).FirstAsync();
 
 			if (product == null)
 			{
 				throw new ArgumentException("Product not found");
 			}
-
-			product.ProductModifiers = await _context.ProductModifier.Where(it => it.ProductId == id).ToListAsync();
 
 			return product;
 		}

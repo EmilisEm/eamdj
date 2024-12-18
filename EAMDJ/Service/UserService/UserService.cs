@@ -35,6 +35,13 @@ namespace EAMDJ.Service.UserService
 			return productCategories.Select(UserMapper.ToDto);
 		}
 
+		public async Task<UserResponseDto> GetUserByUsernameAsync(string username)
+		{
+			User user = await _repository.GetUserByUsernameAsync(username);
+
+			return UserMapper.ToDto(user);
+		}
+
 		public async Task<UserResponseDto> GetUserAsync(Guid id)
 		{
 			User user = await _repository.GetUserAsync(id);

@@ -1,11 +1,13 @@
 ﻿using EAMDJ.Dto.ReservationDto;
 using EAMDJ.Service.ReservationService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EAMDJ.Controllers
 {
 	[Route("api/v1/reservation")]
 	[ApiController]
+	[Authorize]
 	public class ReservationController : ControllerBase
 	{
 		private readonly IReservationService _service;

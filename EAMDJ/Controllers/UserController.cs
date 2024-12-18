@@ -1,4 +1,5 @@
 ﻿using EAMDJ.Dto.UserDto;
+using EAMDJ.Service.AuthService;
 using EAMDJ.Service.UserService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,14 +10,20 @@ namespace EAMDJ.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserService _service;
-		public UserController(IUserService service)
+		private readonly IAuthService _authService;
+		public UserController(IUserService service, IAuthService authService)
 		{
 			_service = service;
+			_authService = authService;
 		}
 
 		[HttpGet("by-business/{id}")]
 		public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetUsersByBusinessId(Guid id)
 		{
+			if (!_authService.AuthorizeForBusiness(id))
+			{
+				return Forbid();
+			}
 			return Ok(await _service.GetAllUsersByBusinessIdAsync(id));
 		}
 
@@ -42,6 +49,11 @@ namespace EAMDJ.Controllers
 		[HttpDelete("delete/{id}")]
 		public async Task<IActionResult> DeleteUser(Guid id)
 		{
+			if (!_authService.AuthorizeToOwnerAndAdmin())
+			{
+				return Forbid();
+			}
+
 			await _service.DeleteUserAsync(id);
 
 			return NoContent();

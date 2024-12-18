@@ -1,11 +1,13 @@
 ﻿using EAMDJ.Dto.OrderItemDto;
 using EAMDJ.Service.OrderItemService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EAMDJ.Controllers
 {
 	[Route("api/v1/order-item")]
 	[ApiController]
+	[Authorize]
 	public class OrderItemController : ControllerBase
 	{
 		private readonly IOrderItemService _service;

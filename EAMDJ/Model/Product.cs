@@ -29,5 +29,5 @@ public record Product
 	// shared fields and shared behaviour.
 	public string Description { get; set; } = string.Empty;
 	public virtual ICollection<ProductModifier> ProductModifiers { get; set; } = new List<ProductModifier>();
-	public virtual IEnumerable<Discount>? Discounts { get; set; }
+	public virtual IEnumerable<Discount> Discounts { get; set; } = new List<Discount>();
 }
