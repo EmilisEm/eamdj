@@ -25,14 +25,14 @@ const OrderList = ({ onOrderSelect }) => {
     };
 
     fetchOrders();
-  }, [currentBusiness]);
+  }, [currentBusiness, setCurrentOrders]);
 
   if (isLoading) return <div>Loading orders...</div>;
 
   return (
     <div>
       <h2>Orders for {currentBusiness.name}</h2>
-      {orders.length === 0 ? (
+      {!!orders || orders.length === 0 ? (
         <p>No orders found</p>
       ) : (
         <table>

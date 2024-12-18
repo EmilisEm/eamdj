@@ -19,6 +19,7 @@ import BusinessList from './components/Business/BusinessList';
 import BusinessDetails from './components/Business/BusinessDetails';
 import TaxPage from './pages/TaxPage';
 import { fetchBusinesses } from './api/business';  // Assuming this function is defined
+import LoginPage from './pages/LoginPage';
 
 export const myContext = createContext();
 
@@ -105,6 +106,7 @@ function App() {
               <li><Link to="/reservation">Reservations</Link></li>
               <li><Link to="/user">Users</Link></li>
               <li><Link to="/tax">Taxes</Link></li>
+              <li><Link to="/login">Login</Link></li>
             </ul>
           </nav>
 
@@ -134,11 +136,10 @@ function App() {
                 <Route path="productlist" element={<ProductList categoryId={currentCategories[0]?.id} />} />
                 <Route path=":id" element={<ProductDetails />} />
             </Route>
-
-
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/tax/*" element={<TaxPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </div>
       </Router>

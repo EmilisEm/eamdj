@@ -19,3 +19,8 @@ export const deleteUser = async (id) => {
   const response = await axiosInstance.delete(`/api/v1/user/delete/${id}`);
   return response.data;
 };
+
+export const login = async (username) => {
+  const response = await axiosInstance.post('api/auth/login', {username, password: "secret"});
+  return response.data;
+}

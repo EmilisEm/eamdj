@@ -25,7 +25,7 @@ const TaxList = ({ onTaxSelect }) => {
     };
 
     fetchTaxes();
-  }, [currentBusiness]);
+  }, [currentBusiness, setCurrentTaxes]);
 
   if (isLoading) return <div>Loading taxes...</div>;
 
