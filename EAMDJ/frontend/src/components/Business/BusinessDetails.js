@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { myContext } from '../../App';  // Your context
 import { fetchBusinessById, updateBusiness, deleteBusiness } from '../../api/business';  // Import fetch, update and delete functions
+import BusinessUserList from '../BusinessUser/BusinessUserList' 
 
 function BusinessDetails() {
   const { id } = useParams();  // Get the ID from the URL
@@ -100,6 +101,10 @@ function BusinessDetails() {
         )}
 
         <button onClick={handleDelete} style={{ marginLeft: '10px' }}>Delete Business</button>
+      </div>
+
+      <div>
+        <BusinessUserList businessId={business.id} />
       </div>
     </div>
   );
