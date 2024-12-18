@@ -1,32 +1,17 @@
-import React from "react";
-import { Link, Route, Routes } from "react-router-dom";
-import ReservationForm from "../components/Reservation/ReservationForm";
-import ReservationList from "../components/Reservation/ReservationList";
-import ReservationDetails from "../components/Reservation/ReservationDetails";
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
 
 function ReservationPage() {
     return (
         <div>
-        <h2>Reservation Management</h2>
-        <nav>
-            <ul>
-            <li>
-                <Link to="/create-reservation">Create Reservation</Link>
-            </li>
-            <li>
-                <Link to="/reservations">List Reservations</Link>
-            </li>
-            </ul>
-        </nav>
-    
-        <Routes>
-            <Route
-            path="create-reservation"
-            element={<ReservationForm onSuccess={() => {}} />}
-            />
-            <Route path="reservations" element={<ReservationList />} />
-            <Route path="reservation/:id" element={<ReservationDetails />} />
-        </Routes>
+            <h2>Reservation Management</h2>
+            <nav>
+                <ul>
+                    <li><Link to="/reservation/create">Create Reservation</Link></li>
+                    <li><Link to="/reservation/reservationlist">List Reservations</Link></li>
+                </ul>
+            </nav>
+            <Outlet />
         </div>
     );
 }

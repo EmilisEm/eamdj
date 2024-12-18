@@ -17,6 +17,10 @@ import ServiceTimeList from './components/ServiceTime/ServiceTimeList';
 import ServiceTimeDetails from './components/ServiceTime/ServiceTimeDetails';
 
 import ReservationPage from './pages/ReservationPage';
+import ReservationForm from './components/Reservation/ReservationForm';
+import ReservationList from './components/Reservation/ReservationList';
+import ReservationDetails from './components/Reservation/ReservationDetails';
+
 import UserPage from './pages/UserPage';
 import BusinessForm from './components/Business/BusinessForm';
 import CategoryPage from './pages/CategoryPage';
@@ -154,7 +158,12 @@ function App() {
             </Route>
 
 
-            <Route path="/reservation" element={<ReservationPage />} />
+            <Route path="/reservation" element={<ReservationPage />}>
+                <Route path="create" element={<ReservationForm />} />
+                <Route path="reservationlist" element={<ReservationList />} />
+                <Route path=":id" element={<ReservationDetails />} />
+            </Route>
+
             <Route path="/user" element={<UserPage />} />
             <Route path="/tax/*" element={<TaxPage />} />
           </Routes>

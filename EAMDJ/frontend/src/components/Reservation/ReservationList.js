@@ -1,46 +1,69 @@
-import React, { useEffect, useState } from 'react';
-import { fetchReservationsByBusiness, deleteReservation } from '../../api/reservation';
-import LoadingSpinner from '../Shared/LoadingSpinner';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { fetchReservationsByProduct } from '../../api/reservation';
 
-const ReservationList = ({ businessId }) => {
+function ReservationList() {
+    const [productId, setProductId] = useState('');
     const [reservations, setReservations] = useState([]);
-    const [loading, setLoading] = useState(true);
-    
-    useEffect(() => {
-        const loadReservations = async () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleFetchReservations = async () => {
+        if (!productId) {
+            setError('Please enter a valid Product ID.');
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+        setReservations([]);
+
         try {
-            const data = await fetchReservationsByBusiness(businessId);
-            setReservations(data);
-        } catch (error) {
-            console.error(error);
+            const response = await fetchReservationsByProduct(productId);
+            setReservations(response || []);
+        } catch (err) {
+            setError('Failed to fetch reservations. Please check the Product ID.');
+            console.error(err);
         } finally {
             setLoading(false);
         }
-        };
-    
-        loadReservations();
-    }, [businessId]);
-    
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this reservation?')) {
-        await deleteReservation(id);
-        setReservations(reservations.filter((reservation) => reservation.id !== id));
-        }
     };
-    
-    if (loading) return <LoadingSpinner />;
-    
+
     return (
         <div>
-        <h1>Reservations</h1>
-        <ul>
-            {reservations.map((reservation) => (
-            <li key={reservation.id}>
-                <p>{reservation.date}</p>
-                <button onClick={() => handleDelete(reservation.id)}>Delete</button>
-            </li>
-            ))}
-        </ul>
+            <h2>Reservations</h2>
+            <div>
+                <label htmlFor="productId">Enter Product ID: </label>
+                <input
+                    type="text"
+                    id="productId"
+                    value={productId}
+                    onChange={(e) => setProductId(e.target.value)}
+                />
+                <button onClick={handleFetchReservations} disabled={loading}>
+                    {loading ? 'Fetching...' : 'Fetch Reservations'}
+                </button>
+            </div>
+
+            {error && <div style={{ color: 'red' }}>{error}</div>}
+
+            {loading ? (
+                <div>Loading reservations...</div>
+            ) : (
+                <ul>
+                    {reservations.length > 0 ? (
+                        reservations.map((reservation) => (
+                            <li key={reservation.id}>
+                                <Link to={`/reservation/${reservation.id}`}>
+                                    {`Service Time ID: ${reservation.serviceTimeId}, Employee ID: ${reservation.employeeId}`}
+                                </Link>
+                            </li>
+                        ))
+                    ) : (
+                        <li>No reservations available for this product</li>
+                    )}
+                </ul>
+            )}
         </div>
     );
 }
