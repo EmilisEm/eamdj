@@ -148,6 +148,7 @@ function App() {
                       </Route>
 
             <Route path="service-time" element={<ServiceTimePage />}>
+                <Route path="create" element={<ServiceTimeForm />} />
                 <Route path="service-timelist" element={<ServiceTimeList />} />
                 <Route path=":id" element={<ServiceTimeDetails />} />
             </Route>
