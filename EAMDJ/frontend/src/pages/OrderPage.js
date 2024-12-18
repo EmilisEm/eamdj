@@ -1,25 +1,35 @@
-import React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
 import OrderForm from '../components/Order/OrderForm';
 import OrderList from '../components/Order/OrderList';
+import OrderDetails from '../components/Order/OrderDetails';
 
-function OrderPage() {
+const OrderPage = () => {
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const handleOrderCreated = (newOrder) => {
+    // Optionally handle new order creation logic
+    setSelectedOrder(newOrder);
+  };
+
   return (
     <div>
-      <h2>Order Management</h2>
-      <nav>
-        <ul>
-          <li><Link to="/create-order">Create Order</Link></li>
-          <li><Link to="/orders">List Orders</Link></li>
-        </ul>
-      </nav>
-
-      <Routes>
-        <Route path="create-order" element={<OrderForm onSuccess={() => {}} />} />
-        <Route path="orders" element={<OrderList />} />
-      </Routes>
+      <h1>Orders Management</h1>
+      
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: 1, marginRight: '20px' }}>
+          <OrderForm onSuccess={handleOrderCreated} />
+        </div>
+        
+        <div style={{ flex: 1, marginRight: '20px' }}>
+          <OrderList onOrderSelect={setSelectedOrder} />
+        </div>
+        
+        <div style={{ flex: 1 }}>
+          <OrderDetails order={selectedOrder} />
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default OrderPage;

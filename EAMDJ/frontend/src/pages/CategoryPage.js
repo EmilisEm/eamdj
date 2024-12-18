@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { Link, Route, Routes } from 'react-router-dom';
+import CategoryForm from '../components/Category/CategoryForm';
+import CategoryList from '../components/Category/CategoryList';
+import CategoryDetails from '../components/Category/CategoryDetails';
 
-const Categories = () => {
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        // Fetch categories from an API
-        axios.get('/api/categories')
-            .then(response => {
-                setCategories(response.data);
-            })
-            .catch(error => {
-                console.error('There was an error fetching the categories!', error);
-            });
-    }, []);
-
+function CategoryPage() {
     return (
         <div>
             <h1>Categories</h1>
-            <ul>
-                {categories.map(category => (
-                    <li key={category.id}>{category.name}</li>
-                ))}
-            </ul>
+            <nav>
+                <ul>
+                    <li><Link to="create">Create Category</Link></li>
+                    <li><Link to="categorylist">List All Categories</Link></li>
+                </ul>
+            </nav>
+
+            <Routes>
+                <Route path="create" element={<CategoryForm />} />
+                <Route path="categorylist" element={<CategoryList />} />
+                <Route path=":id" element={<CategoryDetails />} />
+            </Routes>
         </div>
     );
-};
+}
 
-export default Categories;
+export default CategoryPage;

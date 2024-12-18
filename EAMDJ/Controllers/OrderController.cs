@@ -1,4 +1,5 @@
 ﻿using EAMDJ.Dto.OrderDto;
+using EAMDJ.Model;
 using EAMDJ.Service.OrderService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,10 +16,21 @@ namespace EAMDJ.Controllers
 		}
 
 		[HttpGet("by-business/{id}")]
-		public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetOrdersByBusinessId(Guid id)
+		public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetOrdersByBusinessId(
+			Guid id,
+			[FromQuery] int page = 1,
+			[FromQuery] int pageSize = 20)
 		{
-			return Ok(await _service.GetAllOrdersByBusinessIdAsync(id));
+			if (page < 1 || pageSize < 1)
+			{
+				return BadRequest("Page and pageSize must be greater than 0.");
+			}
+
+			var paginatedOrders = await _service.GetAllOrdersByBusinessIdAsync(id, page, pageSize);
+
+			return Ok(paginatedOrders);
 		}
+
 
 		[HttpGet("{id}")]
 		public async Task<ActionResult<OrderResponseDto>> GetOrder(Guid id)

@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: EAMDJ/Dockerfile.mac
+    ports:
+      - "8080:8080" # HTTP
+      - "8081:8081" # HTTPS
     depends_on:
         - db
   db:

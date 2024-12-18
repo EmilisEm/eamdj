@@ -7,6 +7,7 @@ namespace EAMDJ.Repository.UserRepository
 
 		Task<User> GetUserAsync(Guid id);
 		Task<IEnumerable<User>> GetAllUsersByBusinessIdAsync(Guid businessId);
+		IQueryable<User> GetQueryUsersByBusinessIdAsync(Guid businessId);
 		Task<User> UpdateUserAsync(Guid id, User user);
 		Task DeleteUserAsync(Guid id);
 		Task<User> CreateUserAsync(User user);

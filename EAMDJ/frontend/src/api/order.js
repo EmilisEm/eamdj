@@ -5,6 +5,11 @@ export const fetchOrdersByBusiness = async (businessId) => {
   return response.data;
 };
 
+export const fetchOrderItems = async (orderId) => {
+    const response = await axiosInstance.get(`/api/v1/order-item/by-order/${orderId}`);
+    return response.data;
+};
+
 export const createOrder = async (data) => {
   const response = await axiosInstance.post('/api/v1/order', data);
   return response.data;

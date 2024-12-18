@@ -32,6 +32,13 @@ namespace EAMDJ.Repository.OrderRepository
 		{
 			return await _context.Order.Where(it => it.BusinessId.Equals(businessId)).Include(it => it.Discount).Include(it => it.OrderItems).ToListAsync();
 		}
+		public IQueryable<Order> GetQueryOrdersByBusinessIdAsync(Guid businessId)
+		{
+			return _context.Order
+					.Where(o => o.BusinessId == businessId)
+					.AsQueryable();
+		}
+
 
 		public async Task<Order> GetOrderAsync(Guid id)
 		{

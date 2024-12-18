@@ -19,8 +19,6 @@ namespace EAMDJ.Service.ReservationService
 			Reservation created = await _repository.CreateReservationAsync(ReservationMapper.FromDto(product));
 
 			return ReservationMapper.ToDto(created);
-
-
 		}
 
 		public async Task DeleteReservationAsync(Guid id)
@@ -49,6 +47,14 @@ namespace EAMDJ.Service.ReservationService
 			Reservation updated = await _repository.UpdateReservationAsync(id, ReservationMapper.FromDto(product, original));
 
 			return ReservationMapper.ToDto(updated);
+		}
+		public async Task<Reservation> UpdateReservationStatusAsync(Guid id, ReservationStatus newStatus)
+		{
+			var original = await _repository.GetReservationAsync(id) ?? throw new KeyNotFoundException("Reservation not found.");
+			original.Status = newStatus;
+			original.Updated = DateTime.UtcNow;
+
+			return await _repository.UpdateReservationAsync(id, original);
 		}
 	}
 }

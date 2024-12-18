@@ -1,63 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { createProduct } from '../../api/product';
+import { useNavigate } from 'react-router-dom';
 
-function ProductForm({ onSuccess, businessId }) {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const [categoryId, setCategoryId] = useState('');
-
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(`/api/v1/category/by-business/${businessId}`);
-      const data = await response.json();
-      setCategories(data);
-    };
-    fetchCategories();
-  }, []);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const response = await fetch('/api/v1/product', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, price, description, categoryId }),
+function ProductForm() {
+    const [newProduct, setNewProduct] = useState({
+        price: 0,
+        name: '',
+        description: '',
+        categoryId: '',
     });
-    if (response.ok) {
-      onSuccess();
-    } else {
-      console.error('Failed to create product');
-    }
-  };
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Name:
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-      </label>
-      <label>
-        Price:
-        <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
-      </label>
-      <label>
-        Description:
-        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-      </label>
-      <label>
-        Category:
-        <select onChange={(e) => setCategoryId(e.target.value)} value={categoryId}>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      <button type="submit">Create Product</button>
-    </form>
-  );
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await createProduct(newProduct);
+            navigate('/product/productlist');
+        } catch (error) {
+            setError('Failed to create product');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div>
+            <h2>Create Product</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <form onSubmit={handleSubmit}>
+                <label>
+                    Name:
+                    <input value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
+                </label>
+                <label>
+                    Price:
+                    <input value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })} />
+                </label>
+                <label>
+                    Description:
+                    <input value={newProduct.description} onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })} />
+                </label>
+                <label>
+                    Category ID:
+                    <input value={newProduct.categoryId} onChange={(e) => setNewProduct({ ...newProduct, categoryId: e.target.value })} />
+                </label>
+                <button type="submit" disabled={loading}>{loading ? 'Creating...' : 'Create Product'}</button>
+            </form>
+        </div>
+    );
 }
 
 export default ProductForm;
