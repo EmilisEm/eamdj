@@ -9,14 +9,19 @@ function UserList() {
 	const [editingId, setEditingId] = useState(null);
 	const [creatingUser, setCreatingUser] = useState(false);
 
-	useEffect(async () => {
-		try {
+	useEffect(() => {
+		const fetchData = async () => {
+		  try {
 			const data = await fetchUsers();
 			setUsers(data);
-		} catch (error) {
+		  } catch (error) {
 			console.error(error);
-		}
-	}, []);
+		  }
+		};
+	  
+		fetchData();
+	  }, []);
+	  
 
 	const handleDelete = async (id) => {
 		if (window.confirm("Are you sure you want to delete this user?")) {
