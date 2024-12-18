@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { fetchUsers, deleteUser } from "../../api/user";
-import UserListRow from "./UserListRow";
-import UserListRowEdit from "./UserListRowEdit";
-import UserCreate from "./UserCreate";
+import { fetchUsersByBusiness, deleteUser } from "../../api/user";
+import BusinessUserListRow from "../BusinessUser/BusinessUserListRow";
+import BusinessUserListRowEdit from "../BusinessUser/BusinessUserListRowEdit";
+import BusinessUserCreate from "../BusinessUser/BusinessUserCreate";
 
-function UserList() {
+const BusinessUserList = ({businessId}) => {
 	const [users, setUsers] = useState([]);
 	const [editingId, setEditingId] = useState(null);
 	const [creatingUser, setCreatingUser] = useState(false);
 
 	useEffect(async () => {
 		try {
-			const data = await fetchUsers();
-			setUsers(data);
+			const data = await fetchUsersByBusiness(businessId);
+			setUsers(data.items);
 		} catch (error) {
 			console.error(error);
 		}
@@ -58,7 +58,7 @@ function UserList() {
 			{creatingUser === false ? (
 				<button onClick={handleStartCreate}>Create user</button>
 			) : (
-				<UserCreate onCreate={handleFinishCreate} onCancel={handleCancelCreate}/>
+				<BusinessUserCreate businessId={businessId} onCreate={handleFinishCreate} onCancel={handleCancelCreate}/>
 			)}
 			<table>
 				<thead>
@@ -68,16 +68,15 @@ function UserList() {
                         <th>Email</th>
 						<th colSpan={2}>Legal name</th>
 						<th>Type</th>
-						<th>Business</th>
 						<th colspan={2}>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					{users.map((user) => (
 						editingId === user.id ? (
-							<UserListRowEdit key={user.id} user={user} onSave={handleSave} onCancel={handleCancel}/>
+							<BusinessUserListRowEdit key={user.id} user={user} onSave={handleSave} onCancel={handleCancel}/>
 						) : (
-							<UserListRow key={user.id} user={user} onEdit={() => handleEdit(user.id)} onDelete={() => handleDelete(user.id)}/>
+							<BusinessUserListRow key={user.id} user={user} onEdit={() => handleEdit(user.id)} onDelete={() => handleDelete(user.id)}/>
 						)
 					))}
 				</tbody>
@@ -86,4 +85,4 @@ function UserList() {
 	);
 };
 
-export default UserList;
+export default BusinessUserList;

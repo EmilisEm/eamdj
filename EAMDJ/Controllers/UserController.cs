@@ -53,5 +53,11 @@ namespace EAMDJ.Controllers
 
 			return NoContent();
 		}
+
+		[HttpGet("all")]
+		public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetUsers()
+		{
+			return Ok(await _service.GetAllUsers());
+		}
 	}
 }

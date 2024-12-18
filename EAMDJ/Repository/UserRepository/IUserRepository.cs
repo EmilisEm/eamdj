@@ -11,6 +11,6 @@ namespace EAMDJ.Repository.UserRepository
 		Task<User> UpdateUserAsync(Guid id, User user);
 		Task DeleteUserAsync(Guid id);
 		Task<User> CreateUserAsync(User user);
-
+		Task<IEnumerable<User>> GetAllUsers();
 	}
 }

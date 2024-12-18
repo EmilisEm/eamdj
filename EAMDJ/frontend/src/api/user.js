@@ -19,3 +19,8 @@ export const deleteUser = async (id) => {
   const response = await axiosInstance.delete(`/api/v1/user/delete/${id}`);
   return response.data;
 };
+
+export const fetchUsers = async () => {
+  const response = await axiosInstance.get('/api/v1/user/all');
+  return response.data;
+};
