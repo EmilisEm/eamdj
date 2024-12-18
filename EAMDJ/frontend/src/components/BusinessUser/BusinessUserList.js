@@ -9,13 +9,17 @@ const BusinessUserList = ({businessId}) => {
 	const [editingId, setEditingId] = useState(null);
 	const [creatingUser, setCreatingUser] = useState(false);
 
-	useEffect(async () => {
-		try {
-			const data = await fetchUsersByBusiness(businessId);
-			setUsers(data.items);
-		} catch (error) {
-			console.error(error);
-		}
+	useEffect(() => {
+		const fetchData = async() => {
+			try {
+				const data = await fetchUsersByBusiness(businessId);
+				setUsers(data.items);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		fetchData();
 	}, []);
 
 	const handleDelete = async (id) => {
