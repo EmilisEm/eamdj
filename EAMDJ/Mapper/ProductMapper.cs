@@ -13,7 +13,11 @@ namespace EAMDJ.Mapper
 			}
 			if (from.Discounts == null)
 			{
-				throw new ArgumentException("Failed to fetch discounts for product with ID " + from.Id);
+				throw new ArgumentException("Failed to fetch product dicounts for product with ID " + from.Id);
+			}
+			if (from.Category == null)
+			{
+				throw new ArgumentException("Failed to fetch product category for product with ID " + from.Id);
 			}
 
 			return new ProductResponseDto()
@@ -25,6 +29,7 @@ namespace EAMDJ.Mapper
 				Description = from.Description,
 				Modifiers = from.ProductModifiers.Select(ProductModifierMapper.ToDto),
 				Discounts = from.Discounts.Select(DiscountMapper.ToDto),
+				BusinessId = from.Category.BusinessId,
 			};
 		}
 		public static Product FromDto(ProductCreateDto from)

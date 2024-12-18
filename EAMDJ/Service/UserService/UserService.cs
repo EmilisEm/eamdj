@@ -1,5 +1,4 @@
-﻿using EAMDJ.Dto.BusinessDto;
-using EAMDJ.Dto.Shared;
+﻿using EAMDJ.Dto.Shared;
 using EAMDJ.Dto.UserDto;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
@@ -37,6 +36,14 @@ namespace EAMDJ.Service.UserService
 
 			return productCategories.Select(UserMapper.ToDto);
 		}
+
+		public async Task<UserResponseDto> GetUserByUsernameAsync(string username)
+		{
+			User user = await _repository.GetUserByUsernameAsync(username);
+
+			return UserMapper.ToDto(user);
+		}
+
 		public async Task<PaginatedResult<UserResponseDto>> GetAllUsersByBusinessIdAsync(Guid businessId, int page, int pageSize)
 		{
 			var skip = (page - 1) * pageSize;
