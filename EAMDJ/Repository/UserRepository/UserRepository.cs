@@ -77,5 +77,10 @@ namespace EAMDJ.Repository.UserRepository
 		{
 			return _context.User.Any(e => e.Id == id);
 		}
+
+		public async Task<IEnumerable<User>> GetAllUsers()
+		{
+			return await _context.User.ToListAsync();
+		}
 	}
 }
