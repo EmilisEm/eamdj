@@ -4,8 +4,11 @@ services:
     build:
       context: .
       dockerfile: EAMDJ/Dockerfile
+    ports:
+      - "8080:8080" # HTTP
+      - "8081:8081" # HTTPS
     depends_on:
-        - db
+      - db
   db:
     image: postgres:15
     environment:

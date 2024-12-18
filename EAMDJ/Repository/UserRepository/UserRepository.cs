@@ -33,6 +33,18 @@ namespace EAMDJ.Repository.UserRepository
 			return await _context.User.Where(it => it.BusinessId.Equals(businessId)).ToListAsync();
 		}
 
+		public async Task<User> GetUserByUsernameAsync(string username)
+		{
+			User? user = await _context.User.FirstOrDefaultAsync(it => it.Username == username);
+
+			if (user == default)
+			{
+				throw new ArgumentException("User not found");
+			}
+
+			return user;
+		}
+
 		public IQueryable<User> GetQueryUsersByBusinessIdAsync(Guid businessId)
 		{
 			return _context.User.Where(it => it.BusinessId.Equals(businessId)).AsQueryable();

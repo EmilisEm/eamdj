@@ -6,6 +6,9 @@ const OrderList = ({ onOrderSelect }) => {
   const { currentBusiness, setCurrentOrders } = useContext(myContext);
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(20);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -13,10 +16,10 @@ const OrderList = ({ onOrderSelect }) => {
 
       setIsLoading(true);
       try {
-        const orderData = await fetchOrdersByBusiness(currentBusiness.id);
-        
-        setOrders(orderData);
-        setCurrentOrders(orderData);
+        const response = await fetchOrdersByBusiness(currentBusiness.id, { page, pageSize });
+        setOrders(response.items);
+        setTotalPages(response.totalPages);
+        setCurrentOrders(response.items);
       } catch (error) {
         console.error('Error fetching orders:', error);
       } finally {
@@ -25,7 +28,19 @@ const OrderList = ({ onOrderSelect }) => {
     };
 
     fetchOrders();
-  }, [currentBusiness]);
+  }, [currentBusiness, page, pageSize, setCurrentOrders]);
+
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
 
   if (isLoading) return <div>Loading orders...</div>;
 
@@ -35,30 +50,37 @@ const OrderList = ({ onOrderSelect }) => {
       {orders.length === 0 ? (
         <p>No orders found</p>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map(order => (
-              <tr key={order.id}>
-                <td>{order.id}</td>
-                <td>{new Date(order.createdAt).toLocaleString()}</td>
-                <td>{order.status}</td>
-                <td>
-                  <button onClick={() => onOrderSelect(order)}>
-                    View Details
-                  </button>
-                </td>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.map(order => (
+                <tr key={order.id}>
+                  <td>{order.id}</td>
+                  <td>{new Date(order.createdAt).toLocaleString()}</td>
+                  <td>{order.status}</td>
+                  <td>
+                    <button onClick={() => onOrderSelect(order)}>
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div>
+            <button onClick={handlePreviousPage} disabled={page === 1}>Previous</button>
+            <span>Page {page} of {totalPages}</span>
+            <button onClick={handleNextPage} disabled={page === totalPages}>Next</button>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1,7 +1,9 @@
 import axiosInstance from './axiosInstance';
 
-export const fetchOrdersByBusiness = async (businessId) => {
-  const response = await axiosInstance.get(`/api/v1/order/by-business/${businessId}`);
+export const fetchOrdersByBusiness = async (businessId, { page, pageSize }) => {
+  const response = await axiosInstance.get(`/api/v1/order/by-business/${businessId}`, {
+    params: { page, pageSize }
+  });
   return response.data;
 };
 

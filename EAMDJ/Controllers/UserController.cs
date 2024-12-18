@@ -1,4 +1,5 @@
 ﻿using EAMDJ.Dto.UserDto;
+using EAMDJ.Service.AuthService;
 using EAMDJ.Service.UserService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,11 @@ namespace EAMDJ.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserService _service;
-		public UserController(IUserService service)
+		private readonly IAuthService _authService;
+		public UserController(IUserService service, IAuthService authService)
 		{
 			_service = service;
+			_authService = authService;
 		}
 
 		[HttpGet("by-business/{id}")]
@@ -19,6 +22,10 @@ namespace EAMDJ.Controllers
 			[FromQuery] int page = 1,
 			[FromQuery] int pageSize = 20)
 		{
+			if (!_authService.AuthorizeForBusiness(id))
+			{
+				return Forbid();
+			}
 			if (page < 1 || pageSize < 1)
 			{
 				return BadRequest("Page and pageSize must be greater than 0.");
@@ -49,6 +56,11 @@ namespace EAMDJ.Controllers
 		[HttpDelete("delete/{id}")]
 		public async Task<IActionResult> DeleteUser(Guid id)
 		{
+			if (!_authService.AuthorizeToOwnerAndAdmin())
+			{
+				return Forbid();
+			}
+
 			await _service.DeleteUserAsync(id);
 
 			return NoContent();

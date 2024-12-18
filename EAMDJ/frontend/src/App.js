@@ -10,6 +10,7 @@ import ProductPage from './pages/ProductPage';
 import ProductForm from './components/Product/ProductForm';
 import ProductList from './components/Product/ProductList';
 import ProductDetails from './components/Product/ProductDetails';
+import ProductModifiers from './components/Product/ProductModifiers';
 
 import ServiceTimePage from './pages/ServiceTimePage';
 import ServiceTimeForm from './components/ServiceTime/ServiceTimeForm';
@@ -28,6 +29,7 @@ import BusinessList from './components/Business/BusinessList';
 import BusinessDetails from './components/Business/BusinessDetails';
 import TaxPage from './pages/TaxPage';
 import { fetchBusinesses } from './api/business';  // Assuming this function is defined
+import LoginPage from './pages/LoginPage';
 
 export const myContext = createContext();
 
@@ -74,8 +76,8 @@ function App() {
     setBusiness, 
     currentBusiness, 
     setCurrentBusiness, 
-    businesses,        // Add businesses to context
-    setBusinesses,     // Add setBusinesses to context
+    businesses,       
+    setBusinesses,    
     user, 
     setUser, 
     currentUser, 
@@ -121,6 +123,7 @@ function App() {
               <li><Link to="/reservation">Reservations</Link></li>
               <li><Link to="/user">Users</Link></li>
               <li><Link to="/tax">Taxes</Link></li>
+              <li><Link to="/login">Login</Link></li>
             </ul>
           </nav>
 
@@ -149,14 +152,14 @@ function App() {
                 <Route path="create" element={<ProductForm onSuccess={() => { }} businessId={currentBusiness.id} />} />
                 <Route path="productlist" element={<ProductList categoryId={currentCategories[0]?.id} />} />
                 <Route path=":id" element={<ProductDetails />} />
-                      </Route>
+                <Route path=":id/modifiers" element={<ProductModifiers />} />
+            </Route>
 
             <Route path="service-time" element={<ServiceTimePage />}>
                 <Route path="create" element={<ServiceTimeForm />} />
                 <Route path="service-timelist" element={<ServiceTimeList />} />
                 <Route path=":id" element={<ServiceTimeDetails />} />
             </Route>
-
 
             <Route path="/reservation" element={<ReservationPage />}>
                 <Route path="create" element={<ReservationForm />} />
@@ -166,6 +169,7 @@ function App() {
 
             <Route path="/user" element={<UserPage />} />
             <Route path="/tax/*" element={<TaxPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </div>
       </Router>

@@ -1,13 +1,15 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { myContext } from '../../App';
 import { v4 as uuidv4 } from 'uuid';
 import { createOrder } from '../../api/order';
+import { fetchBusinesses } from '../../api/business';
 
 const OrderForm = ({ onSuccess }) => {
   const { 
     currentBusiness, 
     businesses, 
-    setCurrentBusiness 
+    setCurrentBusiness,
+    setBusinesses
   } = useContext(myContext);
 
   const [orderItems, setOrderItems] = useState([]);
@@ -74,6 +76,19 @@ const OrderForm = ({ onSuccess }) => {
       alert('An error occurred while creating the order');
     }
   };
+
+  useEffect(() => {
+    const getBusinesses = async () => {
+      try {
+        const response = await fetchBusinesses({ page: 1, pageSize: 20 });
+        setBusinesses(response.items);
+      } catch (err) {
+        console.error(err);
+      }     
+    };
+    
+    getBusinesses();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
