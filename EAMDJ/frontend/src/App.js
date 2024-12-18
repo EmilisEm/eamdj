@@ -5,7 +5,12 @@ import OrderPage from './pages/OrderPage';
 import OrderForm from './components/Order/OrderForm';
 import OrderList from './components/Order/OrderList';
 import OrderDetails from './components/Order/OrderDetails';
+
 import ProductPage from './pages/ProductPage';
+import ProductForm from './components/Product/ProductForm';
+import ProductList from './components/Product/ProductList';
+import ProductDetails from './components/Product/ProductDetails';
+
 import ReservationPage from './pages/ReservationPage';
 import UserPage from './pages/UserPage';
 import BusinessForm from './components/Business/BusinessForm';
@@ -39,17 +44,18 @@ function App() {
   const [currentReservations, setCurrentReservations] = useState({});
 
   // Fetch businesses when the component mounts
-  useEffect(() => {
-    const getBusinesses = async () => {
-      try {
-        const fetchedBusinesses = await fetchBusinesses();
-        setBusinesses(fetchedBusinesses);
-      } catch (error) {
-        console.error("Failed to fetch businesses", error);
-      }
-    };
-    getBusinesses();
-  }, []);
+    useEffect(() => {
+        const getBusinesses = async () => {
+            try {
+                const fetchedBusinesses = await fetchBusinesses();
+                setBusinesses(fetchedBusinesses);
+            } catch (error) {
+                console.error("Failed to fetch businesses", error);
+            }
+        };
+        getBusinesses();
+    }, []);
+
   
 
   const value = {
@@ -123,7 +129,13 @@ function App() {
               <Route path="delete/:id" element={<OrderDetails isDelete={true} />} />
             </Route>
 
-            <Route path="/product" element={<ProductPage />} />
+            <Route path="/product/*" element={<ProductPage />}>
+                <Route path="create" element={<ProductForm onSuccess={() => { }} businessId={currentBusiness.id} />} />
+                <Route path="productlist" element={<ProductList categoryId={currentCategories[0]?.id} />} />
+                <Route path=":id" element={<ProductDetails />} />
+            </Route>
+
+
             <Route path="/reservation" element={<ReservationPage />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/tax/*" element={<TaxPage />} />
