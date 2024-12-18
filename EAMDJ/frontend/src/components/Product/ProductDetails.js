@@ -61,9 +61,30 @@ function ProductDetails() {
     return (
         <div>
             <h2>Product Details</h2>
-            <p>Name: <input value={product.name} onChange={(e) => handleChange('name', e.target.value)} disabled={!isEditing} /></p>
-            <p>Price: <input value={product.price} onChange={(e) => handleChange('price', e.target.value)} disabled={!isEditing} /></p>
-            <p>Description: <input value={product.description} onChange={(e) => handleChange('description', e.target.value)} disabled={!isEditing} /></p>
+            <p>
+                Name:
+                <input
+                    value={product.name}
+                    onChange={(e) => handleChange('name', e.target.value)}
+                    disabled={!isEditing}
+                />
+            </p>
+            <p>
+                Price:
+                <input
+                    value={product.price}
+                    onChange={(e) => handleChange('price', e.target.value)}
+                    disabled={!isEditing}
+                />
+            </p>
+            <p>
+                Description:
+                <input
+                    value={product.description}
+                    onChange={(e) => handleChange('description', e.target.value)}
+                    disabled={!isEditing}
+                />
+            </p>
 
             {isEditing ? (
                 <button onClick={handleUpdate}>Save</button>
@@ -71,6 +92,8 @@ function ProductDetails() {
                 <button onClick={() => setIsEditing(true)}>Edit</button>
             )}
             <button onClick={handleDelete}>Delete</button>
+
+            <button onClick={() => navigate(`/product/${id}/modifiers`)}>Manage Modifiers</button>
         </div>
     );
 }
