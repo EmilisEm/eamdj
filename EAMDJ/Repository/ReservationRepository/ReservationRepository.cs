@@ -78,7 +78,6 @@ namespace EAMDJ.Repository.ReservationRepository
 					throw;
 				}
 			}
-
 			return await GetReservationAsync(id);
 		}
 
