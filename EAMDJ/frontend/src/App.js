@@ -10,6 +10,7 @@ import ProductPage from './pages/ProductPage';
 import ProductForm from './components/Product/ProductForm';
 import ProductList from './components/Product/ProductList';
 import ProductDetails from './components/Product/ProductDetails';
+import ProductModifiers from './components/Product/ProductModifiers';
 
 import ServiceTimePage from './pages/ServiceTimePage';
 import ServiceTimeForm from './components/ServiceTime/ServiceTimeForm';
@@ -70,8 +71,8 @@ function App() {
     setBusiness, 
     currentBusiness, 
     setCurrentBusiness, 
-    businesses,        // Add businesses to context
-    setBusinesses,     // Add setBusinesses to context
+    businesses,       
+    setBusinesses,    
     user, 
     setUser, 
     currentUser, 
@@ -145,7 +146,8 @@ function App() {
                 <Route path="create" element={<ProductForm onSuccess={() => { }} businessId={currentBusiness.id} />} />
                 <Route path="productlist" element={<ProductList categoryId={currentCategories[0]?.id} />} />
                 <Route path=":id" element={<ProductDetails />} />
-                      </Route>
+                <Route path=":id/modifiers" element={<ProductModifiers />} />
+            </Route>
 
             <Route path="service-time" element={<ServiceTimePage />}>
                 <Route path="service-timelist" element={<ServiceTimeList />} />
