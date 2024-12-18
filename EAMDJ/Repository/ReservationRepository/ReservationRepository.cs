@@ -79,7 +79,7 @@ namespace EAMDJ.Repository.ReservationRepository
 				}
 			}
 
-			return reservation;
+			return await GetReservationAsync(id);
 		}
 
 		private bool ReservationExists(Guid id)
