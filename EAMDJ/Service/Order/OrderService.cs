@@ -71,7 +71,7 @@ namespace EAMDJ.Service.OrderService
 				.Take(pageSize)
 				.ToListAsync();
 
-			var orderDtos = orders.Select(o => 
+			var orderDtos = orders.Select(o =>
 			{
 				var price = GetPayedAmount(o);
 				return OrderMapper.ToDto(o, price.Item1 + price.Item2, price.Item2);
@@ -177,6 +177,40 @@ namespace EAMDJ.Service.OrderService
 			}
 
 			return Tuple.Create(totalPrice, totalTax);
+		}
+
+		private async Task<OrderResponseDto> PaySumForOrder(Guid id, decimal sum)
+		{
+			ArgumentOutOfRangeException.ThrowIfNegative(sum);
+
+			var order = await _repository.GetOrderAsync(id);
+
+			// If order is not open for payment throw exception
+			if (order.Status != OrderStatus.Open || order.Status != OrderStatus.PartiallyPaid)
+			{
+				throw new InvalidOperationException("Order is not open for payment.");
+			}
+
+			// This actually returns a tuple of the full price of the order and the total taxes
+			var priceWithTaxes = GetPayedAmount(order);
+			var price = priceWithTaxes.Item1;
+			var taxes = priceWithTaxes.Item2;
+			var unpayedAmount = price - order.PayedAmount;
+
+			ArgumentOutOfRangeException.ThrowIfGreaterThan(sum, unpayedAmount);
+
+			order.PayedAmount += sum;
+			// Update order status depending on payment amount
+			if (order.PayedAmount == price)
+			{
+				order.Status = OrderStatus.Paid;
+			}
+			else
+			{
+				order.Status = OrderStatus.PartiallyPaid;
+			}
+
+			return OrderMapper.ToDto(order, price, taxes);
 		}
 	}
 }
