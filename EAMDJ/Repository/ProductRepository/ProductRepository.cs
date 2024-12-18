@@ -18,7 +18,7 @@ namespace EAMDJ.Repository.ProductRepository
 			_context.Product.Add(product);
 			await _context.SaveChangesAsync();
 
-			return await _context.Product.FirstAsync(it => it.Id == product.Id);
+			return await GetProductAsync(product.Id);
 		}
 
 		public async Task DeleteProductAsync(Guid id)
@@ -72,7 +72,7 @@ namespace EAMDJ.Repository.ProductRepository
 				}
 			}
 
-			return product;
+			return await GetProductAsync(product.Id);
 		}
 
 		private bool ProductExists(Guid id)
