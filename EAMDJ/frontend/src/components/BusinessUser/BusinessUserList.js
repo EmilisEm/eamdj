@@ -12,7 +12,7 @@ const BusinessUserList = ({businessId}) => {
 	useEffect(async () => {
 		try {
 			const data = await fetchUsersByBusiness(businessId);
-			setUsers(data);
+			setUsers(data.items);
 		} catch (error) {
 			console.error(error);
 		}

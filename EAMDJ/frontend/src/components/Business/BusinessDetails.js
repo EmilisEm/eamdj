@@ -104,7 +104,7 @@ function BusinessDetails() {
       </div>
 
       <div>
-        <BusinessUserList businessId={business.id} />
+        <BusinessUserList businessId={id} />
       </div>
     </div>
   );
