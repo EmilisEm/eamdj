@@ -179,7 +179,7 @@ namespace EAMDJ.Service.OrderService
 			return Tuple.Create(totalPrice, totalTax);
 		}
 
-		private async Task<OrderResponseDto> PaySumForOrder(Guid id, decimal sum)
+		public async Task<OrderResponseDto> PaySumForOrder(Guid id, decimal sum)
 		{
 			ArgumentOutOfRangeException.ThrowIfNegative(sum);
 
