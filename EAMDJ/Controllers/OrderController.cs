@@ -58,5 +58,11 @@ namespace EAMDJ.Controllers
 
 			return NoContent();
 		}
+
+		[HttpPut("pay/{id}")]
+		public async Task<ActionResult<OrderResponseDto>> PayOrder(Guid id, decimal sum)
+		{
+			return await _service.PaySumForOrder(id, sum);
+		}
 	}
 }
