@@ -1,40 +1,78 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import { fetchProductById, updateProduct, deleteProduct } from '../../api/product';
 
-const ProductDetails = () => {
-    const { productId } = useParams();
+function ProductDetails() {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        const fetchProduct = async () => {
+        if (!id) {
+            console.error('Product ID is missing');
+            navigate('/product/productlist');
+            return;
+        }
+
+        const getProduct = async () => {
             try {
-                const response = await axios.get(`/api/v1/products/${productId}`);
-                setProduct(response.data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
+                const productData = await fetchProductById(id);
+                setProduct(productData);
+            } catch (error) {
+                console.error('Failed to fetch product:', error);
+                navigate('/product/productlist');
             }
         };
 
-        fetchProduct();
-    }, [productId]);
+        getProduct();
+    }, [id, navigate]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (!product) return <div>Loading...</div>;
+
+    const handleUpdate = async () => {
+        try {
+            await updateProduct(id, product);
+            alert('Product updated!');
+            navigate('/product/productlist');
+        } catch (error) {
+            console.error('Failed to update product:', error);
+            alert('Failed to update product');
+        }
+    };
+
+    const handleDelete = async () => {
+        if (window.confirm('Are you sure you want to delete this product?')) {
+            try {
+                await deleteProduct(id);
+                alert('Product deleted!');
+                navigate('/product/productlist');
+            } catch (error) {
+                console.error('Failed to delete product:', error);
+                alert('Failed to delete product');
+            }
+        }
+    };
+
+    const handleChange = (field, value) => {
+        setProduct((prev) => ({ ...prev, [field]: value }));
+    };
 
     return (
         <div>
-            <h1>{product.name}</h1>
-            <p>{product.description}</p>
-            <p>Price: ${product.price}</p>
-            <p>Category: {product.category}</p>
-            {/* Add more product details as needed */}
+            <h2>Product Details</h2>
+            <p>Name: <input value={product.name} onChange={(e) => handleChange('name', e.target.value)} disabled={!isEditing} /></p>
+            <p>Price: <input value={product.price} onChange={(e) => handleChange('price', e.target.value)} disabled={!isEditing} /></p>
+            <p>Description: <input value={product.description} onChange={(e) => handleChange('description', e.target.value)} disabled={!isEditing} /></p>
+
+            {isEditing ? (
+                <button onClick={handleUpdate}>Save</button>
+            ) : (
+                <button onClick={() => setIsEditing(true)}>Edit</button>
+            )}
+            <button onClick={handleDelete}>Delete</button>
         </div>
     );
-};
+}
 
 export default ProductDetails;
