@@ -12,5 +12,6 @@ namespace EAMDJ.Service.OrderService
 		Task<OrderResponseDto> UpdateOrderAsync(Guid id, OrderUpdateDto order);
 		Task DeleteOrderAsync(Guid id);
 		Task<OrderResponseDto> CreateOrderAsync(OrderCreateDto order);
+		Task<OrderResponseDto> PaySumForOrder(Guid id, decimal sum)
 	}
 }
