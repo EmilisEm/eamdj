@@ -45,6 +45,11 @@ namespace EAMDJ.Repository.UserRepository
 			return user;
 		}
 
+		public IQueryable<User> GetQueryUsersByBusinessIdAsync(Guid businessId)
+		{
+			return _context.User.Where(it => it.BusinessId.Equals(businessId)).AsQueryable();
+		}
+
 		public async Task<User> GetUserAsync(Guid id)
 		{
 			var user = await _context.User.FindAsync(id);

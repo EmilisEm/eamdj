@@ -5,6 +5,11 @@ export const fetchProductsByCategory = async (categoryId) => {
   return response.data;
 };
 
+export const fetchProductById = async (id) => {
+    const response = await axiosInstance.get(`/api/v1/product/${id}`);
+    return response.data;
+};
+
 export const createProduct = async (data) => {
   const response = await axiosInstance.post('/api/v1/product', data);
   return response.data;

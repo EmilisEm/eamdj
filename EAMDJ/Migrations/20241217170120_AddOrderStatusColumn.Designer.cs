@@ -3,6 +3,7 @@ using System;
 using EAMDJ.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EAMDJ.Migrations
 {
     [DbContext(typeof(ServiceAppContext))]
-    partial class ServiceAppContextModelSnapshot : ModelSnapshot
+    [Migration("20241217170120_AddOrderStatusColumn")]
+    partial class AddOrderStatusColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,9 +227,6 @@ namespace EAMDJ.Migrations
 
                     b.Property<Guid>("ServiceTimeId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");

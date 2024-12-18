@@ -18,13 +18,20 @@ namespace EAMDJ.Controllers
 		}
 
 		[HttpGet("by-business/{id}")]
-		public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetUsersByBusinessId(Guid id)
+		public async Task<ActionResult<IEnumerable<UserResponseDto>>> GetUsersByBusinessId(Guid id,
+			[FromQuery] int page = 1,
+			[FromQuery] int pageSize = 20)
 		{
 			if (!_authService.AuthorizeForBusiness(id))
 			{
 				return Forbid();
 			}
-			return Ok(await _service.GetAllUsersByBusinessIdAsync(id));
+			if (page < 1 || pageSize < 1)
+			{
+				return BadRequest("Page and pageSize must be greater than 0.");
+			}
+
+			return Ok(await _service.GetAllUsersByBusinessIdAsync(id, page, pageSize));
 		}
 
 		[HttpGet("{id}")]

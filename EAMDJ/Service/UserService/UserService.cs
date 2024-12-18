@@ -1,7 +1,9 @@
-﻿using EAMDJ.Dto.UserDto;
+﻿using EAMDJ.Dto.Shared;
+using EAMDJ.Dto.UserDto;
 using EAMDJ.Mapper;
 using EAMDJ.Model;
 using EAMDJ.Repository.UserRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace EAMDJ.Service.UserService
 {
@@ -42,6 +44,27 @@ namespace EAMDJ.Service.UserService
 			return UserMapper.ToDto(user);
 		}
 
+		public async Task<PaginatedResult<UserResponseDto>> GetAllUsersByBusinessIdAsync(Guid businessId, int page, int pageSize)
+		{
+			var skip = (page - 1) * pageSize;
+			var query = _repository.GetQueryUsersByBusinessIdAsync(businessId);
+			var totalCount = await query.CountAsync();
+
+			var users = await query
+				.Skip(skip)
+				.Take(pageSize)
+				.ToListAsync();
+
+			var userDtos = users.Select(UserMapper.ToDto).ToList();
+
+			return new PaginatedResult<UserResponseDto>
+			{
+				Items = userDtos,
+				TotalCount = totalCount,
+				Page = page,
+				PageSize = pageSize
+			};
+		}
 		public async Task<UserResponseDto> GetUserAsync(Guid id)
 		{
 			User user = await _repository.GetUserAsync(id);

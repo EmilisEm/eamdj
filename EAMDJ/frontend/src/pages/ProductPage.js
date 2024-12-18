@@ -1,30 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// src/pages/ProductPage.js
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
 
-const ProductPage = () => {
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        axios.get('/api/products')
-            .then(response => {
-                setProducts(response.data);
-            })
-            .catch(error => {
-                console.error('There was an error fetching the products!', error);
-            });
-    }, []);
-
+function ProductPage() {
     return (
         <div>
-            <h1>Products</h1>
-            <p>Welcome to the Products page!</p>
-            <ul>
-                {products.map(product => (
-                    <li key={product.id}>{product.name}</li>
-                ))}
-            </ul>
+            <h2>Product Management</h2>
+            <nav>
+                <ul>
+                    <li><Link to="/product/create">Create Product</Link></li>
+                    <li><Link to="/product/productlist">List Products</Link></li>
+                </ul>
+            </nav>
+            <Outlet />
         </div>
     );
-};
+}
 
 export default ProductPage;

@@ -23,7 +23,7 @@ public record Order
 
 	// Status of this order (whether it's open, closed, paid-for, etc.).
 	// Merged into Order entity from OrderLog entity.
-	public OrderStatus Status;
+	public OrderStatus Status { get; set; }
 
 	// Timestamps: Create using DateTime.UtcNow property.
 	// Ex. `var timeStamp = DateTime.UtcNow;`.

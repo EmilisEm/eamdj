@@ -19,6 +19,7 @@ namespace EAMDJ.Mapper
 			{
 				throw new ArgumentException("Failed to fetch product category for product with ID " + from.Id);
 			}
+
 			return new ProductResponseDto()
 			{
 				Id = from.Id,
